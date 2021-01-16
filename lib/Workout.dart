@@ -24,6 +24,10 @@ class Workout {
     return duration;
   }
 
+  void cleanUp() {
+    this.sets.removeWhere((set) => set.exercises.isEmpty);
+  }
+
   factory Workout.fromRawJson(String str) => Workout.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());

@@ -33,6 +33,25 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
+  void saveWorkout() {
+    if (_workout.title == '') {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text('Please enter a name for the workout!'),
+            );
+          });
+      return;
+    }
+    setState(() {
+      _workout.cleanUp();
+    });
+    StorageHelper.deleteWorkout(_oldTitle);
+    StorageHelper.writeWorkout(_workout);
+    _oldTitle = _workout.title;
+  }
+
   void _addExercise(int setIndex, bool isRest) {
     setState(() {
       _workout.sets[setIndex].exercises
@@ -140,6 +159,9 @@ class _BuilderPageState extends State<BuilderPage> {
         Expanded(
             child: TextFormField(
           initialValue: name,
+          maxLength: 30,
+          maxLengthEnforced: true,
+          maxLines: 1,
           decoration: InputDecoration(
             labelText: 'Exercise',
           ),
@@ -169,9 +191,9 @@ class _BuilderPageState extends State<BuilderPage> {
         appBar: AppBar(
           title: TextFormField(
               initialValue: _workout.title,
-              validator: (String value) {
-                return value == '' ? 'Please enter a name!' : null;
-              },
+              maxLength: 30,
+              maxLengthEnforced: true,
+              maxLines: 1,
               onChanged: (String name) {
                 _workout.title = name;
               },
@@ -182,11 +204,7 @@ class _BuilderPageState extends State<BuilderPage> {
             IconButton(
               icon: const Icon(Icons.save),
               tooltip: 'Save workout',
-              onPressed: () {
-                StorageHelper.deleteWorkout(_oldTitle);
-                StorageHelper.writeWorkout(_workout);
-                _oldTitle = _workout.title;
-              },
+              onPressed: saveWorkout,
             )
           ],
         ),
