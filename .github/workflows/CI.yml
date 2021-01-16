@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      
+      - name: Get packages 
+        run: flutter pub get
+        
+      #- run: flutter test
+
+      - name: Store current date in env var
+        run: printf -v date '%(%Y%m%d%)T\n' -1
+        shell: bash
+
+      - name: Build APKs
+        run: flutter build apk --split-per-abi --build-number $date
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          name: APKs
+          path: ./build/app/outputs/apk/release/*.apk
+          retention-days: 30
