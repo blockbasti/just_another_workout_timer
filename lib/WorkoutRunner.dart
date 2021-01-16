@@ -81,11 +81,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
             if (exercise.duration > 10) {
               // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
-                _locNextSet = set;
-                _locNextExercise = set.exercises[exIndex + 1];
                 setMap[_currentTime + exercise.duration - 10] = () {
                   TTSHelper.speak('Next: ${set.exercises[exIndex + 1].name}');
                 };
+                if (setIndex + 1 < _workout.sets.length) {
+                  _locNextSet = _workout.sets[setIndex + 1];
+                }
+                _locNextExercise = set.exercises[exIndex + 1];
               }
               // case: exercise is last in set but set has remaining reps
               else if (exIndex + 1 == set.exercises.length &&
@@ -93,7 +95,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 setMap[_currentTime + exercise.duration - 10] = () {
                   TTSHelper.speak('Next: ${set.exercises[0].name}');
                 };
-                _locNextSet = set;
                 _locNextExercise = set.exercises[0];
               }
               // case: exercise is last in set and set is completed
@@ -102,11 +103,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   TTSHelper.speak(
                       'Next: ${_workout.sets[setIndex + 1].exercises[0].name}');
                 };
-                _locNextSet = _workout.sets[setIndex + 1];
                 _locNextExercise = _workout.sets[setIndex + 1].exercises[0];
               }
             }
           } catch (e) {}
+
+          if (setIndex + 1 < _workout.sets.length) {
+            _locNextSet = _workout.sets[setIndex + 1];
+          }
 
           setMap[_currentTime + exercise.duration - 3] = () {
             TTSHelper.speak('3');
@@ -185,28 +189,27 @@ class _WorkoutPageState extends State<WorkoutPage> {
     buildTimetable();
   }
 
-  Widget _buildSetList() {
+  Widget _buildSetList(Set set) {
+    if (set == null) return Container();
     return ListView.builder(
         shrinkWrap: true,
         primary: false,
         itemBuilder: (context, index) {
-          if (index < _currentSet.exercises.length) {
-            return _buildSetItem(
-                _currentSet.exercises[index].name,
-                _currentSet.exercises[index].duration,
-                _currentSet.exercises.indexOf(_currentExercise) == index);
+          if (index < set.exercises.length) {
+            return _buildSetItem(set.exercises[index],
+                set.exercises.indexOf(_currentExercise) == index);
           } else
             return null;
         });
   }
 
-  Widget _buildSetItem(String name, int duration, bool active) {
+  Widget _buildSetItem(Exercise exercise, bool active) {
     return ListTile(
       tileColor: active
           ? Theme.of(context).focusColor
           : Theme.of(context).primaryColor,
-      title: Text(name),
-      subtitle: Text('$duration seconds'),
+      title: Text(exercise.name),
+      subtitle: Text('Duration: ${Utils.formatSeconds(exercise.duration)}'),
     );
   }
 
@@ -276,7 +279,21 @@ class _WorkoutPageState extends State<WorkoutPage> {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
-                    _buildSetList(),
+                    _buildSetList(_currentSet),
+                  ],
+                ),
+              ),
+              Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text('Next set',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                    _buildSetList(_nextSet),
                   ],
                 ),
               )
