@@ -187,34 +187,61 @@ class _BuilderPageState extends State<BuilderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: TextFormField(
-              initialValue: _workout.title,
-              maxLength: 30,
-              maxLengthEnforced: true,
-              maxLines: 1,
-              onChanged: (String name) {
-                _workout.title = name;
-              },
-              decoration: InputDecoration(
-                labelText: 'Name',
-              )),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.save),
-              tooltip: 'Save workout',
-              onPressed: saveWorkout,
-            )
-          ],
-        ),
-        body: Center(
-          child: _buildSetList(),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _addSet,
-          tooltip: 'Add Set',
-          child: Icon(Icons.add),
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        final value = await showDialog<bool>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text('Are you sure you want to exit?'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('No'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                  FlatButton(
+                    child: Text('Yes, exit'),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
+                ],
+              );
+            });
+
+        return value == true;
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            title: TextFormField(
+                initialValue: _workout.title,
+                maxLength: 30,
+                maxLengthEnforced: true,
+                maxLines: 1,
+                onChanged: (String name) {
+                  _workout.title = name;
+                },
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                )),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.save),
+                tooltip: 'Save workout',
+                onPressed: saveWorkout,
+              )
+            ],
+          ),
+          body: Center(
+            child: _buildSetList(),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: _addSet,
+            tooltip: 'Add Set',
+            child: Icon(Icons.add),
+          )),
+    );
   }
 }
