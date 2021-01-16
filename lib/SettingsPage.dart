@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_another_workout_timer/OssLicensesPage.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:preferences/dropdown_preference.dart';
 import 'package:preferences/preference_page.dart';
@@ -43,6 +44,17 @@ class _SettingsPageState extends State<SettingsPage> {
               TTSHelper.flutterTts.setLanguage(value);
             },
           ),
+          PreferenceTitle('Licenses'),
+          PreferenceText(
+            'View Licenses',
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OssLicensesPage(),
+                  ));
+            },
+          )
         ]));
   }
 }
