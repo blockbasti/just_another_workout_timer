@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
+import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
 
 class WorkoutPage extends StatefulWidget {
@@ -236,7 +237,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   child: Column(
                     children: [
                       Text(
-                        '$_remainingSeconds',
+                        '${Utils.formatSeconds(_remainingSeconds)}',
                         style: TextStyle(
                             fontSize: 48, fontWeight: FontWeight.bold),
                       ),

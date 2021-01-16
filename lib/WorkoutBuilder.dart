@@ -78,11 +78,12 @@ class _BuilderPageState extends State<BuilderPage> {
                 subtitle: Text('${_workout.sets[index].duration} seconds'),
               ),
             ),
+            Text('Repetitions:'),
             NumberStepper(
                 lowerLimit: 0,
                 upperLimit: 99,
                 stepValue: 1,
-                suffix: 'x',
+                formatNumber: false,
                 value: _workout.sets[index].repetitions,
                 valueChanged: (int repetitions) {
                   _workout.sets[index].repetitions = repetitions;
@@ -151,7 +152,7 @@ class _BuilderPageState extends State<BuilderPage> {
             lowerLimit: 0,
             upperLimit: 995,
             stepValue: 5,
-            suffix: 'sec',
+            formatNumber: true,
             value: _workout.sets[setIndex].exercises[exIndex].duration,
             valueChanged: (int duration) {
               _workout.sets[setIndex].exercises[exIndex].duration = duration;

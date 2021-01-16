@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:just_another_workout_timer/Utils.dart';
 
 // ignore: must_be_immutable
 class NumberStepper extends StatefulWidget {
-  NumberStepper({
-    @required this.lowerLimit,
-    @required this.upperLimit,
-    @required this.stepValue,
-    @required this.value,
-    @required this.valueChanged,
-    @required this.suffix
-  });
+  NumberStepper(
+      {@required this.lowerLimit,
+      @required this.upperLimit,
+      @required this.stepValue,
+      @required this.value,
+      @required this.valueChanged,
+      @required this.formatNumber});
 
   final int lowerLimit;
   final int upperLimit;
@@ -17,7 +17,7 @@ class NumberStepper extends StatefulWidget {
   final double iconSize = 16;
   int value;
   final ValueChanged<int> valueChanged;
-  final String suffix;
+  final bool formatNumber;
 
   @override
   _CustomStepperState createState() => _CustomStepperState();
@@ -44,7 +44,7 @@ class _CustomStepperState extends State<NumberStepper> {
         Container(
           //width: widget.iconSize*2,
           child: Text(
-            '${widget.value} ${widget.suffix}',
+            '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
             style: TextStyle(
               fontSize: widget.iconSize * 0.8,
             ),

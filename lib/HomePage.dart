@@ -5,6 +5,7 @@ import 'package:just_another_workout_timer/WorkoutRunner.dart';
 
 import 'SettingsPage.dart';
 import 'StorageHelper.dart';
+import 'Utils.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -84,7 +85,8 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: ListTile(
             title: Text(workout.title),
-            subtitle: Text('Duration: ${workout.duration} seconds'),
+            subtitle:
+                Text('Duration: ${Utils.formatSeconds(workout.duration)} '),
           ),
         ),
         IconButton(
