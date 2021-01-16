@@ -26,7 +26,7 @@ jobs:
       #- run: flutter test
 
       - name: Build APKs
-        run: flutter build apk --split-per-abi --build-number $(printf '%(%Y%m%d)T\n' -1)
+        run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2.2.2
