@@ -21,7 +21,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   Set _currentSet = Set(exercises: [], repetitions: 1);
   Exercise _currentExercise = Exercise(duration: 0, name: '');
-  int _currentReps = 1;
+  int _currentReps = 0;
 
   Set _nextSet;
   Exercise _nextExercise;
@@ -53,6 +53,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
     int _currentTime = 10;
 
+    _timetable[1] = () {
+      TTSHelper.speak('First: ${_workout.sets[0].exercises[0].name}');
+    };
+
     _timetable[7] = () {
       TTSHelper.speak('3');
     };
@@ -75,13 +79,25 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           try {
             if (exercise.duration > 10) {
+              // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
                 _locNextSet = set;
                 _locNextExercise = set.exercises[exIndex + 1];
                 setMap[_currentTime + exercise.duration - 10] = () {
                   TTSHelper.speak('Next: ${set.exercises[exIndex + 1].name}');
                 };
-              } else if (setIndex + 1 < _workout.sets.length) {
+              }
+              // case: exercise is last in set but set has remaining reps
+              else if (exIndex + 1 == set.exercises.length &&
+                  rep < set.repetitions - 1) {
+                setMap[_currentTime + exercise.duration - 10] = () {
+                  TTSHelper.speak('Next: ${set.exercises[0].name}');
+                };
+                _locNextSet = set;
+                _locNextExercise = set.exercises[0];
+              }
+              // case: exercise is last in set and set is completed
+              else if (setIndex + 1 < _workout.sets.length) {
                 setMap[_currentTime + exercise.duration - 10] = () {
                   TTSHelper.speak(
                       'Next: ${_workout.sets[setIndex + 1].exercises[0].name}');
