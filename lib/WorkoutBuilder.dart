@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/NumberStepper.dart';
 import 'package:just_another_workout_timer/StorageHelper.dart';
-import 'package:just_another_workout_timer/workout.dart';
+import 'package:just_another_workout_timer/Workout.dart';
 
 class BuilderPage extends StatefulWidget {
   final Workout workout;

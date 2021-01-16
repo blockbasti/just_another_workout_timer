@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
-import 'package:just_another_workout_timer/workout.dart';
+import 'package:just_another_workout_timer/Workout.dart';
 
 class WorkoutPage extends StatefulWidget {
   final Workout workout;

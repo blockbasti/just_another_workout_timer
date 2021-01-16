@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:just_another_workout_timer/workout.dart';
+import 'package:just_another_workout_timer/Workout.dart';
 import 'package:path_provider/path_provider.dart';
 
 class StorageHelper {
