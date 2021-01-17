@@ -24,6 +24,7 @@ class Workout {
     return duration;
   }
 
+  /// remove sets without any exercises
   void cleanUp() {
     this.sets.removeWhere((set) => set.exercises.isEmpty);
   }

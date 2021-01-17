@@ -7,6 +7,7 @@ import 'SettingsPage.dart';
 import 'StorageHelper.dart';
 import 'Utils.dart';
 
+/// Title screen
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
   final String title = 'Just Another Workout Timer';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// load all workouts from disk and populate list
   _loadWorkouts() async {
     var data = await StorageHelper.getAllWorkouts();
     setState(() {
@@ -33,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  /// aks user if they want to delete a workout
   _showDeleteDialog(BuildContext context, Workout workout) {
     // set up the buttons
     Widget cancelButton = FlatButton(

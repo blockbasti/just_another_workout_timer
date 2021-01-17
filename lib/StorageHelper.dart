@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:just_another_workout_timer/Workout.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// handle everything related to persisting workouts
 class StorageHelper {
   static Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();

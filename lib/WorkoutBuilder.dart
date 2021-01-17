@@ -12,6 +12,7 @@ class BuilderPage extends StatefulWidget {
   _BuilderPageState createState() => _BuilderPageState(workout);
 }
 
+/// page allowing a user to create a workout
 class _BuilderPageState extends State<BuilderPage> {
   Workout _workout;
   String _oldTitle;

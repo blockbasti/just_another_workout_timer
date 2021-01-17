@@ -6,6 +6,7 @@ import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
 
+/// page to do a workout
 class WorkoutPage extends StatefulWidget {
   final Workout workout;
 
@@ -24,13 +25,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
   int _currentReps = 0;
 
   Set _nextSet;
-  Exercise _nextExercise;
 
   int _remainingSeconds = 10;
   int _currentSecond = 0;
 
   bool _workoutDone = false;
 
+  /// timestamps of functions to announce current exercise (among other things)
   Map<int, Function> _timetable = new SplayTreeMap();
 
   @override
@@ -46,17 +47,21 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   void buildTimetable() {
+    // init values
     setState(() {
       _currentSet = _workout.sets[0];
       _currentExercise = _workout.sets[0].exercises[0];
     });
 
+    /// current timestamp
     int _currentTime = 10;
 
+    // announce first exercise
     _timetable[1] = () {
       TTSHelper.speak('First: ${_workout.sets[0].exercises[0].name}');
     };
 
+    // countdown to workout start
     _timetable[7] = () {
       TTSHelper.speak('3');
     };
@@ -75,8 +80,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
       for (int rep = 0; rep < set.repetitions; rep++) {
         set.exercises.asMap().forEach((exIndex, exercise) {
           Set _locNextSet;
-          Exercise _locNextExercise;
 
+          // announce next exercise
           try {
             if (exercise.duration > 10) {
               // case: exercise is somewhere in set
@@ -87,7 +92,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 if (setIndex + 1 < _workout.sets.length) {
                   _locNextSet = _workout.sets[setIndex + 1];
                 }
-                _locNextExercise = set.exercises[exIndex + 1];
               }
               // case: exercise is last in set but set has remaining reps
               else if (exIndex + 1 == set.exercises.length &&
@@ -95,7 +99,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 setMap[_currentTime + exercise.duration - 10] = () {
                   TTSHelper.speak('Next: ${set.exercises[0].name}');
                 };
-                _locNextExercise = set.exercises[0];
               }
               // case: exercise is last in set and set is completed
               else if (setIndex + 1 < _workout.sets.length) {
@@ -103,15 +106,16 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   TTSHelper.speak(
                       'Next: ${_workout.sets[setIndex + 1].exercises[0].name}');
                 };
-                _locNextExercise = _workout.sets[setIndex + 1].exercises[0];
               }
             }
           } catch (e) {}
 
+          // set next set
           if (setIndex + 1 < _workout.sets.length) {
             _locNextSet = _workout.sets[setIndex + 1];
           }
 
+          // countdown to next exercise
           setMap[_currentTime + exercise.duration - 3] = () {
             TTSHelper.speak('3');
           };
@@ -124,13 +128,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
             TTSHelper.speak('1');
           };
 
+          // update display and announce current exercise
           setMap[_currentTime] = () {
             setState(() {
               _remainingSeconds = exercise.duration;
               _currentSet = set;
               _currentExercise = exercise;
               _nextSet = _locNextSet;
-              _nextExercise = _locNextExercise;
               _currentReps = rep;
               TTSHelper.speak(exercise.name);
             });
@@ -138,6 +142,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
           _currentTime += exercise.duration;
         });
       }
+
+      // announce completed workout
       _timetable[_currentTime] = () {
         _timerStop();
         TTSHelper.speak('Workout complete');
@@ -181,7 +187,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
       _currentReps = 1;
 
       _nextSet = Set(exercises: [], repetitions: 1);
-      _nextExercise = Exercise(duration: 0, name: '');
 
       _remainingSeconds = 10;
       _currentSecond = 0;
@@ -229,6 +234,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // left side of footed
                   Expanded(
                       child: ListTile(
                     title: Text(
@@ -236,6 +242,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                     subtitle: Text(
                         'Repetition ${_currentReps + 1} of ${_currentSet.repetitions}'),
                   )),
+                  // right side of footer
                   Expanded(
                       child: ListTile(
                     title: Text(
@@ -251,6 +258,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               )),
           body: Column(
             children: [
+              // top card with current exercise
               Card(
                 child: Center(
                   child: Column(
@@ -272,6 +280,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   ),
                 ),
               ),
+              // card with current set
               Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,6 +295,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   ],
                 ),
               ),
+              // card with next set
               Card(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

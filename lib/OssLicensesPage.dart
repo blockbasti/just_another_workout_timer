@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'oss_licenses.dart';
 
+/// display all used packages and their license
 class OssLicensesPage extends StatelessWidget {
   static Future<List<String>> loadLicenses() async {
     // merging non-dart based dependency list using LicenseRegistry.

@@ -1,11 +1,13 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:preferences/preference_service.dart';
 
+/// handles everything related to TTS
 class TTSHelper {
   static FlutterTts flutterTts;
 
   static List<String> languages;
 
+  /// enable/disable TTS output
   static bool useTTS = true;
 
   static init() async {

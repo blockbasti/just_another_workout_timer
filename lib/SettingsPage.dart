@@ -7,6 +7,7 @@ import 'package:preferences/preference_page.dart';
 import 'package:preferences/preference_title.dart';
 import 'package:preferences/preferences.dart';
 
+/// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();

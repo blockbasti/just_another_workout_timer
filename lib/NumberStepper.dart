@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 
+/// display a value with + and - buttons
 // ignore: must_be_immutable
 class NumberStepper extends StatefulWidget {
   NumberStepper(
