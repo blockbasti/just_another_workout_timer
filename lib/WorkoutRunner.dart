@@ -232,7 +232,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   Expanded(
                       child: ListTile(
                     title: Text(
-                        'Exercise ${_currentSet.exercises.indexOf(_currentExercise) + 1 * (_currentReps + 1)} of ${_currentSet.exercises.length * _currentSet.repetitions}'),
+                        'Exercise ${_currentSet.exercises.indexOf(_currentExercise) + 1 + (_currentReps * _currentSet.exercises.length)} of ${_currentSet.exercises.length * _currentSet.repetitions}'),
                     subtitle: Text(
                         'Repetition ${_currentReps + 1} of ${_currentSet.repetitions}'),
                   )),
@@ -259,6 +259,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         '${Utils.formatSeconds(_remainingSeconds)}',
                         style: TextStyle(
                             fontSize: 48, fontWeight: FontWeight.bold),
+                      ),
+                      LinearProgressIndicator(
+                        value: _remainingSeconds / _currentExercise.duration,
                       ),
                       Text(
                         '${_currentExercise.name}',
