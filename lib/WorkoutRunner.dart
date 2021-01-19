@@ -20,8 +20,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
   Timer _timer;
   Workout _workout;
 
-  Set _currentSet = Set(exercises: [], repetitions: 1);
-  Exercise _currentExercise = Exercise(duration: 0, name: '');
+  Set _currentSet;
+  Exercise _currentExercise;
   int _currentReps = 0;
 
   Set _nextSet;
@@ -51,6 +51,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     setState(() {
       _currentSet = _workout.sets[0];
       _currentExercise = _workout.sets[0].exercises[0];
+      _nextSet = _workout.sets.length > 1 ? _workout.sets[1] : null;
     });
 
     /// current timestamp
@@ -298,22 +299,24 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 ),
               ),
               // card with next set
-              Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text('Next set',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                      subtitle: _nextSet != null
-                          ? Text('${_nextSet.repetitions} repetitions')
-                          : null,
-                    ),
-                    _buildSetList(_nextSet),
-                  ],
-                ),
-              )
+              _nextSet != null
+                  ? Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            title: Text('Next set',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            subtitle: _nextSet != null
+                                ? Text('${_nextSet.repetitions} repetitions')
+                                : null,
+                          ),
+                          _buildSetList(_nextSet),
+                        ],
+                      ),
+                    )
+                  : Column()
             ],
           ),
           floatingActionButton: FloatingActionButton(

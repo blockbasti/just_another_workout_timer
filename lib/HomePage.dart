@@ -99,7 +99,8 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BuilderPage(workout: workout),
+                builder: (context) =>
+                    BuilderPage(workout: workout, newWorkout: false),
               ),
             ).then((value) => _loadWorkouts());
           },
@@ -145,7 +146,10 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BuilderPage(workout: Workout.empty()),
+              builder: (context) => BuilderPage(
+                workout: Workout.empty(),
+                newWorkout: true,
+              ),
             ),
           ).then((value) => _loadWorkouts());
         },

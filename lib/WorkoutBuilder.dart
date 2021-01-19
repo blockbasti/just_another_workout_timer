@@ -6,21 +6,25 @@ import 'package:just_another_workout_timer/Workout.dart';
 
 class BuilderPage extends StatefulWidget {
   final Workout workout;
+  final bool newWorkout;
 
-  BuilderPage({Key key, @required this.workout}) : super(key: key);
+  BuilderPage({Key key, @required this.workout, @required this.newWorkout})
+      : super(key: key);
 
   @override
-  _BuilderPageState createState() => _BuilderPageState(workout);
+  _BuilderPageState createState() => _BuilderPageState(workout, newWorkout);
 }
 
 /// page allowing a user to create a workout
 class _BuilderPageState extends State<BuilderPage> {
   Workout _workout;
   String _oldTitle;
+  bool _newWorkout;
 
-  _BuilderPageState(Workout workout) {
+  _BuilderPageState(Workout workout, bool newWorkout) {
     _workout = workout;
     _oldTitle = _workout.title;
+    _newWorkout = newWorkout;
   }
 
   void _addSet() {
@@ -49,7 +53,7 @@ class _BuilderPageState extends State<BuilderPage> {
     setState(() {
       _workout.cleanUp();
     });
-    StorageHelper.deleteWorkout(_oldTitle);
+    if (!_newWorkout) StorageHelper.deleteWorkout(_oldTitle);
     StorageHelper.writeWorkout(_workout);
     _oldTitle = _workout.title;
   }
