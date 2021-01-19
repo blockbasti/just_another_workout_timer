@@ -17,7 +17,11 @@ class JAWTApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Just Another Workout Timer',
-      theme: ThemeData.dark(),
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          primaryColor: Colors.blue[800],
+          accentColor: Colors.lightBlue[300],
+          fontFamily: 'Roboto'),
       home: HomePage(),
     );
   }

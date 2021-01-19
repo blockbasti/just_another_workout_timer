@@ -211,8 +211,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
   Widget _buildSetItem(Exercise exercise, bool active) {
     return ListTile(
       tileColor: active
-          ? Theme.of(context).focusColor
-          : Theme.of(context).primaryColor,
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).focusColor,
       title: Text(exercise.name),
       subtitle: Text('Duration: ${Utils.formatSeconds(exercise.duration)}'),
     );
@@ -270,6 +270,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       ),
                       LinearProgressIndicator(
                         value: _remainingSeconds / _currentExercise.duration,
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor),
                       ),
                       Text(
                         '${_currentExercise.name}',
@@ -300,11 +302,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text('Next set',
+                    ListTile(
+                      title: Text('Next set',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
+                      subtitle: _nextSet != null
+                          ? Text('${_nextSet.repetitions} repetitions')
+                          : null,
                     ),
                     _buildSetList(_nextSet),
                   ],

@@ -45,6 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
             onChange: () {
               setState(() {});
             },
+            switchActiveColor: Theme.of(context).accentColor,
           ),
           DropdownPreference(
             'TTS Language',
