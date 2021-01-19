@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/NumberStepper.dart';
 import 'package:just_another_workout_timer/StorageHelper.dart';
+import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
 
 class BuilderPage extends StatefulWidget {
@@ -95,7 +96,8 @@ class _BuilderPageState extends State<BuilderPage> {
                 title: Text(
                   'Set ${index + 1}',
                 ),
-                subtitle: Text('${_workout.sets[index].duration} seconds'),
+                subtitle: Text(
+                    '${Utils.formatSeconds(_workout.sets[index].duration)}'),
               ),
             ),
             Text('Repetitions:'),
@@ -178,7 +180,9 @@ class _BuilderPageState extends State<BuilderPage> {
             formatNumber: true,
             value: _workout.sets[setIndex].exercises[exIndex].duration,
             valueChanged: (int duration) {
-              _workout.sets[setIndex].exercises[exIndex].duration = duration;
+              setState(() {
+                _workout.sets[setIndex].exercises[exIndex].duration = duration;
+              });
             },
           ),
         )

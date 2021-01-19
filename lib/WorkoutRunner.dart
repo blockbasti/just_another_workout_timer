@@ -250,7 +250,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       textAlign: TextAlign.end,
                     ),
                     subtitle: Text(
-                      '${_workout.duration - _currentSecond + 10} of ${_workout.duration + 10} seconds left',
+                      '${Utils.formatSeconds(_workout.duration - _currentSecond + 10)} of ${Utils.formatSeconds(_workout.duration + 10)} left',
                       textAlign: TextAlign.end,
                     ),
                   ))
