@@ -257,7 +257,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   ))
                 ],
               )),
-          body: Column(
+          body: ListView(
             children: [
               // top card with current exercise
               Card(
