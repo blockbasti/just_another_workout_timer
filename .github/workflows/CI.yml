@@ -21,7 +21,8 @@ jobs:
       - name: Get packages 
         run: flutter pub get
         
-      - run: flutter test
+      - name: Run Tests
+        run: flutter test
 
       - name: Build APKs
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
