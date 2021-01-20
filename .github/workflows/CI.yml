@@ -2,9 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main, dev ]
   pull_request:
-    branches: [ main, dev ]
   workflow_dispatch:
 
 jobs:
@@ -23,7 +21,7 @@ jobs:
       - name: Get packages 
         run: flutter pub get
         
-      #- run: flutter test
+      - run: flutter test
 
       - name: Build APKs
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
