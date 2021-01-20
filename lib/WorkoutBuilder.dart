@@ -29,7 +29,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _addSet() {
     setState(() {
-      _workout.sets.add(Set.withReps(1));
+      _workout.sets.add(Set.empty());
     });
   }
 
