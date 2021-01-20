@@ -9,7 +9,7 @@ class Workout {
   Workout.empty() {
     title = 'Workout';
     sets = [
-      Set(repetitions: 1, exercises: [Exercise.withName('Exercise')])
+      Set.empty(),
     ];
   }
 
@@ -50,9 +50,9 @@ class Set {
     this.exercises,
   });
 
-  Set.withReps(int repetitions) {
-    this.repetitions = repetitions;
-    this.exercises = [];
+  Set.empty() {
+    this.repetitions = 1;
+    this.exercises = [Exercise.withName('Exercise')];
   }
 
   int repetitions = 1;

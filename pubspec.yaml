@@ -19,8 +19,8 @@ dependencies:
   wakelock:
 
 dev_dependencies:
-  #flutter_test:
-  # sdk: flutter
+  flutter_test:
+    sdk: flutter
   #integration_test:
   flutter_launcher_icons:
   flutter_oss_licenses:

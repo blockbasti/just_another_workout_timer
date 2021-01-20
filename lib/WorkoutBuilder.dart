@@ -29,7 +29,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _addSet() {
     setState(() {
-      _workout.sets.add(Set.withReps(1));
+      _workout.sets.add(Set.empty());
     });
   }
 
@@ -112,7 +112,9 @@ class _BuilderPageState extends State<BuilderPage> {
                 formatNumber: false,
                 value: _workout.sets[index].repetitions,
                 valueChanged: (int repetitions) {
-                  _workout.sets[index].repetitions = repetitions;
+                  setState(() {
+                    _workout.sets[index].repetitions = repetitions;
+                  });
                 })
           ],
         ),
