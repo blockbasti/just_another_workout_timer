@@ -28,16 +28,16 @@ jobs:
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
 
       - name: Sign APK
-          uses: r0adkll/sign-android-release@v1
-          id: sign_app
-          with:
-            releaseDirectory: ./build/app/outputs/apk/release
-            signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-            alias: key
-            keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-            keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          env:
-            BUILD_TOOLS_VERSION: "30.0.4"
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: ./build/app/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: key
+          keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.4"
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2.2.2
