@@ -54,9 +54,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="/screenshots/home.jpg" alt="Home Screen" width="250">
-<img src="/screenshots/runner.jpg" alt="Workout Screen" width="250">
-<img src="/screenshots/builder.jpg" alt="Builder Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Home Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Workout Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Builder Screen" width="250">
 
 
 ### Built With

@@ -1,0 +1,11 @@
+<b>A simple timer for your workouts, built with Flutter!</b>
+
+<ul>
+    <li>Create complex workouts</<li>
+    <li>Define your own exercises with custom durations</li>
+    <li>Add exercises to custom sets</li>
+    <li>Modern Material Design built with Flutter</li>
+    <li>Free and Open-Source</li>
+</ul>
+
+Github: https://github.com/blockbasti/just_another_workout_timer
