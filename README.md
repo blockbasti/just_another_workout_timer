@@ -55,8 +55,8 @@
 ## About The Project
 
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Home Screen" width="250">
-<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Workout Screen" width="250">
-<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Builder Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="Workout Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Builder Screen" width="250">
 
 
 ### Built With
