@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_another_workout_timer/OssLicensesPage.dart';
+import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:preferences/dropdown_preference.dart';
 import 'package:preferences/preference_page.dart';
@@ -32,20 +33,17 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: PreferencePage([
           PreferenceTitle('Text-to-Speech (TTS)'),
-          SwitchPreference(
+          RadioPreference(
             'Use Text-to-Speech',
-            'tts_enable',
-            defaultVal: true,
-            onEnable: () {
-              TTSHelper.useTTS = true;
+            'tts',
+            'sound',
+            isDefault: true,
+            onSelect: () {
+              setState(() {
+                TTSHelper.useTTS = true;
+                SoundHelper.useSound = false;
+              });
             },
-            onDisable: () {
-              TTSHelper.useTTS = false;
-            },
-            onChange: () {
-              setState(() {});
-            },
-            switchActiveColor: Theme.of(context).accentColor,
           ),
           DropdownPreference(
             'TTS Language',
@@ -55,6 +53,16 @@ class _SettingsPageState extends State<SettingsPage> {
             //disabled: (!PrefService.getBool('tts_enable') ?? false),
             onChange: (value) {
               TTSHelper.flutterTts.setLanguage(value);
+            },
+          ),
+          PreferenceTitle('Sound output'),
+          RadioPreference(
+            'Use sound effects',
+            'beep',
+            'sound',
+            onSelect: () {
+              TTSHelper.useTTS = false;
+              SoundHelper.useSound = true;
             },
           ),
           PreferenceTitle('Licenses'),
