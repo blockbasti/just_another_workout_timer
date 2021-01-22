@@ -23,6 +23,9 @@ jobs:
       - name: Run Tests
         run: flutter test
 
+      - name: Generate OSS licenses
+        run: flutter pub run flutter_oss_licenses:generate.dart
+
       - name: Build APKs
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
 
