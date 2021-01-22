@@ -13,7 +13,7 @@ class TTSHelper {
   static init() async {
     flutterTts = FlutterTts();
 
-    useTTS = PrefService.getBool('tts_enable');
+    useTTS = PrefService.getString('sound') == 'tts' ?? true;
     await flutterTts.setLanguage(PrefService.getString('tts_lang') ?? 'en-US');
     await flutterTts.setSpeechRate(1.0);
     await flutterTts.setVolume(1.0);

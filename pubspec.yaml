@@ -17,6 +17,7 @@ dependencies:
   preferences:
   url_launcher:
   wakelock:
+  soundpool:
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,7 @@ flutter:
   generate: true
   assets:
     - LICENSE
+    - assets/beep.wav
 
 flutter_icons:
   android: "launcher_icon"

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
@@ -65,14 +66,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
     // countdown to workout start
     _timetable[7] = () {
       TTSHelper.speak('3');
+      SoundHelper.playBeepLow();
     };
 
     _timetable[8] = () {
       TTSHelper.speak('2');
+      SoundHelper.playBeepLow();
     };
 
     _timetable[9] = () {
       TTSHelper.speak('1');
+      SoundHelper.playBeepLow();
     };
 
     _workout.sets.asMap().forEach((setIndex, set) {
@@ -119,14 +123,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
           // countdown to next exercise
           setMap[_currentTime + exercise.duration - 3] = () {
             TTSHelper.speak('3');
+            SoundHelper.playBeepLow();
           };
 
           setMap[_currentTime + exercise.duration - 2] = () {
             TTSHelper.speak('2');
+            SoundHelper.playBeepLow();
           };
 
           setMap[_currentTime + exercise.duration - 1] = () {
             TTSHelper.speak('1');
+            SoundHelper.playBeepLow();
           };
 
           // update display and announce current exercise
@@ -138,6 +145,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               _nextSet = _locNextSet;
               _currentReps = rep;
               TTSHelper.speak(exercise.name);
+              SoundHelper.playBeepHigh();
             });
           };
           _currentTime += exercise.duration;
