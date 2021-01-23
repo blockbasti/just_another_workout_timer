@@ -1,15 +1,17 @@
-name: release
+name: Create release
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - release
 
 jobs:
-  release:
-    if: startsWith(github.ref, 'refs/tags/')
+  prep_tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-java@v1
         with:
           java-version: '14.x'
@@ -17,17 +19,13 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Get packages
-        run: flutter pub get
-
-      - name: Run Tests
-        run: flutter test
-
-      - name: Generate OSS licenses
-        run: flutter pub run flutter_oss_licenses:generate.dart
-
       - name: Build APKs
-        run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
+        run: |
+          flutter config --no-analytics
+          flutter pub get
+          flutter test
+          flutter pub run flutter_oss_licenses:generate.dart
+          flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
@@ -41,29 +39,53 @@ jobs:
         env:
           BUILD_TOOLS_VERSION: "30.0.2"
 
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@main
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.github_token }}
+          git-message: 'chore: write changelog {version}'
+          git-user-name: 'blockbasti'
+          git-user-email: 'blockbasti99@gmail.com'
+          preset: 'angular'
+          tag-prefix: 'v'
+          output-file: 'CHANGELOG.md'
+          release-count: 0
+          skip-on-empty: 'true'
+          skip-version-file: 'true'
+          skip-commit: 'false'
+
+      - name: Write changelog to fastlane
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
+        run: echo $CHANGELOG > fastlane/metadata/android/en-US/changelogs/$(printf '%(%Y%m%d)T\n' -1).txt
+
+      - name: Commit fastlane changelog
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: Bastian Block
+          author_email: blockbasti99@gmail.com
+          message: 'chore: write changelog to fastlane'
+          add: 'fastlane/metadata/android/en-US/changelogs/*.txt'
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: ${{steps.github_release.outputs.changelog}}
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.changelog }}
 
       - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/app/outputs/apk/release/app-release.apk
-          asset_name: app-release.apk
-          asset_content_type: application/vnd.android.package-archive
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./build/app/outputs/apk/release/app-release.apk
+            asset_name: app-release.apk
+            asset_content_type: application/vnd.android.package-archive

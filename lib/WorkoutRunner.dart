@@ -6,6 +6,8 @@ import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
+import 'package:preferences/preference_service.dart';
+import 'package:wakelock/wakelock.dart';
 
 /// page to do a workout
 class WorkoutPage extends StatefulWidget {
@@ -38,12 +40,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   void dispose() {
     _timer?.cancel();
+    Wakelock.disable();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    if (PrefService.getBool('wakelock') ?? true) Wakelock.enable();
     buildTimetable();
   }
 
