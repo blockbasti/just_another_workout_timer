@@ -1,0 +1,26 @@
+name: Create version tag
+on:
+  push:
+    branches:
+      - release
+      - ci_test
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Extract version string
+      run: |
+        export VERSION=$(cat pubspec.yaml | awk '/version:/ {print $2}' | sed 's/+1//g')
+        export DATE=$(printf '%(%Y%m%d)T\n' -1)
+
+    - uses: BobAnkh/auto-generate-changelog@master
+        with:
+          REPO_NAME: 'blockbasti/just_another_workout_timer'
+          ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          PATH: '/fastlane/metadata/android/en-US/changelogs/${{env.DATE}}.txt'
+          COMMIT_MESSAGE: 'docs: update release notes'
+          TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
