@@ -1,9 +1,8 @@
-name: Create version tag
+name: Create release
 on:
   push:
     branches:
       - release
-      - ci_test
 
 jobs:
   prep_tag:
@@ -20,17 +19,13 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Get packages
-        run: flutter pub get
-
-      - name: Run Tests
-        run: flutter test
-
-      - name: Generate OSS licenses
-        run: flutter pub run flutter_oss_licenses:generate.dart
-
       - name: Build APKs
-        run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
+        run: |
+          flutter config --no-analytics
+          flutter pub get
+          flutter test
+          flutter pub run flutter_oss_licenses:generate.dart
+          flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1)
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
@@ -74,6 +69,7 @@ jobs:
           add: 'fastlane/metadata/android/en-US/changelogs/*.txt'
 
       - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
@@ -81,4 +77,15 @@ jobs:
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.clean_changelog }}
+          body: ${{ steps.changelog.outputs.changelog }}
+
+      - name: Upload Release Asset
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./build/app/outputs/apk/release/app-release.apk
+            asset_name: app-release.apk
+            asset_content_type: application/vnd.android.package-archive
