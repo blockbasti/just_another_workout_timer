@@ -18,9 +18,9 @@ jobs:
         export DATE=$(printf '%(%Y%m%d)T\n' -1)
 
     - uses: BobAnkh/auto-generate-changelog@master
-        with:
-          REPO_NAME: 'blockbasti/just_another_workout_timer'
-          ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          PATH: '/fastlane/metadata/android/en-US/changelogs/${{env.DATE}}.txt'
-          COMMIT_MESSAGE: 'docs: update release notes'
-          TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+      with:
+        REPO_NAME: 'blockbasti/just_another_workout_timer'
+        ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        PATH: '/fastlane/metadata/android/en-US/changelogs/${{env.DATE}}.txt'
+        COMMIT_MESSAGE: 'docs: update release notes'
+        TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
