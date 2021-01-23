@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:preferences/preference_service.dart';
-import 'package:wakelock/wakelock.dart';
 
 import 'HomePage.dart';
 
@@ -11,7 +10,6 @@ void main() async {
   await PrefService.init(prefix: 'pref_');
   TTSHelper.init();
   SoundHelper.loadSounds();
-  Wakelock.enable();
 }
 
 class JAWTApp extends StatelessWidget {

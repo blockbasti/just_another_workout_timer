@@ -32,6 +32,12 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text('Settings'),
         ),
         body: PreferencePage([
+          PreferenceTitle('General'),
+          SwitchPreference(
+            'Keep screen awake',
+            'wakelock',
+            defaultVal: true,
+          ),
           PreferenceTitle('Text-to-Speech (TTS)'),
           RadioPreference(
             'Use Text-to-Speech',
