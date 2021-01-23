@@ -1,1 +1,1 @@
-
+### Features CHANGELOG.md LICENSE README.md android assets build fastlane lib pubspec.lock pubspec.yaml test add option for sound cues ([#4](https://github.com/blockbasti/just_another_workout_timer/issues/4)) ([221fb8b](https://github.com/blockbasti/just_another_workout_timer/commit/221fb8bb3c23b4650d0e19aea28a99e0ec0284e8)) CHANGELOG.md LICENSE README.md android assets build fastlane lib pubspec.lock pubspec.yaml test add setting for wakelock ([3fcfb2c](https://github.com/blockbasti/just_another_workout_timer/commit/3fcfb2c82e3535e2c30afe41fa16603fc1936195))
