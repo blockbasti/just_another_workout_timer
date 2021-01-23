@@ -18,10 +18,27 @@ jobs:
           export VERSION=$(cat pubspec.yaml | awk '/version:/ {print $2}' | sed 's/+1//g')
           export DATE=$(printf '%(%Y%m%d)T\n' -1)
 
-      - uses: BobAnkh/auto-generate-changelog@master
+      #- uses: BobAnkh/auto-generate-changelog@master
+      #  with:
+      #    REPO_NAME: 'blockbasti/just_another_workout_timer'
+      #    ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #    PATH: '/fastlane/metadata/android/en-US/changelogs/${{env.DATE}}.txt'
+      #    COMMIT_MESSAGE: 'docs: update release notes'
+      #    TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+
+      - name: Conventional Changelog Action
+        uses: TriPSs/conventional-changelog-action@v3
         with:
-          REPO_NAME: 'blockbasti/just_another_workout_timer'
-          ACCESS_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          PATH: '/fastlane/metadata/android/en-US/changelogs/${{env.DATE}}.txt'
-          COMMIT_MESSAGE: 'docs: update release notes'
-          TYPE: 'feat:Feature,fix:Bug Fixes,docs:Documentation,refactor:Refactor,perf:Performance Improvements'
+          github-token: ${{ secrets.github_token }}
+          git-message: 'chore(release): {version}'
+          git-user-name: 'Awesome Changelog Action'
+          git-user-email: 'awesome_changelog@github.actions.com'
+          preset: 'angular'
+          tag-prefix: 'v'
+          output-file: 'MY_CUSTOM_CHANGELOG.md'
+          release-count: '10'
+          version-file: './my_custom_version_file.json' // or .yml, .yaml, .toml
+          version-path: 'path.to.version'
+          skip-on-empty: 'false'
+          skip-version-file: 'false'
+          skip-commit: 'false'
