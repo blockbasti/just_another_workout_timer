@@ -162,7 +162,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         TTSHelper.speak('Workout complete');
         setState(() {
           _workoutDone = true;
-          _currentExercise = Exercise(name: 'Workout complete!', duration: 0);
+          _currentExercise = Exercise(name: 'Workout complete!', duration: 1);
         });
       };
 
