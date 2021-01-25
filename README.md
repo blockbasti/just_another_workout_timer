@@ -22,7 +22,7 @@
     <a href="https://github.com/blockbasti/just_another_workout_timer"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/blockbasti/just_another_workout_timer">View Demo</a>
+    <a href="https://github.com/blockbasti/just_another_workout_timer/releases/latest">Latest release</a>
     ·
     <a href="https://github.com/blockbasti/just_another_workout_timer/issues">Report Bug</a>
     ·
