@@ -29,6 +29,23 @@ class Workout {
     this.sets.removeWhere((set) => set.exercises.isEmpty);
   }
 
+  /// move a set up or down the order
+  void moveSet(int index, bool moveUp) {
+    var sets = this.sets.toList();
+    if (!moveUp && index + 1 < this.sets.length) {
+      var a = sets[index];
+      var b = sets[index + 1];
+      sets[index + 1] = a;
+      sets[index] = b;
+    } else if (moveUp && index - 1 >= 0) {
+      var a = sets[index];
+      var b = sets[index - 1];
+      sets[index - 1] = a;
+      sets[index] = b;
+    }
+    this.sets = sets;
+  }
+
   factory Workout.fromRawJson(String str) => Workout.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
@@ -64,6 +81,23 @@ class Set {
     exercises.forEach((exercise) => {duration += exercise.duration});
 
     return duration * repetitions;
+  }
+
+  /// move an exercise up or down the order
+  void moveExercise(int index, bool moveUp) {
+    var sets = this.exercises.toList();
+    if (!moveUp && index + 1 < this.exercises.length) {
+      var a = sets[index];
+      var b = sets[index + 1];
+      sets[index + 1] = a;
+      sets[index] = b;
+    } else if (moveUp && index - 1 >= 0) {
+      var a = sets[index];
+      var b = sets[index - 1];
+      sets[index - 1] = a;
+      sets[index] = b;
+    }
+    this.exercises = sets;
   }
 
   factory Set.fromRawJson(String str) => Set.fromJson(json.decode(str));
