@@ -21,7 +21,10 @@ class JAWTApp extends StatelessWidget {
           brightness: Brightness.dark,
           primaryColor: Colors.blue[800],
           accentColor: Colors.lightBlue[300],
-          fontFamily: 'Roboto'),
+          fontFamily: 'Roboto',
+          cardTheme: CardTheme(elevation: 4),
+          unselectedWidgetColor: Colors.lightBlue[300],
+          toggleableActiveColor: Colors.lightBlue[300]),
       home: HomePage(),
     );
   }

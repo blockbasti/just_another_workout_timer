@@ -120,40 +120,48 @@ class _BuilderPageState extends State<BuilderPage> {
             ),
             _buildExerciseList(set, index),
             ButtonBar(
-              alignment: MainAxisAlignment.start,
+              alignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  icon: Icon(Icons.fitness_center),
-                  tooltip: 'Add exercise',
-                  onPressed: () {
-                    _addExercise(index, false);
-                  },
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.fitness_center),
+                      tooltip: 'Add exercise',
+                      onPressed: () {
+                        _addExercise(index, false);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.pause_circle_filled),
+                      tooltip: 'Add rest',
+                      onPressed: () {
+                        _addExercise(index, true);
+                      },
+                    ),
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.pause_circle_filled),
-                  tooltip: 'Add rest',
-                  onPressed: () {
-                    _addExercise(index, true);
-                  },
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_upward),
+                      tooltip: 'Move set up',
+                      onPressed: () {
+                        setState(() {
+                          _workout.moveSet(index, true);
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.arrow_downward),
+                      tooltip: 'Move set down',
+                      onPressed: () {
+                        setState(() {
+                          _workout.moveSet(index, false);
+                        });
+                      },
+                    )
+                  ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.arrow_upward),
-                  tooltip: 'Move set up',
-                  onPressed: () {
-                    setState(() {
-                      _workout.moveSet(index, true);
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_downward),
-                  tooltip: 'Move set down',
-                  onPressed: () {
-                    setState(() {
-                      _workout.moveSet(index, false);
-                    });
-                  },
-                )
               ],
             )
           ],
@@ -224,7 +232,7 @@ class _BuilderPageState extends State<BuilderPage> {
                   IconButton(
                     icon: Icon(Icons.arrow_upward),
                     padding: EdgeInsets.zero,
-                    tooltip: 'Move set up',
+                    tooltip: 'Move exercise up',
                     onPressed: () {
                       setState(() {
                         _workout.sets[setIndex].moveExercise(exIndex, true);
@@ -234,7 +242,7 @@ class _BuilderPageState extends State<BuilderPage> {
                   IconButton(
                     icon: Icon(Icons.arrow_downward),
                     padding: EdgeInsets.zero,
-                    tooltip: 'Move set down',
+                    tooltip: 'Move exercise down',
                     onPressed: () {
                       setState(() {
                         _workout.sets[setIndex].moveExercise(exIndex, false);
@@ -279,34 +287,36 @@ class _BuilderPageState extends State<BuilderPage> {
         return value == true;
       },
       child: Scaffold(
-          appBar: AppBar(
-            title: TextFormField(
-                initialValue: _workout.title,
-                maxLength: 30,
-                maxLengthEnforced: true,
-                maxLines: 1,
-                onChanged: (String name) {
-                  _workout.title = name;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Name',
-                )),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.save),
-                tooltip: 'Save workout',
-                onPressed: saveWorkout,
-              )
-            ],
-          ),
-          body: Center(
-            child: _buildSetList(),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _addSet,
-            tooltip: 'Add Set',
-            child: Icon(Icons.add),
-          )),
+        appBar: AppBar(
+          title: TextFormField(
+              initialValue: _workout.title,
+              maxLength: 30,
+              maxLengthEnforced: true,
+              maxLines: 1,
+              onChanged: (String name) {
+                _workout.title = name;
+              },
+              decoration: InputDecoration(
+                labelText: 'Name',
+              )),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.save),
+              tooltip: 'Save workout',
+              onPressed: saveWorkout,
+            )
+          ],
+        ),
+        body: Center(
+          child: _buildSetList(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _addSet,
+          tooltip: 'Add Set',
+          child: Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
     );
   }
 }
