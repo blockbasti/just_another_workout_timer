@@ -38,11 +38,22 @@ class _SettingsPageState extends State<SettingsPage> {
             'wakelock',
             defaultVal: true,
           ),
-          PreferenceTitle('Text-to-Speech (TTS)'),
+          PreferenceTitle('Sound output'),
+          RadioPreference(
+            'No sound effects',
+            'none',
+            'sound',
+            desc: 'Mute all sound output',
+            onSelect: () {
+              TTSHelper.useTTS = false;
+              SoundHelper.useSound = false;
+            },
+          ),
           RadioPreference(
             'Use Text-to-Speech',
             'tts',
             'sound',
+            desc: 'Announce current and upcoming exercises',
             isDefault: true,
             onSelect: () {
               setState(() {
@@ -51,24 +62,28 @@ class _SettingsPageState extends State<SettingsPage> {
               });
             },
           ),
+          RadioPreference(
+            'Use sound effects',
+            'beep',
+            'sound',
+            desc:
+                'Use simple sounds to indicate starts and endings of exercises',
+            onSelect: () {
+              TTSHelper.useTTS = false;
+              SoundHelper.useSound = true;
+            },
+          ),
+          PreferenceTitle('Text-to-Speech (TTS)'),
           DropdownPreference(
             'TTS Language',
             'tts_lang',
+            desc:
+                'Select a locally installed language\n(only when TTS is enabled)',
             defaultVal: 'en-US',
             values: TTSHelper.languages,
             //disabled: (!PrefService.getBool('tts_enable') ?? false),
             onChange: (value) {
               TTSHelper.flutterTts.setLanguage(value);
-            },
-          ),
-          PreferenceTitle('Sound output'),
-          RadioPreference(
-            'Use sound effects',
-            'beep',
-            'sound',
-            onSelect: () {
-              TTSHelper.useTTS = false;
-              SoundHelper.useSound = true;
             },
           ),
           PreferenceTitle('Licenses'),
