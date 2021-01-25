@@ -1,0 +1,8 @@
+* Erstelle einfach umfangreiche Workouts
+* Definiere dir eigene Übungen mit anpassbarer Länge
+* Füge Übungen zu längeren Sätzen hinzu
+* Text-to-Speech Ansagen
+* Modernes Material Design, gebaut mit Flutter
+* kostenlos und quelloffen
+
+Github: https://github.com/blockbasti/just_another_workout_timer
