@@ -47,6 +47,8 @@ jobs:
           git-message: 'chore: write changelog {version}'
           git-user-name: 'blockbasti'
           git-user-email: 'blockbasti99@gmail.com'
+          version-file: './pubspec.yml'
+          version-path: 'version'
           preset: 'angular'
           tag-prefix: 'v'
           output-file: 'CHANGELOG.md'
