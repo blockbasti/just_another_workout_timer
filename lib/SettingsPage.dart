@@ -56,10 +56,8 @@ class _SettingsPageState extends State<SettingsPage> {
             desc: 'Announce current and upcoming exercises',
             isDefault: true,
             onSelect: () {
-              setState(() {
-                TTSHelper.useTTS = true;
-                SoundHelper.useSound = false;
-              });
+              TTSHelper.useTTS = true;
+              SoundHelper.useSound = false;
             },
           ),
           RadioPreference(
