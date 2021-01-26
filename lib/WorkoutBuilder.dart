@@ -145,20 +145,24 @@ class _BuilderPageState extends State<BuilderPage> {
                     IconButton(
                       icon: Icon(Icons.arrow_upward),
                       tooltip: 'Move set up',
-                      onPressed: () {
-                        setState(() {
-                          _workout.moveSet(index, true);
-                        });
-                      },
+                      onPressed: index - 1 >= 0
+                          ? () {
+                              setState(() {
+                                _workout.moveSet(index, true);
+                              });
+                            }
+                          : null,
                     ),
                     IconButton(
                       icon: Icon(Icons.arrow_downward),
                       tooltip: 'Move set down',
-                      onPressed: () {
-                        setState(() {
-                          _workout.moveSet(index, false);
-                        });
-                      },
+                      onPressed: index + 1 < _workout.sets.length
+                          ? () {
+                              setState(() {
+                                _workout.moveSet(index, false);
+                              });
+                            }
+                          : null,
                     )
                   ],
                 ),
@@ -233,21 +237,28 @@ class _BuilderPageState extends State<BuilderPage> {
                     icon: Icon(Icons.arrow_upward),
                     padding: EdgeInsets.zero,
                     tooltip: 'Move exercise up',
-                    onPressed: () {
-                      setState(() {
-                        _workout.sets[setIndex].moveExercise(exIndex, true);
-                      });
-                    },
+                    onPressed: exIndex - 1 >= 0
+                        ? () {
+                            setState(() {
+                              _workout.sets[setIndex]
+                                  .moveExercise(exIndex, true);
+                            });
+                          }
+                        : null,
                   ),
                   IconButton(
                     icon: Icon(Icons.arrow_downward),
                     padding: EdgeInsets.zero,
                     tooltip: 'Move exercise down',
-                    onPressed: () {
-                      setState(() {
-                        _workout.sets[setIndex].moveExercise(exIndex, false);
-                      });
-                    },
+                    onPressed:
+                        exIndex + 1 < _workout.sets[setIndex].exercises.length
+                            ? () {
+                                setState(() {
+                                  _workout.sets[setIndex]
+                                      .moveExercise(exIndex, false);
+                                });
+                              }
+                            : null,
                   )
                 ],
               )
