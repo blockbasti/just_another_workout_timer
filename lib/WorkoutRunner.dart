@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
+import 'package:preferences/preference_service.dart';
+import 'package:wakelock/wakelock.dart';
 
 /// page to do a workout
 class WorkoutPage extends StatefulWidget {
@@ -37,12 +40,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   void dispose() {
     _timer?.cancel();
+    Wakelock.disable();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    if (PrefService.getBool('wakelock') ?? true) Wakelock.enable();
     buildTimetable();
   }
 
@@ -65,14 +70,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
     // countdown to workout start
     _timetable[7] = () {
       TTSHelper.speak('3');
+      SoundHelper.playBeepLow();
     };
 
     _timetable[8] = () {
       TTSHelper.speak('2');
+      SoundHelper.playBeepLow();
     };
 
     _timetable[9] = () {
       TTSHelper.speak('1');
+      SoundHelper.playBeepLow();
     };
 
     _workout.sets.asMap().forEach((setIndex, set) {
@@ -84,10 +92,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           // announce next exercise
           try {
-            if (exercise.duration > 10) {
+            if (exercise.duration >= 10) {
               // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak('Next: ${set.exercises[exIndex + 1].name}');
                 };
                 if (setIndex + 1 < _workout.sets.length) {
@@ -97,13 +105,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
               // case: exercise is last in set but set has remaining reps
               else if (exIndex + 1 == set.exercises.length &&
                   rep < set.repetitions - 1) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak('Next: ${set.exercises[0].name}');
                 };
               }
               // case: exercise is last in set and set is completed
               else if (setIndex + 1 < _workout.sets.length) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak(
                       'Next: ${_workout.sets[setIndex + 1].exercises[0].name}');
                 };
@@ -119,14 +127,17 @@ class _WorkoutPageState extends State<WorkoutPage> {
           // countdown to next exercise
           setMap[_currentTime + exercise.duration - 3] = () {
             TTSHelper.speak('3');
+            SoundHelper.playBeepLow();
           };
 
           setMap[_currentTime + exercise.duration - 2] = () {
             TTSHelper.speak('2');
+            SoundHelper.playBeepLow();
           };
 
           setMap[_currentTime + exercise.duration - 1] = () {
             TTSHelper.speak('1');
+            SoundHelper.playBeepLow();
           };
 
           // update display and announce current exercise
@@ -138,6 +149,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               _nextSet = _locNextSet;
               _currentReps = rep;
               TTSHelper.speak(exercise.name);
+              SoundHelper.playBeepHigh();
             });
           };
           _currentTime += exercise.duration;
@@ -150,7 +162,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         TTSHelper.speak('Workout complete');
         setState(() {
           _workoutDone = true;
-          _currentExercise = Exercise(name: 'Workout complete!', duration: 0);
+          _currentExercise = Exercise(name: 'Workout complete!', duration: 1);
         });
       };
 

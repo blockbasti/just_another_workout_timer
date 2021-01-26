@@ -47,8 +47,7 @@ class _CustomStepperState extends State<NumberStepper> {
           child: Text(
             '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
             style: TextStyle(
-              fontSize: widget.iconSize * 0.8,
-            ),
+                fontSize: widget.iconSize * 0.9, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
         ),

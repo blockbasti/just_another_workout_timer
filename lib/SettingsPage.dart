@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_another_workout_timer/OssLicensesPage.dart';
+import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:preferences/dropdown_preference.dart';
 import 'package:preferences/preference_page.dart';
@@ -31,25 +32,51 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text('Settings'),
         ),
         body: PreferencePage([
-          PreferenceTitle('Text-to-Speech (TTS)'),
+          PreferenceTitle('General'),
           SwitchPreference(
-            'Use Text-to-Speech',
-            'tts_enable',
+            'Keep screen awake',
+            'wakelock',
             defaultVal: true,
-            onEnable: () {
-              TTSHelper.useTTS = true;
-            },
-            onDisable: () {
-              TTSHelper.useTTS = false;
-            },
-            onChange: () {
-              setState(() {});
-            },
-            switchActiveColor: Theme.of(context).accentColor,
           ),
+          PreferenceTitle('Sound output'),
+          RadioPreference(
+            'No sound effects',
+            'none',
+            'sound',
+            desc: 'Mute all sound output',
+            onSelect: () {
+              TTSHelper.useTTS = false;
+              SoundHelper.useSound = false;
+            },
+          ),
+          RadioPreference(
+            'Use Text-to-Speech',
+            'tts',
+            'sound',
+            desc: 'Announce current and upcoming exercises',
+            isDefault: true,
+            onSelect: () {
+              TTSHelper.useTTS = true;
+              SoundHelper.useSound = false;
+            },
+          ),
+          RadioPreference(
+            'Use sound effects',
+            'beep',
+            'sound',
+            desc:
+                'Use simple sounds to indicate starts and endings of exercises',
+            onSelect: () {
+              TTSHelper.useTTS = false;
+              SoundHelper.useSound = true;
+            },
+          ),
+          PreferenceTitle('Text-to-Speech (TTS)'),
           DropdownPreference(
             'TTS Language',
             'tts_lang',
+            desc:
+                'Select a locally installed language\n(only when TTS is enabled)',
             defaultVal: 'en-US',
             values: TTSHelper.languages,
             //disabled: (!PrefService.getBool('tts_enable') ?? false),

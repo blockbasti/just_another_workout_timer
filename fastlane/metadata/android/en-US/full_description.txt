@@ -1,6 +1,4 @@
-A simple timer for your workouts, built with Flutter!
-
-* Create complex workouts
+* Create complex workouts easily
 * Define your own exercises with custom durations
 * Add exercises to custom sets
 * Text-to-Speech announcements

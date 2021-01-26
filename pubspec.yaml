@@ -3,7 +3,7 @@ description: Just Another Workout Timer
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+1
+version: 1.1.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -17,6 +17,7 @@ dependencies:
   preferences:
   url_launcher:
   wakelock:
+  soundpool:
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,7 @@ flutter:
   generate: true
   assets:
     - LICENSE
+    - assets/beep.wav
 
 flutter_icons:
   android: "launcher_icon"

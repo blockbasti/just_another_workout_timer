@@ -4,9 +4,26 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'oss_licenses.dart';
 
+class FlutterLicense extends LicenseEntry {
+  final packages;
+  final paragraphs;
+
+  FlutterLicense(this.packages, this.paragraphs);
+}
+
 /// display all used packages and their license
 class OssLicensesPage extends StatelessWidget {
   static Future<List<String>> loadLicenses() async {
+    Stream<LicenseEntry> licenses() async* {
+      yield FlutterLicense([
+        'Sound Effects'
+      ], [
+        LicenseParagraph('https://freesound.org/people/unfa/sounds/243749/', 0)
+      ]);
+    }
+
+    LicenseRegistry.addLicense(licenses);
+
     // merging non-dart based dependency list using LicenseRegistry.
     final ossKeys = ossLicenses.keys.toList();
     final lm = <String, List<String>>{};
