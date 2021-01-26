@@ -92,10 +92,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           // announce next exercise
           try {
-            if (exercise.duration > 10) {
+            if (exercise.duration >= 10) {
               // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak('Next: ${set.exercises[exIndex + 1].name}');
                 };
                 if (setIndex + 1 < _workout.sets.length) {
@@ -105,13 +105,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
               // case: exercise is last in set but set has remaining reps
               else if (exIndex + 1 == set.exercises.length &&
                   rep < set.repetitions - 1) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak('Next: ${set.exercises[0].name}');
                 };
               }
               // case: exercise is last in set and set is completed
               else if (setIndex + 1 < _workout.sets.length) {
-                setMap[_currentTime + exercise.duration - 10] = () {
+                setMap[_currentTime + exercise.duration - 9] = () {
                   TTSHelper.speak(
                       'Next: ${_workout.sets[setIndex + 1].exercises[0].name}');
                 };
