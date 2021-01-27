@@ -59,7 +59,7 @@ jobs:
 
       - name: Write changelog to fastlane
         env:
-          CHANGELOG: ${{ steps.changelog.outputs.clean_changelog }}
+          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
         run: echo $CHANGELOG > fastlane/metadata/android/en-US/changelogs/$(printf '%(%Y%m%d)T\n' -1).txt
 
       - name: Commit fastlane changelog
