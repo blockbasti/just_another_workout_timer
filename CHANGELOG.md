@@ -1,3 +1,13 @@
+## [1.1.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.1.0...v1.1.1) (2021-01-27)
+
+
+### Bug Fixes
+
+* change color of progressbar to be more visible ([f1fcd88](https://github.com/blockbasti/just_another_workout_timer/commit/f1fcd888ca4cd26c5d5de51bbbdb85246b1cb6ae))
+* exercise name field exiting after one character ([8da93e8](https://github.com/blockbasti/just_another_workout_timer/commit/8da93e86103d49f2838bffef321ce6776a367d09))
+
+
+
 # [1.1.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.0.1...v1.1.0) (2021-01-26)
 
 
