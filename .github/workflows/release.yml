@@ -87,6 +87,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./build/app/outputs/apk/release/app-release.apk
+          asset_path: ${{ steps.sign_app.outputs.signedReleaseFile }}
           asset_name: com.blockbasti.justanotherworkouttimer.apk
           asset_content_type: application/vnd.android.package-archive
