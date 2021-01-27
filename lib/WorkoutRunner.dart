@@ -284,7 +284,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       LinearProgressIndicator(
                         value: _remainingSeconds / _currentExercise.duration,
                         valueColor: new AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).primaryColor),
+                            Theme.of(context).accentColor),
                       ),
                       Text(
                         '${_currentExercise.name}',
