@@ -209,9 +209,7 @@ class _BuilderPageState extends State<BuilderPage> {
                   labelText: 'Exercise',
                 ),
                 onChanged: (text) {
-                  setState(() {
-                    _workout.sets[setIndex].exercises[exIndex].name = text;
-                  });
+                  _workout.sets[setIndex].exercises[exIndex].name = text;
                 },
               )),
           Column(
