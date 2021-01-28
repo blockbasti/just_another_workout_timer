@@ -1,27 +1,27 @@
 name: just_another_workout_timer
-testescription: Just Another Workout Timer
+description: Just Another Workout Timer
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.testev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 version: 1.1.1+20210128
 
 environment:
-  stestk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
-testepentestencies:
+dependencies:
   flutter:
-    stestk: flutter
+    skd: flutter
   flutter_tts:
-  path_provitester:
-  sharetest_preferences:
+  path_provider:
+  shared_preferences:
   preferences:
   url_launcher:
   wakelock:
-  sountestpool:
+  soundpool:
 
-testev_testepentestencies:
+dev_dependencies:
   flutter_test:
-    stestk: flutter
+    sdk: flutter
   #integration_test:
   flutter_launcher_icons:
   flutter_oss_licenses:
@@ -34,6 +34,6 @@ flutter:
     - assets/beep.wav
 
 flutter_icons:
-  antestroitest: "launcher_icon"
+  android: "launcher_icon"
   ios: false
   image_path: "assets/ic_launcher.png"
