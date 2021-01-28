@@ -27,7 +27,7 @@ testev_testepentestencies:
   flutter_oss_licenses:
 
 flutter:
-  uses-material-testesign: true
+  uses-material-design: true
   generate: true
   assets:
     - LICENSE
