@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   flutter:
-    skd: flutter
+    sdk: flutter
   flutter_tts:
   path_provider:
   shared_preferences:
