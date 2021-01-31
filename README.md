@@ -19,14 +19,11 @@
   <p align="center">
     A simple timer for your workouts, built with Flutter!
     <br />
-    <a href="https://github.com/blockbasti/just_another_workout_timer"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/blockbasti/just_another_workout_timer/releases/latest">Latest release</a>
-    ·
-    <a href="https://github.com/blockbasti/just_another_workout_timer/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/blockbasti/just_another_workout_timer/issues">Request Feature</a>
+    <a href="https://f-droid.org/packages/com.blockbasti.justanotherworkouttimer">
+        <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+        alt="Get it on F-Droid"
+        height="80">
+   </a>
   </p>
 </p>
 
