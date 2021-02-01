@@ -39,7 +39,7 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
-  void saveWorkout() {
+  void saveWorkout() async {
     if (_workout.title == '') {
       showDialog(
           context: context,
@@ -53,9 +53,39 @@ class _BuilderPageState extends State<BuilderPage> {
     setState(() {
       _workout.cleanUp();
     });
-    if (!_newWorkout) StorageHelper.deleteWorkout(_oldTitle);
-    StorageHelper.writeWorkout(_workout);
-    _oldTitle = _workout.title;
+    if ((_newWorkout && await StorageHelper.workoutExists(_workout.title)) ||
+        (!_newWorkout &&
+            _oldTitle != _workout.title &&
+            await StorageHelper.workoutExists(_workout.title))) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text('Overwrite existing workout?'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text('Yes'),
+                  onPressed: () async {
+                    await StorageHelper.deleteWorkout(_oldTitle);
+                    StorageHelper.writeWorkout(_workout);
+                    _oldTitle = _workout.title;
+                    _newWorkout = false;
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    } else {
+      StorageHelper.writeWorkout(_workout);
+      _newWorkout = false;
+    }
   }
 
   void _addExercise(int setIndex, bool isRest) {

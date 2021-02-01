@@ -24,6 +24,11 @@ class StorageHelper {
     file.writeAsString(workout.toRawJson(), flush: true);
   }
 
+  static Future<bool> workoutExists(String title) async {
+    final file = await _loadWorkoutFile(title);
+    return await file.exists();
+  }
+
   static Future<Workout> loadWorkout(String title) async {
     try {
       final file = await _loadWorkoutFile(title);
