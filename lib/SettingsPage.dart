@@ -8,6 +8,8 @@ import 'package:preferences/preference_page.dart';
 import 'package:preferences/preference_title.dart';
 import 'package:preferences/preferences.dart';
 
+import 'generated/l10n.dart';
+
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
   @override
@@ -29,31 +31,31 @@ class _SettingsPageState extends State<SettingsPage> {
     _loadLicense();
     return Scaffold(
         appBar: AppBar(
-          title: Text('Settings'),
+          title: Text(S.of(context).settings),
         ),
         body: PreferencePage([
-          PreferenceTitle('General'),
+          PreferenceTitle(S.of(context).general),
           SwitchPreference(
-            'Keep screen awake',
+            S.of(context).keepScreenAwake,
             'wakelock',
             defaultVal: true,
           ),
-          PreferenceTitle('Sound output'),
+          PreferenceTitle(S.of(context).soundOutput),
           RadioPreference(
-            'No sound effects',
+            S.of(context).noSound,
             'none',
             'sound',
-            desc: 'Mute all sound output',
+            desc: S.of(context).noSoundDesc,
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = false;
             },
           ),
           RadioPreference(
-            'Use Text-to-Speech',
+            S.of(context).useTTS,
             'tts',
             'sound',
-            desc: 'Announce current and upcoming exercises',
+            desc: S.of(context).useTTSDesc,
             isDefault: true,
             onSelect: () {
               TTSHelper.useTTS = true;
@@ -61,22 +63,20 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           RadioPreference(
-            'Use sound effects',
+            S.of(context).useSound,
             'beep',
             'sound',
-            desc:
-                'Use simple sounds to indicate starts and endings of exercises',
+            desc: S.of(context).useSoundDesc,
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = true;
             },
           ),
-          PreferenceTitle('Text-to-Speech (TTS)'),
+          PreferenceTitle(S.of(context).tts),
           DropdownPreference(
-            'TTS Language',
+            S.of(context).ttsLang,
             'tts_lang',
-            desc:
-                'Select a locally installed language\n(only when TTS is enabled)',
+            desc: S.of(context).ttsLangDesc,
             defaultVal: 'en-US',
             values: TTSHelper.languages,
             //disabled: (!PrefService.getBool('tts_enable') ?? false),
@@ -84,9 +84,9 @@ class _SettingsPageState extends State<SettingsPage> {
               TTSHelper.flutterTts.setLanguage(value);
             },
           ),
-          PreferenceTitle('Licenses'),
+          PreferenceTitle(S.of(context).licenses),
           PreferenceText(
-            'View License',
+            S.of(context).viewLicense,
             onTap: () {
               showDialog(
                   context: context,
@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Padding(
                             padding: EdgeInsets.all(8),
                             child: Text(
-                              'Just Another Workout Timer',
+                              S.of(context).title,
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -113,7 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           PreferenceText(
-            'View Open Source Licenses',
+            S.of(context).viewOSSLicenses,
             onTap: () {
               Navigator.push(
                   context,
