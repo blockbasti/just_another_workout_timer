@@ -171,7 +171,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   void _timerStart() {
-    buildTimetable();
     setState(() {
       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
         setState(() {
