@@ -22,6 +22,9 @@
 
   "settings": "Settings",
   "general": "General",
+  "language": "Language",
+  "english": "English",
+  "german": "German",
   "keepScreenAwake": "Keep screen awake",
   "soundOutput": "Sound output",
   "noSound": "No sound effects",

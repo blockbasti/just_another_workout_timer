@@ -35,6 +35,18 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         body: PreferencePage([
           PreferenceTitle(S.of(context).general),
+          DropdownPreference(
+            S.of(context).language,
+            'lang',
+            defaultVal: 'en',
+            values: ['en', 'de'],
+            displayValues: [S.of(context).english, S.of(context).german],
+            onChange: (value) {
+              setState(() {
+                S.load(Locale(value));
+              });
+            },
+          ),
           SwitchPreference(
             S.of(context).keepScreenAwake,
             'wakelock',

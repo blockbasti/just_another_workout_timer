@@ -20,6 +20,9 @@
   "ossLicenses": "Open Source Lizenzen",
 
   "settings": "Einstellungen",
+  "language": "Sprache",
+  "english": "Englisch",
+  "german": "Deutsch",
   "general": "Allgemein",
   "keepScreenAwake": "Bildschirm angeschaltet lassen",
   "soundOutput": "Tonausgabe",

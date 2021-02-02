@@ -137,7 +137,8 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                        MaterialPageRoute(builder: (context) => SettingsPage()))
+                    .then((value) => _loadWorkouts());
               })
         ],
       ),

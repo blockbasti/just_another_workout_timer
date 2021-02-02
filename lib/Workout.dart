@@ -69,7 +69,7 @@ class Set {
 
   Set.empty() {
     this.repetitions = 1;
-    this.exercises = [Exercise.withName('Exercise')];
+    this.exercises = [];
   }
 
   int repetitions = 1;
