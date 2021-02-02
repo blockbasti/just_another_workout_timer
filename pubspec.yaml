@@ -18,6 +18,9 @@ dependencies:
   url_launcher:
   wakelock:
   soundpool:
+  intl_translation:
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +40,5 @@ flutter_icons:
   android: "launcher_icon"
   ios: false
   image_path: "assets/ic_launcher.png"
+flutter_intl:
+  enabled: true
