@@ -19,6 +19,7 @@ dependencies:
   wakelock:
   soundpool:
   intl_translation:
+  scrollable_positioned_list:
   flutter_localizations:
     sdk: flutter
 

@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/SoundHelper.dart';
 import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
 import 'package:just_another_workout_timer/Workout.dart';
 import 'package:preferences/preference_service.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'generated/l10n.dart';
@@ -24,6 +26,10 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   Timer _timer;
   Workout _workout;
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
 
   Set _currentSet;
   Exercise _currentExercise;
@@ -149,6 +155,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
           // update display and announce current exercise
           setMap[_currentTime] = () {
             setState(() {
+              _itemScrollController.scrollTo(
+                index: exIndex - 1 > 0 ? exIndex - 1 : 0,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOutCubic,
+              );
               _remainingSeconds = exercise.duration;
               _currentSet = set;
               _currentExercise = exercise;
@@ -213,18 +224,44 @@ class _WorkoutPageState extends State<WorkoutPage> {
     buildTimetable();
   }
 
-  Widget _buildSetList(Set set) {
+  Widget _buildCurrentSetList(Set set) {
     if (set == null) return Container();
-    return ListView.builder(
-        shrinkWrap: true,
-        primary: false,
+
+    return SizedBox(
+      height: 217,
+      child: ScrollablePositionedList.builder(
         itemBuilder: (context, index) {
           if (index < set.exercises.length) {
             return _buildSetItem(set.exercises[index],
                 set.exercises.indexOf(_currentExercise) == index);
           } else
             return null;
-        });
+        },
+        itemCount: set.exercises.length,
+        itemScrollController: _itemScrollController,
+        itemPositionsListener: _itemPositionsListener,
+      ),
+    );
+  }
+
+  Widget _buildNextSetList(Set set) {
+    if (set == null) return Container();
+
+    return SizedBox(
+      height: 217,
+      child: ListView.builder(
+        itemBuilder: (context, index) {
+          if (index < set.exercises.length) {
+            return _buildSetItem(set.exercises[index],
+                set.exercises.indexOf(_currentExercise) == index);
+          } else
+            return null;
+        },
+        itemCount: set.exercises.length,
+        primary: false,
+        shrinkWrap: true,
+      ),
+    );
   }
 
   Widget _buildSetItem(Exercise exercise, bool active) {
@@ -255,7 +292,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // left side of footed
+                  // left side of footer
                   Expanded(
                       child: ListTile(
                     title: Text(S.of(context).exerciseOf(
@@ -287,7 +324,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   ))
                 ],
               )),
-          body: ListView(
+          body: Column(
             children: [
               // top card with current exercise
               Card(
@@ -295,60 +332,68 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   child: Column(
                     children: [
                       Text(
-                        '${Utils.formatSeconds(_remainingSeconds)}',
+                        '${S.of(context).setIndex(_workout.sets.indexOf(_currentSet) + 1)} - ${Utils.formatSeconds(_remainingSeconds)}',
                         style: TextStyle(
                             fontSize: 48, fontWeight: FontWeight.bold),
                       ),
                       LinearProgressIndicator(
                         value: _remainingSeconds / _currentExercise.duration,
-                        valueColor: new AlwaysStoppedAnimation<Color>(
+                        minHeight: 6,
+                        valueColor: AlwaysStoppedAnimation<Color>(
                             Theme.of(context).accentColor),
                       ),
                       Text(
                         '${_currentExercise.name}',
                         style: TextStyle(
-                            fontSize: 32, fontWeight: FontWeight.bold),
+                            fontSize: 48, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
                 ),
               ),
-              // card with current set
-              Card(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Expanded(
+                child: ListView(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(S.of(context).currentSet,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                    _buildSetList(_currentSet),
-                  ],
-                ),
-              ),
-              // card with next set
-              _nextSet != null
-                  ? Card(
+                    // card with current set
+                    Card(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ListTile(
-                            title: Text(S.of(context).nextSet,
+                          Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(S.of(context).currentSet,
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
-                            subtitle: _nextSet != null
-                                ? Text(S
-                                    .of(context)
-                                    .countRepetitions(_nextSet.repetitions))
-                                : null,
                           ),
-                          _buildSetList(_nextSet),
+                          _buildCurrentSetList(_currentSet),
                         ],
                       ),
-                    )
-                  : Column()
+                    ),
+                    // card with next set
+                    _nextSet != null
+                        ? Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  title: Text(S.of(context).nextSet,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold)),
+                                  subtitle: _nextSet != null
+                                      ? Text(S.of(context).countRepetitions(
+                                          _nextSet.repetitions))
+                                      : null,
+                                ),
+                                _buildNextSetList(_nextSet),
+                              ],
+                            ),
+                          )
+                        : Column()
+                  ],
+                ),
+              )
             ],
           ),
           floatingActionButton: FloatingActionButton(
