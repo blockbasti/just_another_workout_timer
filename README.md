@@ -23,6 +23,10 @@
         <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
         alt="Get it on F-Droid"
         height="80">
+    <a href="https://github.com/blockbasti/just_another_workout_timer/releases/latest">
+        <img src="/assets/get-it-on-github.png"
+        alt="Get it on GitHub"
+        height="80">
    </a>
   </p>
 </p>
