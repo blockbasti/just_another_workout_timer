@@ -20,9 +20,9 @@ jobs:
           channel: 'stable'
 
       - name: Write versioncode to pubspec.yml
-          run: |
-            export VERSION=$(printf '%(%Y%m%d)T\n' -1)
-            sed -i -E -e "s/\+[0-9]+/\+$VERSION/g" pubspec.yaml
+        run: |
+          export VERSION=$(printf '%(%Y%m%d)T\n' -1)
+          sed -i -E -e "s/\+[0-9]+/\+$VERSION/g" pubspec.yaml
 
       - name: Build APKs
         run: |
