@@ -47,7 +47,7 @@ void main() {
       Set set = Set.empty();
 
       expect(set.repetitions, 1);
-      expect(set.exercises.length, 1);
+      expect(set.exercises.length, 0);
     });
 
     test(
@@ -60,13 +60,14 @@ void main() {
         Exercise.withName('Exercise')
       ]);
 
-      expect(setDefault.duration, 30);
+      expect(setDefault.duration, 0);
       expect(setEmpty.duration, 0);
       expect(setComplex.duration, 180);
     });
 
     test('GIVEN a set WHEN converting to JSON THEN output is valid', () {
       Set set = Set.empty();
+      set.exercises.add(Exercise.withName('Exercise'));
 
       var json = set.toRawJson();
 
@@ -106,7 +107,7 @@ void main() {
 
       expect(workout.title, 'Workout');
       expect(workout.sets.length, 1);
-      expect(workout.sets.first.exercises.length, 1);
+      expect(workout.sets.first.exercises.length, 0);
     });
 
     test(
@@ -114,16 +115,20 @@ void main() {
         () {
       Workout workoutDefault = Workout.empty();
       Workout workoutEmpty = Workout(title: 'Workout', sets: []);
-      Workout workoutComplex =
-          Workout(title: 'Workout', sets: [Set.empty(), Set.empty()]);
 
-      expect(workoutDefault.duration, 30);
+      Set set = Set.empty();
+      set.exercises.add(Exercise.withName('Exercise'));
+
+      Workout workoutComplex = Workout(title: 'Workout', sets: [set, set]);
+
+      expect(workoutDefault.duration, 0);
       expect(workoutEmpty.duration, 0);
       expect(workoutComplex.duration, 60);
     });
 
     test('GIVEN a workout WHEN converting to JSON THEN output is valid', () {
       Workout workout = Workout.empty();
+      workout.sets.first.exercises.add(Exercise.withName('Exercise'));
 
       var json = workout.toRawJson();
 

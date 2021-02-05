@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'generated/l10n.dart';
 import 'oss_licenses.dart';
 
 class FlutterLicense extends LicenseEntry {
@@ -18,7 +19,8 @@ class OssLicensesPage extends StatelessWidget {
       yield FlutterLicense([
         'Sound Effects'
       ], [
-        LicenseParagraph('https://freesound.org/people/unfa/sounds/243749/', 0)
+        LicenseParagraph(
+            'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/', 0)
       ]);
     }
 
@@ -48,7 +50,7 @@ class OssLicensesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Open Source Licenses'),
+          title: Text(S.of(context).ossLicenses),
         ),
         body: FutureBuilder<List<String>>(
             future: _licenses,

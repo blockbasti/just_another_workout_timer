@@ -3,6 +3,7 @@
 * Add exercises to custom sets
 * Text-to-Speech announcements
 * Modern Material Design built with Flutter
+* Ad-free
 * Free and Open-Source
 
 Github: https://github.com/blockbasti/just_another_workout_timer

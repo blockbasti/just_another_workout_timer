@@ -10,7 +10,7 @@ class TTSHelper {
   /// enable/disable TTS output
   static bool useTTS = true;
 
-  static init() async {
+  static Future<void> init() async {
     flutterTts = FlutterTts();
 
     useTTS = PrefService.getString('sound') == 'tts' ?? true;

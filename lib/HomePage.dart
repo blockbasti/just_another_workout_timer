@@ -6,11 +6,11 @@ import 'package:just_another_workout_timer/WorkoutRunner.dart';
 import 'SettingsPage.dart';
 import 'StorageHelper.dart';
 import 'Utils.dart';
+import 'generated/l10n.dart';
 
 /// Title screen
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
-  final String title = 'Just Another Workout Timer';
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -39,13 +39,13 @@ class _HomePageState extends State<HomePage> {
   _showDeleteDialog(BuildContext context, Workout workout) {
     // set up the buttons
     Widget cancelButton = FlatButton(
-      child: Text('Cancel'),
+      child: Text(S.of(context).cancel),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = FlatButton(
-      child: Text('Delete'),
+      child: Text(S.of(context).delete),
       onPressed: () {
         StorageHelper.deleteWorkout(workout.title);
         _loadWorkouts();
@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text('Delete'),
-      content: Text('Would you like to delete the workout "${workout.title}"?'),
+      title: Text(S.of(context).delete),
+      content: Text(S.of(context).deleteConfirmation(workout.title)),
       actions: [
         cancelButton,
         continueButton,
@@ -88,13 +88,14 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: ListTile(
             title: Text(workout.title),
-            subtitle:
-                Text('Duration: ${Utils.formatSeconds(workout.duration)} '),
+            subtitle: Text(S
+                .of(context)
+                .durationWithTime(Utils.formatSeconds(workout.duration))),
           ),
         ),
         IconButton(
           icon: Icon(Icons.edit),
-          tooltip: 'Edit workout',
+          tooltip: S.of(context).editWorkout,
           onPressed: () {
             Navigator.push(
               context,
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
         ),
         IconButton(
             icon: Icon(Icons.play_circle_fill),
-            tooltip: 'Start workout',
+            tooltip: S.of(context).startWorkout,
             onPressed: () {
               Navigator.push(
                 context,
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
             }),
         IconButton(
             icon: Icon(Icons.delete),
-            tooltip: 'Delete workout',
+            tooltip: S.of(context).deleteWorkout,
             onPressed: () {
               _showDeleteDialog(context, workout);
             })
@@ -130,13 +131,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(S.of(context).title),
         actions: [
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingsPage()));
+                        MaterialPageRoute(builder: (context) => SettingsPage()))
+                    .then((value) => _loadWorkouts());
               })
         ],
       ),
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ).then((value) => _loadWorkouts());
         },
-        tooltip: 'Add workout',
+        tooltip: S.of(context).addWorkout,
         child: Icon(Icons.add),
       ),
     );
