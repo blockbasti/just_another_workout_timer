@@ -54,7 +54,7 @@ jobs:
           git-user-email: 'blockbasti99@gmail.com'
           version-file: './pubspec.yaml'
           version-path: 'version'
-          preset: 'codemirror'
+          preset: 'angular'
           tag-prefix: 'v'
           output-file: 'CHANGELOG.md'
           release-count: 0
