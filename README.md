@@ -40,37 +40,38 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#screenshots">Screenshots</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
-
-
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Home Screen" width="250">
-<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="Workout Screen" width="250">
+* Create complex workouts easily
+* Define your own exercises with custom durations
+* Add exercises to custom sets
+* Text-to-Speech announcements
+* Modern Material Design built with Flutter
+* Ad-free
+* Free and Open-Source
+
+### Screenshots
+
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" alt="Workout Screen" width="250">
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" alt="Home Screen" width="250">
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Builder Screen" width="250">
-
-
-### Built With
-
-* [Flutter](https://flutter.dev/)
+<img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" alt="Settings Screen" width="250">
 
 
 <!-- ROADMAP -->
 ## Roadmap
 
 See the [open issues](https://github.com/blockbasti/just_another_workout_timer/issues) for a list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -83,22 +84,10 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Bastian Block - blockbasti99@gmail.com
-
-Project Link: [https://github.com/blockbasti/just_another_workout_timer](https://github.com/blockbasti/just_another_workout_timer)
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
