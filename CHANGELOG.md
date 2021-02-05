@@ -1,3 +1,29 @@
+# [1.2.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.1.1...v1.2.0) (2021-02-05)
+
+
+### Bug Fixes
+
+* don't rebuild timetable when pausing (fix [#12](https://github.com/blockbasti/just_another_workout_timer/issues/12)) ([45bc9a6](https://github.com/blockbasti/just_another_workout_timer/commit/45bc9a6a39bcd9d5062d7f7e65b8605a0ab99b71))
+
+
+### Features
+
+* add german language ([8ecc50b](https://github.com/blockbasti/just_another_workout_timer/commit/8ecc50b90d9309c5effb97ea19d22c2d85ebb87c))
+* ask before overwriting a workout ([f16d038](https://github.com/blockbasti/just_another_workout_timer/commit/f16d038fdda9f8e9e2c9ccbfad1efb7f754d4c43))
+* improve design of workout runner (fixes [#13](https://github.com/blockbasti/just_another_workout_timer/issues/13)) ([ec3acad](https://github.com/blockbasti/just_another_workout_timer/commit/ec3acadd26e3939b7beb0e76d46355e3db8f5f4b))
+
+
+### Performance Improvements
+
+* improve app start ([eb6f856](https://github.com/blockbasti/just_another_workout_timer/commit/eb6f856017d2a8e99bde75d48b3793b711748d05))
+
+
+### Reverts
+
+* "chore: write changelog to fastlane" ([f40c927](https://github.com/blockbasti/just_another_workout_timer/commit/f40c9274659e43162d7e57e77ad96d033abe66dc))
+
+
+
 ## [1.1.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.1.0...v1.1.1) (2021-01-27)
 
 
