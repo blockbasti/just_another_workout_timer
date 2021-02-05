@@ -3,7 +3,7 @@ description: Just Another Workout Timer
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.2+20210128
+version: 1.2.0+20210128
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
