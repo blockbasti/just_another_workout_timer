@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:just_another_workout_timer/NumberStepper.dart';
 import 'package:just_another_workout_timer/StorageHelper.dart';
 import 'package:just_another_workout_timer/Utils.dart';
@@ -236,6 +237,7 @@ class _BuilderPageState extends State<BuilderPage> {
                 initialValue: name,
                 maxLength: 30,
                 maxLengthEnforced: true,
+                inputFormatters: [LengthLimitingTextInputFormatter(30)],
                 maxLines: 1,
                 decoration: InputDecoration(
                   labelText: S.of(context).exercise,
@@ -333,6 +335,7 @@ class _BuilderPageState extends State<BuilderPage> {
               initialValue: _workout.title,
               maxLength: 30,
               maxLengthEnforced: true,
+              inputFormatters: [LengthLimitingTextInputFormatter(30)],
               maxLines: 1,
               onChanged: (String name) {
                 _workout.title = name;
