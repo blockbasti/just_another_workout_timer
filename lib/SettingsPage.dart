@@ -7,6 +7,7 @@ import 'package:preferences/dropdown_preference.dart';
 import 'package:preferences/preference_page.dart';
 import 'package:preferences/preference_title.dart';
 import 'package:preferences/preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
 
@@ -103,6 +104,14 @@ class _SettingsPageState extends State<SettingsPage> {
             desc: S.of(context).AnnounceUpcomingExerciseDesc,
           ),
           PreferenceTitle(S.of(context).licenses),
+          PreferenceText(
+            S.of(context).viewOnGithub,
+            subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
+            onTap: () {
+              launch(
+                  'https://github.com/blockbasti/just_another_workout_timer');
+            },
+          ),
           PreferenceText(
             S.of(context).viewLicense,
             onTap: () {

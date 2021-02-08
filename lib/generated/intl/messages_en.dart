@@ -83,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "overwriteExistingWorkout" : MessageLookupByLibrary.simpleMessage("Overwrite existing workout?"),
     "repOf" : m7,
     "repetitions" : MessageLookupByLibrary.simpleMessage("Repetitions:"),
+    "reportIssuesOrRequestAFeature" : MessageLookupByLibrary.simpleMessage("Report issues or request a feature"),
     "rest" : MessageLookupByLibrary.simpleMessage("Rest"),
     "saveWorkout" : MessageLookupByLibrary.simpleMessage("Save workout"),
     "setIndex" : m8,
@@ -101,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "useTTSDesc" : MessageLookupByLibrary.simpleMessage("Announce current and upcoming exercises"),
     "viewLicense" : MessageLookupByLibrary.simpleMessage("View License"),
     "viewOSSLicenses" : MessageLookupByLibrary.simpleMessage("View Open Source Licenses"),
+    "viewOnGithub" : MessageLookupByLibrary.simpleMessage("View on GitHub"),
     "workoutComplete" : MessageLookupByLibrary.simpleMessage("Workout complete"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes"),
     "yesExit" : MessageLookupByLibrary.simpleMessage("Yes, exit")

@@ -664,6 +664,26 @@ class S {
       args: [count],
     );
   }
+
+  /// `View on GitHub`
+  String get viewOnGithub {
+    return Intl.message(
+      'View on GitHub',
+      name: 'viewOnGithub',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report issues or request a feature`
+  String get reportIssuesOrRequestAFeature {
+    return Intl.message(
+      'Report issues or request a feature',
+      name: 'reportIssuesOrRequestAFeature',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

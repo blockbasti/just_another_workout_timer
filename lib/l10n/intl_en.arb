@@ -66,5 +66,7 @@
   "durationLeft": "{timeLeft} of {timeTotal} left",
   "currentSet": "Current set",
   "nextSet": "Next set",
-  "countRepetitions": "{count} repetitions"
+  "countRepetitions": "{count} repetitions",
+  "viewOnGithub": "View on GitHub",
+  "reportIssuesOrRequestAFeature": "Report issues or request a feature"
 }
