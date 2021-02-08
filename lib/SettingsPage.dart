@@ -96,6 +96,12 @@ class _SettingsPageState extends State<SettingsPage> {
               TTSHelper.flutterTts.setLanguage(value);
             },
           ),
+          SwitchPreference(
+            S.of(context).announceUpcomingExercise,
+            'tts_next_announce',
+            defaultVal: true,
+            desc: S.of(context).AnnounceUpcomingExerciseDesc,
+          ),
           PreferenceTitle(S.of(context).licenses),
           PreferenceText(
             S.of(context).viewLicense,

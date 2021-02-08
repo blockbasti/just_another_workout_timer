@@ -375,6 +375,26 @@ class S {
     );
   }
 
+  /// `Announce upcoming exercise`
+  String get announceUpcomingExercise {
+    return Intl.message(
+      'Announce upcoming exercise',
+      name: 'announceUpcomingExercise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When TTS is enabled, announce the upcoming exercise`
+  String get AnnounceUpcomingExerciseDesc {
+    return Intl.message(
+      'When TTS is enabled, announce the upcoming exercise',
+      name: 'AnnounceUpcomingExerciseDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please enter a name for the workout!`
   String get enterWorkoutName {
     return Intl.message(

@@ -41,10 +41,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "AnnounceUpcomingExerciseDesc" : MessageLookupByLibrary.simpleMessage("Wenn TTS aktiviert ist, wird die nächste Übung angesagt"),
     "addExercise" : MessageLookupByLibrary.simpleMessage("Übung hinzufügen"),
     "addRest" : MessageLookupByLibrary.simpleMessage("Pause hinzufügen"),
     "addSet" : MessageLookupByLibrary.simpleMessage("Satz hinzufügen"),
     "addWorkout" : MessageLookupByLibrary.simpleMessage("Workout erstellen"),
+    "announceUpcomingExercise" : MessageLookupByLibrary.simpleMessage("nächste Übung ansagen"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Abbrechen"),
     "countRepetitions" : m0,
     "currentSet" : MessageLookupByLibrary.simpleMessage("Aktueller Satz"),

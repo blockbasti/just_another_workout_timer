@@ -101,7 +101,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           // announce next exercise
           try {
-            if (exercise.duration >= 10) {
+            if ((PrefService.getBool('tts_next_announce')) &&
+                exercise.duration >= 10) {
               // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
                 setMap[_currentTime + exercise.duration - 9] = () {

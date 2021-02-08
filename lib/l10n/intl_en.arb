@@ -36,6 +36,8 @@
   "tts": "Text-to-Speech (TTS)",
   "ttsLang": "TTS Language",
   "ttsLangDesc": "Select a locally installed language\n(only when TTS is enabled)",
+  "announceUpcomingExercise": "Announce upcoming exercise",
+  "AnnounceUpcomingExerciseDesc": "When TTS is enabled, announce the upcoming exercise",
 
   "enterWorkoutName": "Please enter a name for the workout!",
   "overwriteExistingWorkout": "Overwrite existing workout?",
