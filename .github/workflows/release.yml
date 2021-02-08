@@ -59,7 +59,7 @@ jobs:
           output-file: 'CHANGELOG.md'
           release-count: 0
           skip-on-empty: 'true'
-          skip-version-file: 'true'
+          skip-version-file: 'false'
           skip-commit: 'false'
 
       - name: Write changelog to fastlane
@@ -75,7 +75,7 @@ jobs:
           author_name: Bastian Block
           author_email: blockbasti99@gmail.com
           message: 'chore: write changelog to fastlane'
-          add: "['fastlane/metadata/android/en-US/changelogs/*.txt', 'pubspec.yaml']"
+          add: 'fastlane/metadata/android/en-US/changelogs/*.txt'
 
       - name: Create Release
         id: create_release
