@@ -1,3 +1,24 @@
+# [1.3.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.2.0...v1.3.0) (2021-02-09)
+
+
+### Bug Fixes
+
+* max length on input fields (fixes [#15](https://github.com/blockbasti/just_another_workout_timer/issues/15)) ([cce44ce](https://github.com/blockbasti/just_another_workout_timer/commit/cce44ceb3bbc51eec9a4bad9d297356d49968cdc))
+* progressbar value was wrong during first countdown ([a2688b1](https://github.com/blockbasti/just_another_workout_timer/commit/a2688b13805fc63afd8483a69bc3d470c1b70dca))
+
+
+### Features
+
+* add option to view project on GitHub ([0dbd9bf](https://github.com/blockbasti/just_another_workout_timer/commit/0dbd9bf3830749d807d936aeaeb0825c22a30ba2))
+* add setting to not announce upcoming exercise ([f8fc425](https://github.com/blockbasti/just_another_workout_timer/commit/f8fc425f83e18beda659f3b3a4591b52c8eb93df))
+
+
+### Performance Improvements
+
+* improve scrolling performance ([02fdd67](https://github.com/blockbasti/just_another_workout_timer/commit/02fdd679932b76420cba3f0d3e72df43f82ab20a))
+
+
+
 # [1.2.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.1.1...v1.2.0) (2021-02-05)
 
 
