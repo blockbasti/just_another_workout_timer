@@ -90,6 +90,11 @@ jobs:
         env:
           BUILD_TOOLS_VERSION: "30.0.2"
 
+      - name: Get last commit id
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        id: get_commit
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -97,6 +102,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
+          commitish: ${{ steps.get_commit.outputs.sha }}
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.changelog }}
