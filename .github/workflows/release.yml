@@ -20,7 +20,6 @@ jobs:
           channel: 'stable'
 
       - name: Write versioncode to pubspec.yml
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         run: |
             export VERSION=$(printf '%(%Y%m%d)T\n' -1)
             sed -i -E -e "s/\+[0-9]+/\+$VERSION/g" pubspec.yaml
