@@ -38,6 +38,7 @@ jobs:
           skip-commit: 'true'
 
       - name: Write versioncode to pubspec.yml
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         run: |
           export VERSION=$(printf '%(%Y%m%d)T\n' -1)
           sed -i -E -e "/version:/ s/$/\+$VERSION/" pubspec.yaml
@@ -47,6 +48,14 @@ jobs:
         env:
           CHANGELOG: ${{ steps.changelog.outputs.changelog }}
         run: echo $CHANGELOG > fastlane/metadata/android/en-US/changelogs/$(printf '%(%Y%m%d)T\n' -1).txt
+
+      - name: Delete automatically created tag
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          TAG: ${{ steps.changelog.outputs.tag }}
+        run: |
+          git tag -d $TAG
+          git push --delete origin $TAG
 
       - name: Commit changed files
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
