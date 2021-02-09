@@ -35,7 +35,7 @@ jobs:
           release-count: 0
           skip-on-empty: 'true'
           skip-version-file: 'false'
-          skip-commit: 'false'
+          skip-commit: 'true'
 
       - name: Write versioncode to pubspec.yml
         run: |
@@ -48,14 +48,14 @@ jobs:
           CHANGELOG: ${{ steps.changelog.outputs.changelog }}
         run: echo $CHANGELOG > fastlane/metadata/android/en-US/changelogs/$(printf '%(%Y%m%d)T\n' -1).txt
 
-      - name: Commit fastlane changelog
+      - name: Commit changed files
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         uses: EndBug/add-and-commit@v7
         with:
           author_name: Bastian Block
           author_email: blockbasti99@gmail.com
-          message: 'chore: write changelog to fastlane'
-          add: "['fastlane/metadata/android/en-US/changelogs/*.txt', 'pubspec.yaml']"
+          message: 'chore: commit files during release'
+          add: "['fastlane/metadata/android/en-US/changelogs/*.txt', 'pubspec.yaml', 'CHANGELOG.md']"
 
       - name: Build APKs
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
