@@ -338,7 +338,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
                             fontSize: 48, fontWeight: FontWeight.bold),
                       ),
                       LinearProgressIndicator(
-                        value: _remainingSeconds / _currentExercise.duration,
+                        value: _remainingSeconds /
+                            (_currentSecond < 10
+                                ? 10
+                                : _currentExercise.duration),
                         minHeight: 6,
                         valueColor: AlwaysStoppedAnimation<Color>(
                             Theme.of(context).accentColor),
