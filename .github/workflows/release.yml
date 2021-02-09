@@ -19,31 +19,6 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Write versioncode to pubspec.yml
-        run: |
-          export VERSION=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "s/\+[0-9]+/\+$VERSION/g" pubspec.yaml
-
-      - name: Build APKs
-        run: |
-          flutter config --no-analytics
-          flutter pub get
-          flutter test
-          flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk
-
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDirectory: ./build/app/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: key
-          keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "30.0.2"
-
       - name: Build full changelog
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
@@ -76,6 +51,34 @@ jobs:
           author_email: blockbasti99@gmail.com
           message: 'chore: write changelog to fastlane'
           add: 'fastlane/metadata/android/en-US/changelogs/*.txt'
+
+      - name: Write versioncode to pubspec.yml
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        run: |
+          export VERSION=$(printf '%(%Y%m%d)T\n' -1)
+          sed -i -E -e "s/\+[0-9]+/\+$VERSION/g" pubspec.yaml
+
+      - name: Build APKs
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        run: |
+          flutter config --no-analytics
+          flutter pub get
+          flutter test
+          flutter pub run flutter_oss_licenses:generate.dart
+          flutter build apk
+
+      - name: Sign APK
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: ./build/app/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: key
+          keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "30.0.2"
 
       - name: Create Release
         id: create_release
