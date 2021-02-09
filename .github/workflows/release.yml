@@ -39,9 +39,11 @@ jobs:
 
       - name: Write versioncode to pubspec.yml
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          TAG: ${{ steps.changelog.outputs.version }}
         run: |
           export VERSION=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "/version:/ s/$/\+$VERSION/" pubspec.yaml
+          sed -i -E -e "6,6s/.*/version\: $TAG\+$VERSION/" pubspec.yaml
 
       - name: Write changelog to fastlane
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
