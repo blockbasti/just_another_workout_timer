@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:just_another_workout_timer/SoundHelper.dart';
@@ -9,6 +10,7 @@ import 'generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  GestureBinding.instance.resamplingEnabled = true;
   PrefService.init(prefix: 'pref_').then((value) =>
       Future.wait([TTSHelper.init(), SoundHelper.loadSounds()])
           .then((value) => runApp(JAWTApp())));

@@ -35,6 +35,8 @@
   "tts": "Text-zu-Sprache (TTS)",
   "ttsLang": "TTS Sprache",
   "ttsLangDesc": "Wähle eine installierte Sprache aus\n(nur bei aktiviertem TTS)",
+  "announceUpcomingExercise": "nächste Übung ansagen",
+  "AnnounceUpcomingExerciseDesc": "Wenn TTS aktiviert ist, wird die nächste Übung angesagt",
 
   "enterWorkoutName": "Bitte einen Namen für das Workout festlegen!",
   "overwriteExistingWorkout": "Existierendes Workout überschreiben?",
@@ -63,5 +65,7 @@
   "durationLeft": "{timeLeft} von {timeTotal} übrig",
   "currentSet": "Aktueller Satz",
   "nextSet": "Nächster Satz",
-  "countRepetitions": "{count} Wiederholungen"
+  "countRepetitions": "{count} Wiederholungen",
+  "viewOnGithub": "Auf GitHub ansehen",
+  "reportIssuesOrRequestAFeature": "Fehler melden oder neue Funktionen vorschlagen"
 }

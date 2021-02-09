@@ -41,10 +41,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "AnnounceUpcomingExerciseDesc" : MessageLookupByLibrary.simpleMessage("When TTS is enabled, announce the upcoming exercise"),
     "addExercise" : MessageLookupByLibrary.simpleMessage("Add exercise"),
     "addRest" : MessageLookupByLibrary.simpleMessage("Add rest"),
     "addSet" : MessageLookupByLibrary.simpleMessage("Add Set"),
     "addWorkout" : MessageLookupByLibrary.simpleMessage("Add workout"),
+    "announceUpcomingExercise" : MessageLookupByLibrary.simpleMessage("Announce upcoming exercise"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "countRepetitions" : m0,
     "currentSet" : MessageLookupByLibrary.simpleMessage("Current set"),
@@ -81,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "overwriteExistingWorkout" : MessageLookupByLibrary.simpleMessage("Overwrite existing workout?"),
     "repOf" : m7,
     "repetitions" : MessageLookupByLibrary.simpleMessage("Repetitions:"),
+    "reportIssuesOrRequestAFeature" : MessageLookupByLibrary.simpleMessage("Report issues or request a feature"),
     "rest" : MessageLookupByLibrary.simpleMessage("Rest"),
     "saveWorkout" : MessageLookupByLibrary.simpleMessage("Save workout"),
     "setIndex" : m8,
@@ -99,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "useTTSDesc" : MessageLookupByLibrary.simpleMessage("Announce current and upcoming exercises"),
     "viewLicense" : MessageLookupByLibrary.simpleMessage("View License"),
     "viewOSSLicenses" : MessageLookupByLibrary.simpleMessage("View Open Source Licenses"),
+    "viewOnGithub" : MessageLookupByLibrary.simpleMessage("View on GitHub"),
     "workoutComplete" : MessageLookupByLibrary.simpleMessage("Workout complete"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes"),
     "yesExit" : MessageLookupByLibrary.simpleMessage("Yes, exit")

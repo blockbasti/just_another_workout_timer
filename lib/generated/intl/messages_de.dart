@@ -41,10 +41,12 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "AnnounceUpcomingExerciseDesc" : MessageLookupByLibrary.simpleMessage("Wenn TTS aktiviert ist, wird die nächste Übung angesagt"),
     "addExercise" : MessageLookupByLibrary.simpleMessage("Übung hinzufügen"),
     "addRest" : MessageLookupByLibrary.simpleMessage("Pause hinzufügen"),
     "addSet" : MessageLookupByLibrary.simpleMessage("Satz hinzufügen"),
     "addWorkout" : MessageLookupByLibrary.simpleMessage("Workout erstellen"),
+    "announceUpcomingExercise" : MessageLookupByLibrary.simpleMessage("nächste Übung ansagen"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Abbrechen"),
     "countRepetitions" : m0,
     "currentSet" : MessageLookupByLibrary.simpleMessage("Aktueller Satz"),
@@ -81,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "overwriteExistingWorkout" : MessageLookupByLibrary.simpleMessage("Existierendes Workout überschreiben?"),
     "repOf" : m7,
     "repetitions" : MessageLookupByLibrary.simpleMessage("Wiederholungen:"),
+    "reportIssuesOrRequestAFeature" : MessageLookupByLibrary.simpleMessage("Fehler melden oder neue Funktionen vorschlagen"),
     "rest" : MessageLookupByLibrary.simpleMessage("Pause"),
     "saveWorkout" : MessageLookupByLibrary.simpleMessage("Workout speichern"),
     "setIndex" : m8,
@@ -98,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "useTTSDesc" : MessageLookupByLibrary.simpleMessage("Aktuelle und kommende Übungen ansagen"),
     "viewLicense" : MessageLookupByLibrary.simpleMessage("Lizenz anzeigen"),
     "viewOSSLicenses" : MessageLookupByLibrary.simpleMessage("Open Source Lizenzen anzeigen"),
+    "viewOnGithub" : MessageLookupByLibrary.simpleMessage("Auf GitHub ansehen"),
     "workoutComplete" : MessageLookupByLibrary.simpleMessage("Workout abgeschlossen"),
     "yes" : MessageLookupByLibrary.simpleMessage("Ja"),
     "yesExit" : MessageLookupByLibrary.simpleMessage("Ja")

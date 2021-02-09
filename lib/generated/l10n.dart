@@ -375,6 +375,26 @@ class S {
     );
   }
 
+  /// `Announce upcoming exercise`
+  String get announceUpcomingExercise {
+    return Intl.message(
+      'Announce upcoming exercise',
+      name: 'announceUpcomingExercise',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `When TTS is enabled, announce the upcoming exercise`
+  String get AnnounceUpcomingExerciseDesc {
+    return Intl.message(
+      'When TTS is enabled, announce the upcoming exercise',
+      name: 'AnnounceUpcomingExerciseDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please enter a name for the workout!`
   String get enterWorkoutName {
     return Intl.message(
@@ -642,6 +662,26 @@ class S {
       name: 'countRepetitions',
       desc: '',
       args: [count],
+    );
+  }
+
+  /// `View on GitHub`
+  String get viewOnGithub {
+    return Intl.message(
+      'View on GitHub',
+      name: 'viewOnGithub',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Report issues or request a feature`
+  String get reportIssuesOrRequestAFeature {
+    return Intl.message(
+      'Report issues or request a feature',
+      name: 'reportIssuesOrRequestAFeature',
+      desc: '',
+      args: [],
     );
   }
 }
