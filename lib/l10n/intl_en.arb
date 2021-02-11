@@ -68,5 +68,8 @@
   "nextSet": "Next set",
   "countRepetitions": "{count} repetitions",
   "viewOnGithub": "View on GitHub",
-  "reportIssuesOrRequestAFeature": "Report issues or request a feature"
+  "reportIssuesOrRequestAFeature": "Report issues or request a feature",
+  "halfwayDone": "Halfway done",
+  "settingHalfway": "Play sound or announcement halfway during exercise",
+  "playTickEverySecond": "Play tick every second"
 }

@@ -684,6 +684,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Halfway done`
+  String get halfwayDone {
+    return Intl.message(
+      'Halfway done',
+      name: 'halfwayDone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play sound or announcement halfway during exercise`
+  String get settingHalfway {
+    return Intl.message(
+      'Play sound or announcement halfway during exercise',
+      name: 'settingHalfway',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play tick every second`
+  String get playTickEverySecond {
+    return Intl.message(
+      'Play tick every second',
+      name: 'playTickEverySecond',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

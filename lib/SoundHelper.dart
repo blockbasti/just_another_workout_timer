@@ -25,4 +25,16 @@ class SoundHelper {
   static playBeepHigh() {
     if (useSound) _soundpool.play(_beepId, rate: 1.5);
   }
+
+  static playBeepTick() {
+    if (PrefService.getBool('ticks')) _soundpool.play(_beepId, rate: 2);
+  }
+
+  static playDouble() {
+    if (useSound) {
+      _soundpool.play(_beepId);
+      Future.delayed(Duration(milliseconds: 200))
+          .then((value) => _soundpool.play(_beepId));
+    }
+  }
 }

@@ -53,6 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
             'wakelock',
             defaultVal: true,
           ),
+          SwitchPreference(S.of(context).settingHalfway, 'halftime'),
+          SwitchPreference(S.of(context).playTickEverySecond, 'ticks'),
           PreferenceTitle(S.of(context).soundOutput),
           RadioPreference(
             S.of(context).noSound,

@@ -101,7 +101,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           // announce next exercise
           try {
-            if ((PrefService.getBool('tts_next_announce')) &&
+            if ((PrefService.getString('sound') == 'tts' &&
+                    PrefService.getBool('tts_next_announce')) &&
                 exercise.duration >= 10) {
               // case: exercise is somewhere in set
               if (exIndex + 1 < set.exercises.length) {
@@ -129,12 +130,24 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       _workout.sets[setIndex + 1].exercises[0].name));
                 };
               }
+            } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+              SoundHelper.playBeepTick();
             }
           } catch (e) {}
 
           // set next set
           if (setIndex + 1 < _workout.sets.length) {
             _locNextSet = _workout.sets[setIndex + 1];
+          }
+
+          if (exercise.duration >= 10 && PrefService.getBool('halftime')) {
+            setMap[(_currentTime + exercise.duration / 2).round()] = () {
+              if (PrefService.getString('sound') == 'beep') {
+                SoundHelper.playDouble();
+              } else if (PrefService.getString('sound') == 'tts') {
+                TTSHelper.speak(S.of(context).halfwayDone);
+              }
+            };
           }
 
           // countdown to next exercise
@@ -198,6 +211,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
           if (_timetable.containsKey(_currentSecond)) {
             _timetable[_currentSecond]();
+          } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+            SoundHelper.playBeepTick();
           }
         });
       });
