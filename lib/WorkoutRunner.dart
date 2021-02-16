@@ -284,6 +284,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
       _remainingSeconds = 10;
       _currentSecond = 0;
     });
+
+    _itemScrollController.scrollTo(
+      index: 0,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+    );
+
     buildTimetable();
   }
 
