@@ -34,7 +34,7 @@
   "useSoundDesc": "Übungsbeginn und -ende mit einfachen Tönen ankündigen",
   "tts": "Text-zu-Sprache (TTS)",
   "ttsLang": "TTS Sprache",
-  "ttsLangDesc": "Wähle eine installierte Sprache aus\n(nur bei aktiviertem TTS)",
+  "ttsLangDesc": "Wähle eine Sprache aus\n(nur bei aktiviertem TTS)",
   "announceUpcomingExercise": "nächste Übung ansagen",
   "AnnounceUpcomingExerciseDesc": "Wenn TTS aktiviert ist, wird die nächste Übung angesagt",
 

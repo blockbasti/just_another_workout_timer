@@ -19,12 +19,13 @@ class TTSHelper {
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
 
-    List<dynamic> lang = await flutterTts.getLanguages;
-    Map<dynamic, dynamic> langMap =
-        await flutterTts.areLanguagesInstalled(lang.cast<String>());
-    langMap.removeWhere((key, value) => !value);
-    languages = langMap.keys.toList().cast<String>();
+    languages = List<String>.from(await flutterTts.getLanguages);
     languages.sort();
+    languages.remove('de-DE');
+    languages.remove('en-US');
+    languages.insertAll(0, ['en-US', 'de-DE']);
+    languages = await Future.wait(languages.map((e) async =>
+        '$e${await flutterTts.isLanguageInstalled(e) ? '' : '*'}'));
   }
 
   static speak(String text) async {

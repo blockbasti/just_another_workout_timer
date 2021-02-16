@@ -98,7 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "title" : MessageLookupByLibrary.simpleMessage("Just Another Workout Timer"),
     "tts" : MessageLookupByLibrary.simpleMessage("Text-to-Speech (TTS)"),
     "ttsLang" : MessageLookupByLibrary.simpleMessage("TTS Language"),
-    "ttsLangDesc" : MessageLookupByLibrary.simpleMessage("Select a locally installed language\n(only when TTS is enabled)"),
+    "ttsLangDesc" : MessageLookupByLibrary.simpleMessage("Select a language\n(only when TTS is enabled)"),
     "useSound" : MessageLookupByLibrary.simpleMessage("Use sound effects"),
     "useSoundDesc" : MessageLookupByLibrary.simpleMessage("Use simple sounds to indicate starts and endings of exercises"),
     "useTTS" : MessageLookupByLibrary.simpleMessage("Use Text-to-Speech"),

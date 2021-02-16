@@ -365,10 +365,10 @@ class S {
     );
   }
 
-  /// `Select a locally installed language\n(only when TTS is enabled)`
+  /// `Select a language\n(only when TTS is enabled)`
   String get ttsLangDesc {
     return Intl.message(
-      'Select a locally installed language\n(only when TTS is enabled)',
+      'Select a language\n(only when TTS is enabled)',
       name: 'ttsLangDesc',
       desc: '',
       args: [],
