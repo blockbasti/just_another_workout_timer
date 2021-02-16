@@ -355,6 +355,7 @@ class _BuilderPageState extends State<BuilderPage> {
           child: _buildSetList(),
         ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'mainFAB',
           onPressed: _addSet,
           tooltip: S.of(context).addSet,
           child: Icon(Icons.add),

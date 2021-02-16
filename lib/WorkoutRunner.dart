@@ -37,6 +37,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   Set _nextSet;
 
+  Exercise _prevExercise;
+  Exercise _nextExercise;
+
   int _remainingSeconds = 10;
   int _currentSecond = 0;
 
@@ -59,11 +62,37 @@ class _WorkoutPageState extends State<WorkoutPage> {
     buildTimetable();
   }
 
+  void skipForward() {
+    if (_nextExercise != null || _currentSecond < 10) {
+      setState(() {
+        _currentSecond += _remainingSeconds - 1;
+      });
+      _timerStop();
+      _timerStart();
+      _timerTick();
+    }
+  }
+
+  void skipBackward() {
+    if (_prevExercise != null) {
+      setState(() {
+        _currentSecond -= (_currentExercise.duration - _remainingSeconds) +
+            _prevExercise.duration +
+            1;
+      });
+      _timerStop();
+      _timerStart();
+      _timerTick();
+    }
+  }
+
   void buildTimetable() {
     // init values
     setState(() {
       _currentSet = _workout.sets[0];
       _currentExercise = _workout.sets[0].exercises[0];
+      _prevExercise = null;
+      _nextExercise = null;
       _nextSet = _workout.sets.length > 1 ? _workout.sets[1] : null;
     });
 
@@ -98,42 +127,54 @@ class _WorkoutPageState extends State<WorkoutPage> {
       for (int rep = 0; rep < set.repetitions; rep++) {
         set.exercises.asMap().forEach((exIndex, exercise) {
           Set _locNextSet;
+          Exercise _locNextExercise;
+          Exercise _locPrevExercise;
+
+          // case: exercise is somewhere in set
+          if (exIndex + 1 < set.exercises.length) {
+            _locNextExercise = set.exercises[exIndex + 1];
+            if (setIndex + 1 < _workout.sets.length) {
+              _locNextSet = _workout.sets[setIndex + 1];
+            }
+          }
+          // case: exercise is last in set but set has remaining reps
+          else if (exIndex + 1 == set.exercises.length &&
+              rep < set.repetitions - 1) {
+            _locNextExercise = set.exercises.first;
+          }
+          // case: exercise is last in set and set is completed
+          else if (setIndex + 1 < _workout.sets.length) {
+            _locNextExercise = _workout.sets[setIndex + 1].exercises.first;
+          } else {
+            _locNextExercise = null;
+          }
+
+          // case: exercise is somewhere in set
+          if (exIndex - 1 >= 0) {
+            _locPrevExercise = set.exercises[exIndex - 1];
+          }
+          // case: exercise is first in set and not in first rep
+          else if (exIndex == 0 && rep > 0) {
+            _locPrevExercise = set.exercises.last;
+          }
+          // case: exercise is first in set and first rep
+          else if (exIndex == 0 && rep == 0 && setIndex > 0) {
+            _locPrevExercise = _workout.sets[setIndex - 1].exercises.last;
+          } else {
+            _locPrevExercise = null;
+          }
 
           // announce next exercise
-          try {
-            if ((PrefService.getString('sound') == 'tts' &&
-                    PrefService.getBool('tts_next_announce')) &&
-                exercise.duration >= 10) {
-              // case: exercise is somewhere in set
-              if (exIndex + 1 < set.exercises.length) {
-                setMap[_currentTime + exercise.duration - 9] = () {
-                  TTSHelper.speak(S
-                      .of(context)
-                      .nextExercise(set.exercises[exIndex + 1].name));
-                };
-                if (setIndex + 1 < _workout.sets.length) {
-                  _locNextSet = _workout.sets[setIndex + 1];
-                }
-              }
-              // case: exercise is last in set but set has remaining reps
-              else if (exIndex + 1 == set.exercises.length &&
-                  rep < set.repetitions - 1) {
-                setMap[_currentTime + exercise.duration - 9] = () {
-                  TTSHelper.speak(
-                      S.of(context).nextExercise(set.exercises[0].name));
-                };
-              }
-              // case: exercise is last in set and set is completed
-              else if (setIndex + 1 < _workout.sets.length) {
-                setMap[_currentTime + exercise.duration - 9] = () {
-                  TTSHelper.speak(S.of(context).nextExercise(
-                      _workout.sets[setIndex + 1].exercises[0].name));
-                };
-              }
-            } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
-              SoundHelper.playBeepTick();
-            }
-          } catch (e) {}
+          if ((PrefService.getString('sound') == 'tts' &&
+                  PrefService.getBool('tts_next_announce')) &&
+              exercise.duration >= 10) {
+            setMap[_currentTime + exercise.duration - 9] = () {
+              TTSHelper.speak(
+                  S.of(context).nextExercise(_locNextExercise.name));
+            };
+          } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+            SoundHelper.playBeepTick();
+          }
 
           // set next set
           if (setIndex + 1 < _workout.sets.length) {
@@ -176,6 +217,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
               );
               _remainingSeconds = exercise.duration;
               _currentSet = set;
+              _prevExercise = _locPrevExercise;
+              _nextExercise = _locNextExercise;
               _currentExercise = exercise;
               _nextSet = _locNextSet;
               _currentReps = rep;
@@ -205,17 +248,21 @@ class _WorkoutPageState extends State<WorkoutPage> {
   void _timerStart() {
     setState(() {
       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        setState(() {
-          _currentSecond += 1;
-          _remainingSeconds -= 1;
-
-          if (_timetable.containsKey(_currentSecond)) {
-            _timetable[_currentSecond]();
-          } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
-            SoundHelper.playBeepTick();
-          }
-        });
+        _timerTick();
       });
+    });
+  }
+
+  void _timerTick() {
+    setState(() {
+      _currentSecond += 1;
+      _remainingSeconds -= 1;
+
+      if (_timetable.containsKey(_currentSecond)) {
+        _timetable[_currentSecond]();
+      } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+        SoundHelper.playBeepTick();
+      }
     });
   }
 
@@ -304,7 +351,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
             title: Text(_workout.title),
           ),
           bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
+              shape: AutomaticNotchedShape(
+                  ContinuousRectangleBorder(), CircleBorder()),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -415,23 +463,45 @@ class _WorkoutPageState extends State<WorkoutPage> {
               )
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(
-              _timer != null && _timer.isActive
-                  ? Icons.pause
-                  : _workoutDone
-                      ? Icons.replay
-                      : Icons.play_arrow,
-              size: 32,
-            ),
-            onPressed: () {
-              if (_timer != null && _timer.isActive)
-                _timerStop();
-              else if (_workoutDone)
-                _resetWorkout();
-              else
-                _timerStart();
-            },
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FloatingActionButton(
+                heroTag: 'FAB1',
+                mini: true,
+                onPressed: () {
+                  skipBackward();
+                },
+                child: Icon(Icons.skip_previous),
+              ),
+              FloatingActionButton(
+                heroTag: 'mainFAB',
+                child: Icon(
+                  _timer != null && _timer.isActive
+                      ? Icons.pause
+                      : _workoutDone
+                          ? Icons.replay
+                          : Icons.play_arrow,
+                  size: 32,
+                ),
+                onPressed: () {
+                  if (_timer != null && _timer.isActive)
+                    _timerStop();
+                  else if (_workoutDone)
+                    _resetWorkout();
+                  else
+                    _timerStart();
+                },
+              ),
+              FloatingActionButton(
+                heroTag: 'FAB2',
+                mini: true,
+                onPressed: () {
+                  skipForward();
+                },
+                child: Icon(Icons.skip_next),
+              )
+            ],
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,

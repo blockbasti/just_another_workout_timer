@@ -144,6 +144,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: _buildWorkoutList(),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'mainFAB',
         onPressed: () {
           Navigator.push(
             context,
