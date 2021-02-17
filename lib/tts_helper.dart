@@ -1,6 +1,7 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:preferences/preference_service.dart';
 
+// ignore: avoid_classes_with_only_static_members
 /// handles everything related to TTS
 class TTSHelper {
   static FlutterTts flutterTts;
@@ -28,7 +29,7 @@ class TTSHelper {
         '$e${await flutterTts.isLanguageInstalled(e) ? '' : '*'}'));
   }
 
-  static speak(String text) async {
+  static void speak(String text) async {
     if (!useTTS) return;
     await flutterTts.speak(text);
   }

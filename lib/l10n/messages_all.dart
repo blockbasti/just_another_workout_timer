@@ -50,7 +50,7 @@ Future<bool> initializeMessages(String localeName) async {
 bool _messagesExistFor(String locale) {
   try {
     return _findExact(locale) != null;
-  } catch (e) {
+  } on Exception {
     return false;
   }
 }

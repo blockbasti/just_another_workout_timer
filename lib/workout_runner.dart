@@ -3,15 +3,15 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:just_another_workout_timer/SoundHelper.dart';
-import 'package:just_another_workout_timer/TTSHelper.dart';
-import 'package:just_another_workout_timer/Utils.dart';
-import 'package:just_another_workout_timer/Workout.dart';
 import 'package:preferences/preference_service.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'generated/l10n.dart';
+import 'sound_helper.dart';
+import 'tts_helper.dart';
+import 'utils.dart';
+import 'workout.dart';
 
 /// page to do a workout
 class WorkoutPage extends StatefulWidget {
@@ -46,7 +46,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   bool _workoutDone = false;
 
   /// timestamps of functions to announce current exercise (among other things)
-  Map<int, Function> _timetable = new SplayTreeMap();
+  final Map<int, Function> _timetable = SplayTreeMap();
 
   @override
   void dispose() {
@@ -97,7 +97,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     });
 
     /// current timestamp
-    int _currentTime = 10;
+    var _currentTime = 10;
 
     // announce first exercise
     _timetable[1] = () {
@@ -122,9 +122,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
     };
 
     _workout.sets.asMap().forEach((setIndex, set) {
-      Map<int, Function> setMap = new Map();
+      var setMap = <int, Function>{};
 
-      for (int rep = 0; rep < set.repetitions; rep++) {
+      for (var rep = 0; rep < set.repetitions; rep++) {
         set.exercises.asMap().forEach((exIndex, exercise) {
           Set _locNextSet;
           Exercise _locNextExercise;
@@ -304,8 +304,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
           if (index < set.exercises.length) {
             return _buildSetItem(set.exercises[index],
                 set.exercises.indexOf(_currentExercise) == index);
-          } else
+          } else {
             return null;
+          }
         },
         itemCount: set.exercises.length,
         itemScrollController: _itemScrollController,
@@ -324,8 +325,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
           if (index < set.exercises.length) {
             return _buildSetItem(set.exercises[index],
                 set.exercises.indexOf(_currentExercise) == index);
-          } else
+          } else {
             return null;
+          }
         },
         itemCount: set.exercises.length,
         primary: false,
@@ -334,190 +336,185 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
   }
 
-  Widget _buildSetItem(Exercise exercise, bool active) {
-    return ListTile(
-      tileColor: active
-          ? Theme.of(context).primaryColor
-          : Theme.of(context).focusColor,
-      title: Text(exercise.name),
-      subtitle: Text(S
-          .of(context)
-          .durationWithTime(Utils.formatSeconds(exercise.duration))),
-    );
-  }
+  Widget _buildSetItem(Exercise exercise, bool active) => ListTile(
+        tileColor: active
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).focusColor,
+        title: Text(exercise.name),
+        subtitle: Text(S
+            .of(context)
+            .durationWithTime(Utils.formatSeconds(exercise.duration))),
+      );
 
   _WorkoutPageState(Workout workout) {
     _workout = workout;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(_workout.title),
-          ),
-          bottomNavigationBar: BottomAppBar(
-              shape: AutomaticNotchedShape(
-                  ContinuousRectangleBorder(), CircleBorder()),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // left side of footer
-                  Expanded(
-                      child: ListTile(
-                    title: Text(S.of(context).exerciseOf(
-                        _currentSet.exercises.indexOf(_currentExercise) +
-                            1 +
-                            (_currentReps * _currentSet.exercises.length),
-                        _currentSet.exercises.length *
-                            _currentSet.repetitions)),
-                    subtitle: Text(S
-                        .of(context)
-                        .repOf(_currentReps + 1, _currentSet.repetitions)),
-                  )),
-                  // right side of footer
-                  Expanded(
-                      child: ListTile(
-                    title: Text(
-                      S.of(context).setOf(
-                          _workout.sets.indexOf(_currentSet) + 1,
-                          _workout.sets.length),
-                      textAlign: TextAlign.end,
-                    ),
-                    subtitle: Text(
-                      S.of(context).durationLeft(
-                          Utils.formatSeconds(
-                              _workout.duration - _currentSecond + 10),
-                          Utils.formatSeconds(_workout.duration + 10)),
-                      textAlign: TextAlign.end,
-                    ),
-                  ))
-                ],
-              )),
-          body: Column(
-            children: [
-              // top card with current exercise
-              Card(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        '${S.of(context).setIndex(_workout.sets.indexOf(_currentSet) + 1)} - ${Utils.formatSeconds(_remainingSeconds)}',
-                        style: TextStyle(
-                            fontSize: 48, fontWeight: FontWeight.bold),
-                      ),
-                      LinearProgressIndicator(
-                        value: _remainingSeconds /
-                            (_currentSecond < 10
-                                ? 10
-                                : _currentExercise.duration),
-                        minHeight: 6,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).accentColor),
-                      ),
-                      Text(
-                        '${_currentExercise.name}',
-                        style: TextStyle(
-                            fontSize: 48, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+  Widget build(BuildContext context) => WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_workout.title),
+        ),
+        bottomNavigationBar: BottomAppBar(
+            shape: AutomaticNotchedShape(
+                ContinuousRectangleBorder(), CircleBorder()),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // left side of footer
+                Expanded(
+                    child: ListTile(
+                  title: Text(S.of(context).exerciseOf(
+                      _currentSet.exercises.indexOf(_currentExercise) +
+                          1 +
+                          (_currentReps * _currentSet.exercises.length),
+                      _currentSet.exercises.length * _currentSet.repetitions)),
+                  subtitle: Text(S
+                      .of(context)
+                      .repOf(_currentReps + 1, _currentSet.repetitions)),
+                )),
+                // right side of footer
+                Expanded(
+                    child: ListTile(
+                  title: Text(
+                    S.of(context).setOf(_workout.sets.indexOf(_currentSet) + 1,
+                        _workout.sets.length),
+                    textAlign: TextAlign.end,
                   ),
-                ),
-              ),
-              Expanded(
-                child: ListView(
+                  subtitle: Text(
+                    S.of(context).durationLeft(
+                        Utils.formatSeconds(
+                            _workout.duration - _currentSecond + 10),
+                        Utils.formatSeconds(_workout.duration + 10)),
+                    textAlign: TextAlign.end,
+                  ),
+                ))
+              ],
+            )),
+        body: Column(
+          children: [
+            // top card with current exercise
+            Card(
+              child: Center(
+                child: Column(
                   children: [
-                    // card with current set
-                    Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Text(S.of(context).currentSet,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold)),
-                          ),
-                          _buildCurrentSetList(_currentSet),
-                        ],
-                      ),
+                    Text(
+                      '${S.of(context).setIndex(_workout.sets.indexOf(_currentSet) + 1)} - ${Utils.formatSeconds(_remainingSeconds)}',
+                      style:
+                          TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                     ),
-                    // card with next set
-                    _nextSet != null
-                        ? Card(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  title: Text(S.of(context).nextSet,
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold)),
-                                  subtitle: _nextSet != null
-                                      ? Text(S.of(context).countRepetitions(
-                                          _nextSet.repetitions))
-                                      : null,
-                                ),
-                                _buildNextSetList(_nextSet),
-                              ],
-                            ),
-                          )
-                        : Column()
+                    LinearProgressIndicator(
+                      value: _remainingSeconds /
+                          (_currentSecond < 10
+                              ? 10
+                              : _currentExercise.duration),
+                      minHeight: 6,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).accentColor),
+                    ),
+                    Text(
+                      '${_currentExercise.name}',
+                      style:
+                          TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   ],
                 ),
-              )
-            ],
-          ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FloatingActionButton(
-                heroTag: 'FAB1',
-                mini: true,
-                onPressed: () {
-                  skipBackward();
-                },
-                child: Icon(Icons.skip_previous),
               ),
-              FloatingActionButton(
-                heroTag: 'mainFAB',
-                child: Icon(
-                  _timer != null && _timer.isActive
-                      ? Icons.pause
-                      : _workoutDone
-                          ? Icons.replay
-                          : Icons.play_arrow,
-                  size: 32,
-                ),
-                onPressed: () {
-                  if (_timer != null && _timer.isActive)
-                    _timerStop();
-                  else if (_workoutDone)
-                    _resetWorkout();
-                  else
-                    _timerStart();
-                },
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  // card with current set
+                  Card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Text(S.of(context).currentSet,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                        ),
+                        _buildCurrentSetList(_currentSet),
+                      ],
+                    ),
+                  ),
+                  // card with next set
+                  _nextSet != null
+                      ? Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ListTile(
+                                title: Text(S.of(context).nextSet,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                subtitle: _nextSet != null
+                                    ? Text(S
+                                        .of(context)
+                                        .countRepetitions(_nextSet.repetitions))
+                                    : null,
+                              ),
+                              _buildNextSetList(_nextSet),
+                            ],
+                          ),
+                        )
+                      : Column()
+                ],
               ),
-              FloatingActionButton(
-                heroTag: 'FAB2',
-                mini: true,
-                onPressed: () {
-                  skipForward();
-                },
-                child: Icon(Icons.skip_next),
-              )
-            ],
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+            )
+          ],
         ),
-        onWillPop: () async {
-          final value = await showDialog<bool>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FloatingActionButton(
+              heroTag: 'FAB1',
+              mini: true,
+              onPressed: () {
+                skipBackward();
+              },
+              child: Icon(Icons.skip_previous),
+            ),
+            FloatingActionButton(
+              heroTag: 'mainFAB',
+              child: Icon(
+                _timer != null && _timer.isActive
+                    ? Icons.pause
+                    : _workoutDone
+                        ? Icons.replay
+                        : Icons.play_arrow,
+                size: 32,
+              ),
+              onPressed: () {
+                if (_timer != null && _timer.isActive) {
+                  _timerStop();
+                } else if (_workoutDone) {
+                  _resetWorkout();
+                } else {
+                  _timerStart();
+                }
+              },
+            ),
+            FloatingActionButton(
+              heroTag: 'FAB2',
+              mini: true,
+              onPressed: () {
+                skipForward();
+              },
+              child: Icon(Icons.skip_next),
+            )
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      ),
+      onWillPop: () async {
+        final value = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
                   content: Text(S.of(context).exitCheck),
                   actions: <Widget>[
                     FlatButton(
@@ -533,10 +530,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       },
                     ),
                   ],
-                );
-              });
+                ));
 
-          return value == true;
-        });
-  }
+        return value == true;
+      });
 }

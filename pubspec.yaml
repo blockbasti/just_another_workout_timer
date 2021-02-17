@@ -29,6 +29,7 @@ dev_dependencies:
   #integration_test:
   flutter_launcher_icons:
   flutter_oss_licenses:
+  effective_dart:
 
 flutter:
   uses-material-design: true

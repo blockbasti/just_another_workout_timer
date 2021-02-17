@@ -17,7 +17,7 @@ class Workout {
   List<Set> sets;
 
   int get duration {
-    int duration = 0;
+    var duration = 0;
 
     sets.forEach((set) => {duration += set.duration});
 
@@ -26,11 +26,11 @@ class Workout {
 
   /// remove sets without any exercises
   void cleanUp() {
-    this.sets.removeWhere((set) => set.exercises.isEmpty);
+    sets.removeWhere((set) => set.exercises.isEmpty);
   }
 
   /// move a set up or down the order
-  void moveSet(int index, bool moveUp) {
+  void moveSet(int index, {bool moveUp}) {
     var sets = this.sets.toList();
     if (!moveUp && index + 1 < this.sets.length) {
       var a = sets[index];
@@ -68,15 +68,15 @@ class Set {
   });
 
   Set.empty() {
-    this.repetitions = 1;
-    this.exercises = [];
+    repetitions = 1;
+    exercises = [];
   }
 
   int repetitions = 1;
   List<Exercise> exercises = [];
 
   int get duration {
-    int duration = 0;
+    var duration = 0;
 
     exercises.forEach((exercise) => {duration += exercise.duration});
 
@@ -84,9 +84,9 @@ class Set {
   }
 
   /// move an exercise up or down the order
-  void moveExercise(int index, bool moveUp) {
-    var sets = this.exercises.toList();
-    if (!moveUp && index + 1 < this.exercises.length) {
+  void moveExercise(int index, {bool moveUp}) {
+    var sets = exercises.toList();
+    if (!moveUp && index + 1 < exercises.length) {
       var a = sets[index];
       var b = sets[index + 1];
       sets[index + 1] = a;
@@ -97,7 +97,7 @@ class Set {
       sets[index - 1] = a;
       sets[index] = b;
     }
-    this.exercises = sets;
+    exercises = sets;
   }
 
   factory Set.fromRawJson(String str) => Set.fromJson(json.decode(str));
@@ -121,11 +121,6 @@ class Exercise {
     this.name,
     this.duration,
   });
-
-  Exercise.withName(String name) {
-    this.name = name;
-    this.duration = 30;
-  }
 
   String name;
   int duration;
