@@ -1,3 +1,20 @@
+# [1.4.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.3.0...v1.4.0) (2021-02-21)
+
+
+### Bug Fixes
+
+* allow selecting any TTS language ([3cbeb1a](https://github.com/blockbasti/just_another_workout_timer/commit/3cbeb1ad707ccbba339e1ffbc74e8ec32f1249a3))
+* when resetting a workout, scroll current set to beginning ([9870d10](https://github.com/blockbasti/just_another_workout_timer/commit/9870d1080df1a667fdc1206b2f91c0659498dce0))
+
+
+### Features
+
+* add announcement halfway and tick every second (closes [#19](https://github.com/blockbasti/just_another_workout_timer/issues/19)) ([c782fc8](https://github.com/blockbasti/just_another_workout_timer/commit/c782fc8511c067147653d936b564b79ba488c0c3))
+* allow duplicating sets and exercises (closes [#21](https://github.com/blockbasti/just_another_workout_timer/issues/21)) ([acef383](https://github.com/blockbasti/just_another_workout_timer/commit/acef38374caa77a996aaf50c85dd957af942a727))
+* skip exercises (closes [#20](https://github.com/blockbasti/just_another_workout_timer/issues/20)) ([99e846c](https://github.com/blockbasti/just_another_workout_timer/commit/99e846c6725a5b0b6f8364ce79b8a5d49a7f1a8a))
+
+
+
 # [1.3.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.2.0...v1.3.0) (2021-02-09)
 
 
