@@ -55,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteExercise" : MessageLookupByLibrary.simpleMessage("Übung löschen"),
     "deleteSet" : MessageLookupByLibrary.simpleMessage("Satz löschen"),
     "deleteWorkout" : MessageLookupByLibrary.simpleMessage("Workout löschen"),
+    "duplicate" : MessageLookupByLibrary.simpleMessage("Duplizieren"),
     "durationLeft" : m2,
     "durationWithTime" : m3,
     "editWorkout" : MessageLookupByLibrary.simpleMessage("Workout bearbeiten"),

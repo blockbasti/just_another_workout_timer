@@ -714,6 +714,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Duplicate`
+  String get duplicate {
+    return Intl.message(
+      'Duplicate',
+      name: 'duplicate',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

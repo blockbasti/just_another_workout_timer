@@ -70,5 +70,6 @@
   "reportIssuesOrRequestAFeature": "Fehler melden oder neue Funktionen vorschlagen",
   "halfwayDone": "Hälfte geschafft",
   "settingHalfway": "Ansage oder Ton in der Hälfte der Übung abspielen",
-  "playTickEverySecond": "Jede Sekunde ein Ticken abspielen"
+  "playTickEverySecond": "Jede Sekunde ein Ticken abspielen",
+  "duplicate": "Duplizieren"
 }

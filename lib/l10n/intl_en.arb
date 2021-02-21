@@ -71,5 +71,6 @@
   "reportIssuesOrRequestAFeature": "Report issues or request a feature",
   "halfwayDone": "Halfway done",
   "settingHalfway": "Play sound or announcement halfway during exercise",
-  "playTickEverySecond": "Play tick every second"
+  "playTickEverySecond": "Play tick every second",
+  "duplicate": "Duplicate"
 }

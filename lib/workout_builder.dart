@@ -43,6 +43,18 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
+  void _duplicateSet(int index) {
+    setState(() {
+      _workout.sets.insert(index, Set.fromJson( _workout.sets[index].toJson()));
+    });
+  }
+
+  void _duplicateExercise(int setIndex, int exIndex){
+    setState(() {
+      _workout.sets[setIndex].exercises.insert(exIndex, Exercise.fromJson(_workout.sets[setIndex].exercises[exIndex].toJson()));
+    });
+  }
+
   void saveWorkout() async {
     if (_workout.title == '') {
       showDialog(
@@ -171,6 +183,11 @@ class _BuilderPageState extends State<BuilderPage> {
               Row(
                 children: [
                   IconButton(
+                    icon: Icon(Icons.copy),
+                    tooltip: S.of(context).duplicate,
+                    onPressed: () =>_duplicateSet(index),
+                  ),
+                  IconButton(
                     icon: Icon(Icons.arrow_upward),
                     tooltip: S.of(context).moveSetUp,
                     onPressed: index - 1 >= 0
@@ -282,7 +299,12 @@ class _BuilderPageState extends State<BuilderPage> {
                                   });
                                 }
                               : null,
-                    )
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.copy),
+                      tooltip: S.of(context).duplicate,
+                      onPressed: () =>_duplicateExercise(setIndex, exIndex),
+                    ),
                   ],
                 )
               ],
