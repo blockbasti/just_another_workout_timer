@@ -34,7 +34,7 @@
   "useSoundDesc": "Übungsbeginn und -ende mit einfachen Tönen ankündigen",
   "tts": "Text-zu-Sprache (TTS)",
   "ttsLang": "TTS Sprache",
-  "ttsLangDesc": "Wähle eine installierte Sprache aus\n(nur bei aktiviertem TTS)",
+  "ttsLangDesc": "Wähle eine Sprache aus\n(nur bei aktiviertem TTS)",
   "announceUpcomingExercise": "nächste Übung ansagen",
   "AnnounceUpcomingExerciseDesc": "Wenn TTS aktiviert ist, wird die nächste Übung angesagt",
 
@@ -67,5 +67,9 @@
   "nextSet": "Nächster Satz",
   "countRepetitions": "{count} Wiederholungen",
   "viewOnGithub": "Auf GitHub ansehen",
-  "reportIssuesOrRequestAFeature": "Fehler melden oder neue Funktionen vorschlagen"
+  "reportIssuesOrRequestAFeature": "Fehler melden oder neue Funktionen vorschlagen",
+  "halfwayDone": "Hälfte geschafft",
+  "settingHalfway": "Ansage oder Ton in der Hälfte der Übung abspielen",
+  "playTickEverySecond": "Jede Sekunde ein Ticken abspielen",
+  "duplicate": "Duplizieren"
 }

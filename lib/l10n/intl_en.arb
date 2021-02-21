@@ -35,7 +35,7 @@
   "useSoundDesc": "Use simple sounds to indicate starts and endings of exercises",
   "tts": "Text-to-Speech (TTS)",
   "ttsLang": "TTS Language",
-  "ttsLangDesc": "Select a locally installed language\n(only when TTS is enabled)",
+  "ttsLangDesc": "Select a language\n(only when TTS is enabled)",
   "announceUpcomingExercise": "Announce upcoming exercise",
   "AnnounceUpcomingExerciseDesc": "When TTS is enabled, announce the upcoming exercise",
 
@@ -68,5 +68,9 @@
   "nextSet": "Next set",
   "countRepetitions": "{count} repetitions",
   "viewOnGithub": "View on GitHub",
-  "reportIssuesOrRequestAFeature": "Report issues or request a feature"
+  "reportIssuesOrRequestAFeature": "Report issues or request a feature",
+  "halfwayDone": "Halfway done",
+  "settingHalfway": "Play sound or announcement halfway during exercise",
+  "playTickEverySecond": "Play tick every second",
+  "duplicate": "Duplicate"
 }

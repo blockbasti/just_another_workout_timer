@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:just_another_workout_timer/OssLicensesPage.dart';
-import 'package:just_another_workout_timer/SoundHelper.dart';
-import 'package:just_another_workout_timer/TTSHelper.dart';
 import 'package:preferences/dropdown_preference.dart';
 import 'package:preferences/preference_page.dart';
 import 'package:preferences/preference_title.dart';
@@ -10,6 +7,9 @@ import 'package:preferences/preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
+import 'oss_license_page.dart';
+import 'sound_helper.dart';
+import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
@@ -53,6 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
             'wakelock',
             defaultVal: true,
           ),
+          SwitchPreference(S.of(context).settingHalfway, 'halftime'),
+          SwitchPreference(S.of(context).playTickEverySecond, 'ticks'),
           PreferenceTitle(S.of(context).soundOutput),
           RadioPreference(
             S.of(context).noSound,
@@ -117,26 +119,24 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: () {
               showDialog(
                   context: context,
-                  builder: (context) {
-                    return Dialog(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              S.of(context).title,
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                  builder: (context) => Dialog(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                S.of(context).title,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(_license),
-                          )
-                        ],
-                      ),
-                    );
-                  });
+                            Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(_license),
+                            )
+                          ],
+                        ),
+                      ));
             },
           ),
           PreferenceText(

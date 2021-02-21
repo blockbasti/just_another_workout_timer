@@ -22,11 +22,17 @@
     <a href="https://f-droid.org/packages/com.blockbasti.justanotherworkouttimer">
         <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
         alt="Get it on F-Droid"
-        height="80">
+             height="80"></a>
     <a href="https://github.com/blockbasti/just_another_workout_timer/releases/latest">
         <img src="/assets/get-it-on-github.png"
         alt="Get it on GitHub"
-        height="80">
+             height="80"></a>
+    <br />
+      <p>
+        NOTE: Due to the process of releasing updates on F-Droid, the version there can be outdated for a few days.
+        The version on GitHub will always be the latest. Keep in mind, that the F-Droid and GitHub versions are not compatible with each other.
+        If you switch, you will loose ALL your data.
+      </p>
    </a>
   </p>
 </p>

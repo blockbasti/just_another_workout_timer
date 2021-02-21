@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:preferences/preference_service.dart';
 import 'package:soundpool/soundpool.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class SoundHelper {
   static Soundpool _soundpool;
   static int _beepId;
@@ -18,11 +19,23 @@ class SoundHelper {
     return await _soundpool.load(asset);
   }
 
-  static playBeepLow() {
+  static void playBeepLow() {
     if (useSound) _soundpool.play(_beepId);
   }
 
-  static playBeepHigh() {
+  static void playBeepHigh() {
     if (useSound) _soundpool.play(_beepId, rate: 1.5);
+  }
+
+  static void playBeepTick() {
+    if (PrefService.getBool('ticks')) _soundpool.play(_beepId, rate: 2);
+  }
+
+  static void playDouble() {
+    if (useSound) {
+      _soundpool.play(_beepId);
+      Future.delayed(Duration(milliseconds: 200))
+          .then((value) => _soundpool.play(_beepId));
+    }
   }
 }

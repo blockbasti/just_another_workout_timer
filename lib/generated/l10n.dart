@@ -365,10 +365,10 @@ class S {
     );
   }
 
-  /// `Select a locally installed language\n(only when TTS is enabled)`
+  /// `Select a language\n(only when TTS is enabled)`
   String get ttsLangDesc {
     return Intl.message(
-      'Select a locally installed language\n(only when TTS is enabled)',
+      'Select a language\n(only when TTS is enabled)',
       name: 'ttsLangDesc',
       desc: '',
       args: [],
@@ -680,6 +680,46 @@ class S {
     return Intl.message(
       'Report issues or request a feature',
       name: 'reportIssuesOrRequestAFeature',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Halfway done`
+  String get halfwayDone {
+    return Intl.message(
+      'Halfway done',
+      name: 'halfwayDone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play sound or announcement halfway during exercise`
+  String get settingHalfway {
+    return Intl.message(
+      'Play sound or announcement halfway during exercise',
+      name: 'settingHalfway',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play tick every second`
+  String get playTickEverySecond {
+    return Intl.message(
+      'Play tick every second',
+      name: 'playTickEverySecond',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Duplicate`
+  String get duplicate {
+    return Intl.message(
+      'Duplicate',
+      name: 'duplicate',
       desc: '',
       args: [],
     );
