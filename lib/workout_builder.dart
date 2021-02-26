@@ -103,7 +103,10 @@ class _BuilderPageState extends State<BuilderPage> {
   void _addExercise(int setIndex, bool isRest) {
     setState(() {
       _workout.sets[setIndex].exercises.add(
-          Exercise(name: isRest ? S.of(context).rest : S.of(context).exercise));
+          Exercise(
+              name: isRest ? S.of(context).rest : S.of(context).exercise,
+              duration: 30
+          ));
     });
   }
 
