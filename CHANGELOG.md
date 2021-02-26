@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.4.0...v1.4.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* set duration when adding a new Exercise in workout_builder.dart ([#23](https://github.com/blockbasti/just_another_workout_timer/issues/23)) ([#24](https://github.com/blockbasti/just_another_workout_timer/issues/24)) ([ecb2305](https://github.com/blockbasti/just_another_workout_timer/commit/ecb23053e83b6505a1c3d44f85b299db9bad7ab7))
+
+
+
 # [1.4.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.3.0...v1.4.0) (2021-02-21)
 
 
