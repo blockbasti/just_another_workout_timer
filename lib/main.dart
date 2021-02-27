@@ -11,8 +11,14 @@ import 'tts_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GestureBinding.instance.resamplingEnabled = true;
-  PrefService.init(prefix: 'pref_').then((value) =>
-      Future.wait([TTSHelper.init(), SoundHelper.loadSounds()])
+  PrefService.init(prefix: 'pref_')
+      .then((value) => PrefService.setDefaultValues({
+            'wakelock': true,
+            'halftime': false,
+            'ticks': false,
+            'tts_next_announce': true
+          }))
+      .then((value) => Future.wait([TTSHelper.init(), SoundHelper.loadSounds()])
           .then((value) => runApp(JAWTApp())));
 }
 

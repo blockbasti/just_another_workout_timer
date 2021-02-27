@@ -51,7 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
           SwitchPreference(
             S.of(context).keepScreenAwake,
             'wakelock',
-            defaultVal: true,
           ),
           SwitchPreference(S.of(context).settingHalfway, 'halftime'),
           SwitchPreference(S.of(context).playTickEverySecond, 'ticks'),
@@ -102,7 +101,6 @@ class _SettingsPageState extends State<SettingsPage> {
           SwitchPreference(
             S.of(context).announceUpcomingExercise,
             'tts_next_announce',
-            defaultVal: true,
             desc: S.of(context).AnnounceUpcomingExerciseDesc,
           ),
           PreferenceTitle(S.of(context).licenses),
