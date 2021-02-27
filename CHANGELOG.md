@@ -1,3 +1,39 @@
+## [1.4.2](https://github.com/blockbasti/just_another_workout_timer/compare/v1.4.1...v1.4.2) (2021-02-27)
+
+
+### Bug Fixes
+
+* set duration when adding a new Exercise in workout_builder.dart ([#23](https://github.com/blockbasti/just_another_workout_timer/issues/23)) ([cfb942e](https://github.com/blockbasti/just_another_workout_timer/commit/cfb942e224a838157db30a9fbc4ba34dc103b0f9))
+* set PrefService default values (closes [#25](https://github.com/blockbasti/just_another_workout_timer/issues/25)) ([#26](https://github.com/blockbasti/just_another_workout_timer/issues/26)) ([2ab05c8](https://github.com/blockbasti/just_another_workout_timer/commit/2ab05c82cdf60362a8fca4c493e32b4d33ec2738))
+
+
+
+## [1.4.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.4.0...v1.4.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* set duration when adding a new Exercise in workout_builder.dart ([#23](https://github.com/blockbasti/just_another_workout_timer/issues/23)) ([#24](https://github.com/blockbasti/just_another_workout_timer/issues/24)) ([ecb2305](https://github.com/blockbasti/just_another_workout_timer/commit/ecb23053e83b6505a1c3d44f85b299db9bad7ab7))
+
+
+
+# [1.4.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.3.0...v1.4.0) (2021-02-21)
+
+
+### Bug Fixes
+
+* allow selecting any TTS language ([3cbeb1a](https://github.com/blockbasti/just_another_workout_timer/commit/3cbeb1ad707ccbba339e1ffbc74e8ec32f1249a3))
+* when resetting a workout, scroll current set to beginning ([9870d10](https://github.com/blockbasti/just_another_workout_timer/commit/9870d1080df1a667fdc1206b2f91c0659498dce0))
+
+
+### Features
+
+* add announcement halfway and tick every second (closes [#19](https://github.com/blockbasti/just_another_workout_timer/issues/19)) ([c782fc8](https://github.com/blockbasti/just_another_workout_timer/commit/c782fc8511c067147653d936b564b79ba488c0c3))
+* allow duplicating sets and exercises (closes [#21](https://github.com/blockbasti/just_another_workout_timer/issues/21)) ([acef383](https://github.com/blockbasti/just_another_workout_timer/commit/acef38374caa77a996aaf50c85dd957af942a727))
+* skip exercises (closes [#20](https://github.com/blockbasti/just_another_workout_timer/issues/20)) ([99e846c](https://github.com/blockbasti/just_another_workout_timer/commit/99e846c6725a5b0b6f8364ce79b8a5d49a7f1a8a))
+
+
+
 # [1.3.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.2.0...v1.3.0) (2021-02-09)
 
 
