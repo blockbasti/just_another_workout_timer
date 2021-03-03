@@ -18,6 +18,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Workout> workouts = [];
+  IconData _sortIcon = Icons.sort_by_alpha;
+  String _sortMode = 'alpha';
 
   @override
   void initState() {
@@ -30,9 +32,47 @@ class _HomePageState extends State<HomePage> {
   /// load all workouts from disk and populate list
   _loadWorkouts() async {
     var data = await getAllWorkouts();
+
     setState(() {
-      workouts = data;
+      workouts = _sortWorkouts(data);
     });
+  }
+
+  _updateSortMode(){
+    switch(_sortMode) {
+      case 'alpha':
+        {
+          _sortIcon = Icons.sort;
+          _sortMode =  'duration';
+        }
+        break;
+
+      case 'duration':
+        {
+          _sortIcon = Icons.sort_by_alpha;
+          _sortMode = 'alpha';
+        };
+      break;
+
+      default: _sortIcon = Icons.sort_by_alpha;
+    }
+      _loadWorkouts();
+  }
+
+  _sortWorkouts(List<Workout> workouts ) {
+    var sortedWorkouts = List<Workout>.from(workouts);
+    switch(_sortMode) {
+      case 'alpha': {
+        sortedWorkouts.sort((w1, w2) => w1.title.compareTo(w2.title));
+      }
+      break;
+
+      case 'duration': {
+        sortedWorkouts.sort((w1, w2) => w2.duration.compareTo(w1.duration));
+      }
+      break;
+    }
+    return sortedWorkouts;
   }
 
   /// aks user if they want to delete a workout
@@ -127,6 +167,11 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(S.of(context).title),
           actions: [
+            IconButton(
+                icon: Icon(_sortIcon),
+                onPressed: () {
+                  setState(_updateSortMode);
+                }),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {
