@@ -31,9 +31,8 @@
       <p>
         NOTE: Due to the process of releasing updates on F-Droid, the version there can be outdated for a few days.
         The version on GitHub will always be the latest. Keep in mind, that the F-Droid and GitHub versions are not compatible with each other.
-        If you switch, you will loose ALL your data.
+        If you switch, you will loose ALL your data. You need to  <a href="#how-to-backup--restore-your-workouts">backup your workouts</a> to keep them.
       </p>
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -44,6 +43,7 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#screenshots">Screenshots</a></li>
+		<li><a href="#how-to-backup--restore-your-workouts">How To Backup & Restore Your Workouts</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -70,6 +70,10 @@
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" alt="Builder Screen" width="250">
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" alt="Settings Screen" width="250">
 
+### How To Backup & Restore Your Workouts
+*Just Another Workout Timer* saves your workouts to local storage at `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`. Just copy this folder to your desired backup location.<br>
+To restore a backup, simply paste the contents of the backed up workout folder back into `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`.<br>
+The workouts are now available in the app again.
 
 <!-- ROADMAP -->
 ## Roadmap
