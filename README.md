@@ -33,9 +33,6 @@
         The version on GitHub will always be the latest. Keep in mind, that the F-Droid and GitHub versions are not compatible with each other.
         If you switch, you will loose ALL your data.
       </p>
-   </a>
-  </p>
-</p>
 
 
 
