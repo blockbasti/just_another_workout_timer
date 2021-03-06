@@ -24,6 +24,7 @@ class _BuilderPageState extends State<BuilderPage> {
   Workout _workout;
   String _oldTitle;
   bool _newWorkout;
+  bool _dirty = false;
 
   _BuilderPageState(Workout workout, {bool newWorkout}) {
     _workout = workout;
@@ -34,24 +35,28 @@ class _BuilderPageState extends State<BuilderPage> {
   void _addSet() {
     setState(() {
       _workout.sets.add(Set.empty());
+      _dirty = true;
     });
   }
 
   void _deleteSet(int index) {
     setState(() {
       _workout.sets.removeAt(index);
+      _dirty = true;
     });
   }
 
   void _duplicateSet(int index) {
     setState(() {
       _workout.sets.insert(index, Set.fromJson( _workout.sets[index].toJson()));
+      _dirty = true;
     });
   }
 
   void _duplicateExercise(int setIndex, int exIndex){
     setState(() {
       _workout.sets[setIndex].exercises.insert(exIndex, Exercise.fromJson(_workout.sets[setIndex].exercises[exIndex].toJson()));
+      _dirty = true;
     });
   }
 
@@ -98,6 +103,9 @@ class _BuilderPageState extends State<BuilderPage> {
       writeWorkout(_workout);
       _newWorkout = false;
     }
+    setState(() {
+      _dirty = false;
+    });
   }
 
   void _addExercise(int setIndex, bool isRest) {
@@ -107,12 +115,14 @@ class _BuilderPageState extends State<BuilderPage> {
               name: isRest ? S.of(context).rest : S.of(context).exercise,
               duration: 30
           ));
+      _dirty = true;
     });
   }
 
   void _deleteExercise(int setIndex, int exIndex) {
     setState(() {
       _workout.sets[setIndex].exercises.removeAt(exIndex);
+      _dirty = true;
     });
   }
 
@@ -157,6 +167,7 @@ class _BuilderPageState extends State<BuilderPage> {
                   valueChanged: (repetitions) {
                     setState(() {
                       set.repetitions = repetitions;
+                      _dirty = true;
                     });
                   })
             ],
@@ -197,6 +208,7 @@ class _BuilderPageState extends State<BuilderPage> {
                         ? () {
                             setState(() {
                               _workout.moveSet(index, moveUp: true);
+                              _dirty = true;
                             });
                           }
                         : null,
@@ -208,6 +220,7 @@ class _BuilderPageState extends State<BuilderPage> {
                         ? () {
                             setState(() {
                               _workout.moveSet(index, moveUp: false);
+                              _dirty = true;
                             });
                           }
                         : null,
@@ -255,6 +268,9 @@ class _BuilderPageState extends State<BuilderPage> {
                   ),
                   onChanged: (text) {
                     _workout.sets[setIndex].exercises[exIndex].name = text;
+                    setState(() {
+                      _dirty = true;
+                    });
                   },
                 )),
             Column(
@@ -271,6 +287,7 @@ class _BuilderPageState extends State<BuilderPage> {
                     setState(() {
                       _workout.sets[setIndex].exercises[exIndex].duration =
                           duration;
+                      _dirty = true;
                     });
                   },
                 ),
@@ -285,6 +302,7 @@ class _BuilderPageState extends State<BuilderPage> {
                               setState(() {
                                 _workout.sets[setIndex]
                                     .moveExercise(exIndex, moveUp: true);
+                                _dirty = true;
                               });
                             }
                           : null,
@@ -299,6 +317,7 @@ class _BuilderPageState extends State<BuilderPage> {
                                   setState(() {
                                     _workout.sets[setIndex]
                                         .moveExercise(exIndex, moveUp: false);
+                                    _dirty = true;
                                   });
                                 }
                               : null,
@@ -319,6 +338,10 @@ class _BuilderPageState extends State<BuilderPage> {
   @override
   Widget build(BuildContext context) => WillPopScope(
         onWillPop: () async {
+          if(!_dirty) {
+            return true;
+          }
+
           final value = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
@@ -339,7 +362,7 @@ class _BuilderPageState extends State<BuilderPage> {
                     ],
                   ));
 
-          return value == true;
+          return value;
         },
         child: Scaffold(
           appBar: AppBar(
@@ -351,6 +374,9 @@ class _BuilderPageState extends State<BuilderPage> {
                 maxLines: 1,
                 onChanged: (name) {
                   _workout.title = name;
+                  setState(() {
+                    _dirty = true;
+                  });
                 },
                 decoration: InputDecoration(
                   labelText: S.of(context).name,
