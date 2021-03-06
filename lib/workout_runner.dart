@@ -512,6 +512,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
       onWillPop: () async {
+        // Just pop if the workout wasn't started yet or is already done
+        if(_timer == null || _workoutDone) {
+          return true;
+        }
+
         final value = await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
