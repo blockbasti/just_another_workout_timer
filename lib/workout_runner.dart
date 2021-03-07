@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:preferences/preference_service.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
