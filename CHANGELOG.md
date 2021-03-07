@@ -1,3 +1,19 @@
+# [1.5.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.4.2...v1.5.0) (2021-03-07)
+
+
+### Bug Fixes
+
+* disable TTS when no TTS engine is installed (fixes [#36](https://github.com/blockbasti/just_another_workout_timer/issues/36)) ([292ce69](https://github.com/blockbasti/just_another_workout_timer/commit/292ce699ef3823057cd74344f4b97986be8e9e2c))
+
+
+### Features
+
+* allow sorting workouts on home page (closes [#30](https://github.com/blockbasti/just_another_workout_timer/issues/30)) ([1fea25f](https://github.com/blockbasti/just_another_workout_timer/commit/1fea25f682af97d17855769d419406dc25e9f3ae))
+* remove exit check from builder when nothing has changed ([1bb5af9](https://github.com/blockbasti/just_another_workout_timer/commit/1bb5af98b3dbbe8d3da2b6b694ffe90f2af558da))
+* remove exit check in unnecessary situations in workout_runner.dart ([c17162d](https://github.com/blockbasti/just_another_workout_timer/commit/c17162d3b57ea8d2044b37d4f017ed2f74278c14))
+
+
+
 ## [1.4.2](https://github.com/blockbasti/just_another_workout_timer/compare/v1.4.1...v1.4.2) (2021-02-27)
 
 
