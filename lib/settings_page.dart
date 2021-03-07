@@ -71,6 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
             'sound',
             desc: S.of(context).useTTSDesc,
             isDefault: true,
+            disabled: !TTSHelper.available,
             onSelect: () {
               TTSHelper.useTTS = true;
               SoundHelper.useSound = false;
@@ -91,9 +92,11 @@ class _SettingsPageState extends State<SettingsPage> {
             S.of(context).ttsLang,
             'tts_lang',
             desc: S.of(context).ttsLangDesc,
-            defaultVal: 'en-US',
+            defaultVal: (TTSHelper.languages.isNotEmpty
+                ? TTSHelper.languages.first
+                : ''),
             values: TTSHelper.languages,
-            //disabled: (!PrefService.getBool('tts_enable') ?? false),
+            disabled: !TTSHelper.available,
             onChange: (value) {
               TTSHelper.flutterTts.setLanguage(value);
             },
@@ -102,6 +105,7 @@ class _SettingsPageState extends State<SettingsPage> {
             S.of(context).announceUpcomingExercise,
             'tts_next_announce',
             desc: S.of(context).AnnounceUpcomingExerciseDesc,
+            disabled: !TTSHelper.available,
           ),
           PreferenceTitle(S.of(context).licenses),
           PreferenceText(
