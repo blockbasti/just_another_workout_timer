@@ -268,9 +268,7 @@ class _BuilderPageState extends State<BuilderPage> {
                   ),
                   onChanged: (text) {
                     _workout.sets[setIndex].exercises[exIndex].name = text;
-                    setState(() {
-                      _dirty = true;
-                    });
+                    _dirty = true;
                   },
                 )),
             Column(
