@@ -512,7 +512,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       ),
       onWillPop: () async {
         // Just pop if the workout wasn't started yet or is already done
-        if(_timer == null || _workoutDone) {
+        if (_timer == null || _workoutDone) {
           return true;
         }
 

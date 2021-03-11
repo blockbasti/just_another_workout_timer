@@ -38,12 +38,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _updateSortMode(){
-    switch(_sortMode) {
+  _updateSortMode() {
+    switch (_sortMode) {
       case 'alpha':
         {
           _sortIcon = Icons.sort;
-          _sortMode =  'duration';
+          _sortMode = 'duration';
         }
         break;
 
@@ -51,26 +51,29 @@ class _HomePageState extends State<HomePage> {
         {
           _sortIcon = Icons.sort_by_alpha;
           _sortMode = 'alpha';
-        };
-      break;
+        }
+        break;
 
-      default: _sortIcon = Icons.sort_by_alpha;
+      default:
+        _sortIcon = Icons.sort_by_alpha;
     }
-      _loadWorkouts();
+    _loadWorkouts();
   }
 
-  _sortWorkouts(List<Workout> workouts ) {
+  _sortWorkouts(List<Workout> workouts) {
     var sortedWorkouts = List<Workout>.from(workouts);
-    switch(_sortMode) {
-      case 'alpha': {
-        sortedWorkouts.sort((w1, w2) => w1.title.compareTo(w2.title));
-      }
-      break;
+    switch (_sortMode) {
+      case 'alpha':
+        {
+          sortedWorkouts.sort((w1, w2) => w1.title.compareTo(w2.title));
+        }
+        break;
 
-      case 'duration': {
-        sortedWorkouts.sort((w1, w2) => w2.duration.compareTo(w1.duration));
-      }
-      break;
+      case 'duration':
+        {
+          sortedWorkouts.sort((w1, w2) => w2.duration.compareTo(w1.duration));
+        }
+        break;
     }
     return sortedWorkouts;
   }
