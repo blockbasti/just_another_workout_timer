@@ -1,0 +1,1 @@
+Un semplice temporizzatore per i tuoi allenamenti scritto con Flutter!

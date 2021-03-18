@@ -400,6 +400,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   children: [
                     Text(
                       '${S.of(context).setIndex(_workout.sets.indexOf(_currentSet) + 1)} - ${Utils.formatSeconds(_remainingSeconds)}',
+                      textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                     ),
