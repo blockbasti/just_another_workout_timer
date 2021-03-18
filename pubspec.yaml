@@ -3,7 +3,7 @@ description: Just Another Workout Timer
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.5.0+20210307
+version: 1.6.0+20210311
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   url_launcher:
   wakelock:
   soundpool:
-  intl_translation:
+  intl_utils:
   scrollable_positioned_list:
   flutter_localizations:
     sdk: flutter

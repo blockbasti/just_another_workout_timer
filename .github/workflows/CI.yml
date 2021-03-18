@@ -18,14 +18,18 @@ jobs:
         with:
           #channel: 'stable'
           flutter-version: '1.22.6'
-      
-      - name: Build APKs
+
+      - name: Setup Flutter
         run: |
           flutter config --no-analytics
           flutter pub get
-          flutter test
-          flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1) --debug
+          sh ./scripts/generate_code.sh
+
+      - name: Run Tests
+        run: flutter test
+      
+      - name: Build APKs
+        run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1) --debug
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2.2.2

@@ -91,6 +91,14 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+### Building the app
+
+1. Run `flutter pub get`
+2. Run `./scripts/generate_code.sh` or 
+`flutter pub run flutter_oss_licenses:generate.dart` and
+`flutter pub run intl_utils:generate` to generate licenses and translations
+3. Run `flutter build apk` or run using your IDE
+
 <!-- LICENSE -->
 ## License
 
