@@ -1,0 +1,9 @@
+* Creare facilmente allenamenti complessi
+* Definire i tuoi esercizi con durate personalizzate
+* Aggiungere esercizi a sessioni personalizzate
+* Conduzione attraverso la sintesi vocale (Text-to-speech)
+* Material Design moderno scritto con Flutter
+* Privo di pubblicità
+* Libero e open-Source
+
+Github: https://github.com/blockbasti/just_another_workout_timer

@@ -40,8 +40,12 @@ class _SettingsPageState extends State<SettingsPage> {
             S.of(context).language,
             'lang',
             defaultVal: 'en',
-            values: ['en', 'de'],
-            displayValues: [S.of(context).english, S.of(context).german],
+            values: ['en', 'de', 'it'],
+            displayValues: [
+              S.of(context).english,
+              S.of(context).german,
+              S.of(context).italian
+            ],
             onChange: (value) {
               setState(() {
                 S.load(Locale(value));
