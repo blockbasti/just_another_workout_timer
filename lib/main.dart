@@ -6,6 +6,7 @@ import 'package:preferences/preference_service.dart';
 import 'generated/l10n.dart';
 import 'home_page.dart';
 import 'sound_helper.dart';
+import 'storage_helper.dart';
 import 'tts_helper.dart';
 
 void main() async {
@@ -18,7 +19,8 @@ void main() async {
             'ticks': false,
             'tts_next_announce': true
           }))
-      .then((_) => Future.wait([TTSHelper.init(), SoundHelper.loadSounds()])
+      .then((_) => Future.wait(
+              [TTSHelper.init(), SoundHelper.loadSounds(), migrateFilenames()])
           .then((_) => runApp(JAWTApp())));
 }
 
