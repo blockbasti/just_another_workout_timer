@@ -8,8 +8,6 @@ import 'package:preferences/preference_service.dart';
 class TTSHelper {
   static FlutterTts flutterTts;
 
-  static List<String> languages = List.empty();
-
   static bool available = true;
 
   /// enable/disable TTS output
@@ -32,12 +30,6 @@ class TTSHelper {
         await flutterTts.setSpeechRate(1.0);
         await flutterTts.setVolume(1.0);
         await flutterTts.setPitch(1.0);
-
-        languages = List<String>.from(await flutterTts.getLanguages);
-        languages.sort();
-        languages.remove('de-DE');
-        languages.remove('en-US');
-        languages.insertAll(0, ['en-US', 'de-DE']);
       });
     } on TimeoutException {
       available = false;

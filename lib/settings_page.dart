@@ -40,12 +40,8 @@ class _SettingsPageState extends State<SettingsPage> {
             S.of(context).language,
             'lang',
             defaultVal: 'en',
-            values: ['en', 'de', 'it'],
-            displayValues: [
-              S.of(context).english,
-              S.of(context).german,
-              S.of(context).italian
-            ],
+            values: ['en', 'de', 'it', 'fr'],
+            displayValues: ['English', 'Deutsch', 'Italiano', 'Français'],
             onChange: (value) {
               setState(() {
                 S.load(Locale(value));
@@ -96,10 +92,9 @@ class _SettingsPageState extends State<SettingsPage> {
             S.of(context).ttsLang,
             'tts_lang',
             desc: S.of(context).ttsLangDesc,
-            defaultVal: (TTSHelper.languages.isNotEmpty
-                ? TTSHelper.languages.first
-                : ''),
-            values: TTSHelper.languages,
+            defaultVal: 'en-US',
+            values: ['en-US', 'de-DE', 'it-IT', 'fr-FR'],
+            displayValues: ['English', 'Deutsch', 'Italiano', 'Français'],
             disabled: !TTSHelper.available,
             onChange: (value) {
               TTSHelper.flutterTts.setLanguage(value);
