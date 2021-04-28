@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'generated/l10n.dart';
 import 'number_stepper.dart';
@@ -105,10 +106,12 @@ class _BuilderPageState extends State<BuilderPage> {
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
+      Fluttertoast.showToast(
+          msg: "Saved",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER);
     }
-    setState(() {
-      _dirty = false;
-    });
+    Navigator.of(context).pop(true);
   }
 
   void _addExercise(int setIndex, bool isRest) {
