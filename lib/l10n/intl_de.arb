@@ -21,9 +21,6 @@
 
   "settings": "Einstellungen",
   "language": "Sprache",
-  "english": "English",
-  "german": "Deutsch",
-  "italian": "Italiano",
   "general": "Allgemein",
   "keepScreenAwake": "Bildschirm angeschaltet lassen",
   "soundOutput": "Tonausgabe",
