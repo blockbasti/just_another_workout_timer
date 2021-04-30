@@ -26,6 +26,7 @@ class _BuilderPageState extends State<BuilderPage> {
   String _oldTitle;
   bool _newWorkout;
   bool _dirty = false;
+  int _lastDuration = 30;
 
   _BuilderPageState(Workout workout, {bool newWorkout}) {
     _workout = workout;
@@ -118,7 +119,7 @@ class _BuilderPageState extends State<BuilderPage> {
     setState(() {
       _workout.sets[setIndex].exercises.add(Exercise(
           name: isRest ? S.of(context).rest : S.of(context).exercise,
-          duration: 30));
+          duration: _lastDuration));
       _dirty = true;
     });
   }
@@ -290,6 +291,7 @@ class _BuilderPageState extends State<BuilderPage> {
                       _workout.sets[setIndex].exercises[exIndex].duration =
                           duration;
                       _dirty = true;
+                      _lastDuration = duration;
                     });
                   },
                 ),
