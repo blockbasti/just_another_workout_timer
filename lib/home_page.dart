@@ -10,7 +10,7 @@ import 'workout_runner.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage() : super();
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _loadWorkouts();
     });
   }
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
           if (index < workouts.length) {
             return _buildWorkoutItem(workouts[index]);
           } else {
-            return null;
+            return Container();
           }
         },
       );
@@ -194,7 +194,7 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(
                 builder: (context) => BuilderPage(
-                  workout: Workout.empty(),
+                  workout: Workout(),
                   newWorkout: true,
                 ),
               ),

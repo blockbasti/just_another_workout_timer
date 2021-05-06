@@ -46,7 +46,7 @@ void main() {
 
   group('Set', () {
     test('WHEN creating an empty set THEN values are correct', () {
-      var set = Set.empty();
+      var set = Set();
 
       expect(set.repetitions, 1);
       expect(set.exercises.length, 0);
@@ -55,7 +55,7 @@ void main() {
     test(
         'GIVEN a set with exercises WHEN calculating duration THEN duration is correct',
         () {
-      var setDefault = Set.empty();
+      var setDefault = Set();
       var setEmpty = Set(repetitions: 1, exercises: []);
       var setComplex = Set(repetitions: 3, exercises: [
         Exercise(name: 'Exercise', duration: 30),
@@ -68,7 +68,7 @@ void main() {
     });
 
     test('GIVEN a set WHEN converting to JSON THEN output is valid', () {
-      var set = Set.empty();
+      var set = Set();
       set.exercises.add(Exercise(name: 'Exercise', duration: 30));
 
       var json = set.toRawJson();
@@ -105,7 +105,7 @@ void main() {
     test(
         'WHEN creating an empty workout THEN workout contains a single set with one exercise',
         () {
-      var workout = Workout.empty();
+      var workout = Workout();
 
       expect(workout.title, 'Workout');
       expect(workout.sets.length, 1);
@@ -115,10 +115,10 @@ void main() {
     test(
         'GIVEN a workout WHEN calculating the duration THEN duration is correct',
         () {
-      var workoutDefault = Workout.empty();
+      var workoutDefault = Workout();
       var workoutEmpty = Workout(title: 'Workout', sets: []);
 
-      var set = Set.empty();
+      var set = Set();
       set.exercises.add(Exercise(name: 'Exercise', duration: 30));
 
       var workoutComplex = Workout(title: 'Workout', sets: [set, set]);
@@ -129,7 +129,7 @@ void main() {
     });
 
     test('GIVEN a workout WHEN converting to JSON THEN output is valid', () {
-      var workout = Workout.empty();
+      var workout = Workout();
       workout.sets.first.exercises
           .add(Exercise(name: 'Exercise', duration: 30));
 

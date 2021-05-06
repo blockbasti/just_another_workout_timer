@@ -4,16 +4,15 @@ import 'package:soundpool/soundpool.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SoundHelper {
-  static Soundpool _soundpool;
-  static int _beepLowId;
-  static int _beepHighId;
-  static int _tickId;
+  static Soundpool _soundpool = Soundpool(streamType: StreamType.music);
+  static int? _beepLowId;
+  static int? _beepHighId;
+  static int? _tickId;
   static bool useSound = false;
 
   static Future<void> loadSounds() async {
-    _soundpool ??= Soundpool(streamType: StreamType.music);
     await _loadSounds();
-    useSound = PrefService.getString('sound') == 'beep' ?? true;
+    useSound = PrefService.getString('sound') == 'beep';
   }
 
   static Future<void> _loadSounds() async {

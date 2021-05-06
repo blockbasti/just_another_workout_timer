@@ -11,7 +11,7 @@ import 'tts_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  GestureBinding.instance.resamplingEnabled = true;
+  GestureBinding.instance!.resamplingEnabled = true;
   PrefService.init(prefix: 'pref_')
       .then((_) => PrefService.setDefaultValues({
             'wakelock': true,
@@ -49,7 +49,7 @@ class JAWTApp extends StatelessWidget {
             if (supportedLocales.contains(locale)) return locale;
           }
 
-          for (var locale in locales) {
+          for (var locale in locales!) {
             if (supportedLocales.contains(locale)) {
               PrefService.setString('lang', locale.languageCode);
               return locale;

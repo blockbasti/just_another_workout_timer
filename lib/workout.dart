@@ -2,19 +2,14 @@ import 'dart:convert';
 
 class Workout {
   Workout({
-    this.title,
-    this.sets,
+    title,
+    sets,
   });
 
-  Workout.empty() {
-    title = 'Workout';
-    sets = [
-      Set.empty(),
-    ];
-  }
-
-  String title;
-  List<Set> sets;
+  String title = 'Workout';
+  List<Set> sets = [
+    Set(),
+  ];
 
   int get duration {
     var duration = 0;
@@ -30,7 +25,7 @@ class Workout {
   }
 
   /// move a set up or down the order
-  void moveSet(int index, {bool moveUp}) {
+  void moveSet(int index, {required bool moveUp}) {
     var sets = this.sets.toList();
     if (!moveUp && index + 1 < this.sets.length) {
       var a = sets[index];
@@ -63,14 +58,9 @@ class Workout {
 
 class Set {
   Set({
-    this.repetitions,
-    this.exercises,
+    repetitions,
+    exercises,
   });
-
-  Set.empty() {
-    repetitions = 1;
-    exercises = [];
-  }
 
   int repetitions = 1;
   List<Exercise> exercises = [];
@@ -84,7 +74,7 @@ class Set {
   }
 
   /// move an exercise up or down the order
-  void moveExercise(int index, {bool moveUp}) {
+  void moveExercise(int index, {required bool moveUp}) {
     var sets = exercises.toList();
     if (!moveUp && index + 1 < exercises.length) {
       var a = sets[index];
@@ -118,12 +108,12 @@ class Set {
 
 class Exercise {
   Exercise({
-    this.name,
-    this.duration,
+    name,
+    duration,
   });
 
-  String name;
-  int duration;
+  String name = 'Exercise';
+  int duration = 30;
 
   factory Exercise.fromRawJson(String str) =>
       Exercise.fromJson(json.decode(str));

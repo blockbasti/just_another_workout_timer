@@ -16,28 +16,28 @@ import 'workout.dart';
 class WorkoutPage extends StatefulWidget {
   final Workout workout;
 
-  WorkoutPage({Key key, @required this.workout}) : super(key: key);
+  WorkoutPage({required this.workout}) : super();
 
   @override
   _WorkoutPageState createState() => _WorkoutPageState(workout);
 }
 
 class _WorkoutPageState extends State<WorkoutPage> {
-  Timer _timer;
-  Workout _workout;
+  Timer? _timer;
+  late Workout _workout;
 
   final ItemScrollController _itemScrollController = ItemScrollController();
   final ItemPositionsListener _itemPositionsListener =
       ItemPositionsListener.create();
 
-  Set _currentSet;
-  Exercise _currentExercise;
+  late Set _currentSet;
+  late Exercise _currentExercise;
   int _currentReps = 0;
 
-  Set _nextSet;
+  Set? _nextSet;
 
-  Exercise _prevExercise;
-  Exercise _nextExercise;
+  Exercise? _prevExercise;
+  Exercise? _nextExercise;
 
   int _remainingSeconds = 10;
   int _currentSecond = 0;
@@ -76,7 +76,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     if (_prevExercise != null) {
       setState(() {
         _currentSecond -= (_currentExercise.duration - _remainingSeconds) +
-            _prevExercise.duration +
+            _prevExercise!.duration +
             1;
       });
       _timerStop();
@@ -125,9 +125,9 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
       for (var rep = 0; rep < set.repetitions; rep++) {
         set.exercises.asMap().forEach((exIndex, exercise) {
-          Set _locNextSet;
-          Exercise _locNextExercise;
-          Exercise _locPrevExercise;
+          Set? _locNextSet;
+          Exercise? _locNextExercise;
+          Exercise? _locPrevExercise;
 
           // case: exercise is somewhere in set
           if (exIndex + 1 < set.exercises.length) {
@@ -169,7 +169,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               exercise.duration >= 10) {
             setMap[_currentTime + exercise.duration - 9] = () {
               TTSHelper.speak(
-                  S.of(context).nextExercise(_locNextExercise.name));
+                  S.of(context).nextExercise(_locNextExercise!.name));
             };
           } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
             SoundHelper.playBeepTick();
@@ -258,7 +258,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       _remainingSeconds -= 1;
 
       if (_timetable.containsKey(_currentSecond)) {
-        _timetable[_currentSecond]();
+        _timetable[_currentSecond]!();
       } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
         SoundHelper.playBeepTick();
       }
@@ -267,7 +267,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   void _timerStop() {
     setState(() {
-      _timer.cancel();
+      _timer!.cancel();
     });
   }
 
@@ -293,7 +293,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     buildTimetable();
   }
 
-  Widget _buildCurrentSetList(Set set) {
+  Widget _buildCurrentSetList(Set? set) {
     if (set == null) return Container();
 
     return SizedBox(
@@ -314,7 +314,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
   }
 
-  Widget _buildNextSetList(Set set) {
+  Widget _buildNextSetList(Set? set) {
     if (set == null) return Container();
 
     return SizedBox(
@@ -325,7 +325,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             return _buildSetItem(set.exercises[index],
                 set.exercises.indexOf(_currentExercise) == index);
           } else {
-            return null;
+            return Container();
           }
         },
         itemCount: set.exercises.length,
@@ -453,9 +453,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
                                 subtitle: _nextSet != null
-                                    ? Text(S
-                                        .of(context)
-                                        .countRepetitions(_nextSet.repetitions))
+                                    ? Text(S.of(context).countRepetitions(
+                                        _nextSet!.repetitions))
                                     : null,
                               ),
                               _buildNextSetList(_nextSet),
@@ -482,7 +481,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             FloatingActionButton(
               heroTag: 'mainFAB',
               child: Icon(
-                _timer != null && _timer.isActive
+                _timer != null && _timer!.isActive
                     ? Icons.pause
                     : _workoutDone
                         ? Icons.replay
@@ -490,7 +489,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 size: 32,
               ),
               onPressed: () {
-                if (_timer != null && _timer.isActive) {
+                if (_timer != null && _timer!.isActive) {
                   _timerStop();
                 } else if (_workoutDone) {
                   _resetWorkout();
@@ -502,9 +501,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             FloatingActionButton(
               heroTag: 'FAB2',
               mini: true,
-              onPressed: () {
-                skipForward();
-              },
+              onPressed: skipForward,
               child: Icon(Icons.skip_next),
             )
           ],
@@ -522,13 +519,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
             builder: (context) => AlertDialog(
                   content: Text(S.of(context).exitCheck),
                   actions: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text(S.of(context).no),
                       onPressed: () {
                         Navigator.of(context).pop(false);
                       },
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text(S.of(context).yesExit),
                       onPressed: () {
                         Navigator.of(context).pop(true);
