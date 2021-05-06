@@ -37,7 +37,9 @@ flutter:
   generate: true
   assets:
     - LICENSE
-    - assets/beep.wav
+    - assets/beep_low.wav
+    - assets/beep_high.wav
+    - assets/tick.wav
 
 flutter_icons:
   android: "launcher_icon"
