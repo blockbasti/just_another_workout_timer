@@ -108,7 +108,7 @@ class _BuilderPageState extends State<BuilderPage> {
       writeWorkout(_workout);
       _newWorkout = false;
       Fluttertoast.showToast(
-          msg: "Saved",
+          msg: S.of(context).saved,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER);
     }

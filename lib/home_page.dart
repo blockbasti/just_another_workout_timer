@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: Text(S.of(context).title),
+          title: Text(S.of(context).workouts),
           actions: [
             IconButton(
                 icon: Icon(_sortIcon),

@@ -1,6 +1,7 @@
 {
   "@@locale": "it",
   "title": "Just Another Workout Timer",
+  "workouts": "allenamenti",
   "no": "no",
   "yes": "si",
   "exitCheck": "Vuoi veramente uscire?",
@@ -13,6 +14,7 @@
   "startWorkout": "Inizia l'allenamento",
   "deleteWorkout": "Cacella l'allenamento",
   "addWorkout": "Inizia l'allenamento",
+  "saved": "Salvato",
 
   "licenses": "Licenze",
   "viewLicense": "Vedi la licenza",
