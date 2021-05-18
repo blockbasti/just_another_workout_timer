@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:preferences/preference_service.dart';
+import 'package:prefs/prefs.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -57,7 +57,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   @override
   void initState() {
     super.initState();
-    if (PrefService.getBool('wakelock') ?? true) Wakelock.enable();
+    if (Prefs.getBool('wakelock', true)) Wakelock.enable();
     buildTimetable();
   }
 
@@ -164,14 +164,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
           }
 
           // announce next exercise
-          if ((PrefService.getString('sound') == 'tts' &&
-                  PrefService.getBool('tts_next_announce')) &&
+          if ((Prefs.getString('sound') == 'tts' &&
+                  Prefs.getBool('tts_next_announce')) &&
               exercise.duration >= 10) {
             setMap[_currentTime + exercise.duration - 9] = () {
               TTSHelper.speak(
                   S.of(context).nextExercise(_locNextExercise!.name));
             };
-          } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+          } else if (_currentSecond > 10 && Prefs.getBool('ticks')) {
             SoundHelper.playBeepTick();
           }
 
@@ -180,11 +180,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
             _locNextSet = _workout.sets[setIndex + 1];
           }
 
-          if (exercise.duration >= 10 && PrefService.getBool('halftime')) {
+          if (exercise.duration >= 10 && Prefs.getBool('halftime')) {
             setMap[(_currentTime + exercise.duration / 2).round()] = () {
-              if (PrefService.getString('sound') == 'beep') {
+              if (Prefs.getString('sound') == 'beep') {
                 SoundHelper.playDouble();
-              } else if (PrefService.getString('sound') == 'tts') {
+              } else if (Prefs.getString('sound') == 'tts') {
                 TTSHelper.speak(S.of(context).halfwayDone);
               }
             };
@@ -259,7 +259,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
       if (_timetable.containsKey(_currentSecond)) {
         _timetable[_currentSecond]!();
-      } else if (_currentSecond > 10 && PrefService.getBool('ticks')) {
+      } else if (_currentSecond > 10 && Prefs.getBool('ticks')) {
         SoundHelper.playBeepTick();
       }
     });

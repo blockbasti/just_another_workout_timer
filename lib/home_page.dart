@@ -186,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                 })
           ],
         ),
-        body: _buildWorkoutList(),
+        body: Text('Test'), //_buildWorkoutList(),
         floatingActionButton: FloatingActionButton(
           heroTag: 'mainFAB',
           onPressed: () {

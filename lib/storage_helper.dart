@@ -8,7 +8,7 @@ import 'workout.dart';
 Future<String> get _localPath async {
   final directory = await getExternalStorageDirectory();
 
-  await Directory('${directory.path}/workouts').create();
+  await Directory('${directory!.path}/workouts').create();
 
   return directory.path;
 }
