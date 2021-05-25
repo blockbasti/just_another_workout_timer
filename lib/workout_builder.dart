@@ -12,8 +12,7 @@ class BuilderPage extends StatefulWidget {
   final Workout workout;
   final bool newWorkout;
 
-  BuilderPage({Key key, @required this.workout, @required this.newWorkout})
-      : super(key: key);
+  BuilderPage({required this.workout, required this.newWorkout}) : super();
 
   @override
   _BuilderPageState createState() =>
@@ -22,13 +21,13 @@ class BuilderPage extends StatefulWidget {
 
 /// page allowing a user to create a workout
 class _BuilderPageState extends State<BuilderPage> {
-  Workout _workout;
-  String _oldTitle;
-  bool _newWorkout;
+  late Workout _workout;
+  late String _oldTitle;
+  late bool _newWorkout;
   bool _dirty = false;
   int _lastDuration = 30;
 
-  _BuilderPageState(Workout workout, {bool newWorkout}) {
+  _BuilderPageState(Workout workout, {required bool newWorkout}) {
     _workout = workout;
     _oldTitle = _workout.title;
     _newWorkout = newWorkout;
@@ -36,7 +35,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _addSet() {
     setState(() {
-      _workout.sets.add(Set.empty());
+      _workout.sets.add(Set(exercises: []));
       _dirty = true;
     });
   }
@@ -74,9 +73,11 @@ class _BuilderPageState extends State<BuilderPage> {
               ));
       return;
     }
+
     setState(() {
       _workout.cleanUp();
     });
+
     if ((_newWorkout && await workoutExists(_workout.title)) ||
         (!_newWorkout &&
             _oldTitle != _workout.title &&
@@ -86,13 +87,13 @@ class _BuilderPageState extends State<BuilderPage> {
           builder: (context) => AlertDialog(
                 content: Text(S.of(context).overwriteExistingWorkout),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text(S.of(context).no),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(S.of(context).yes),
                     onPressed: () async {
                       await deleteWorkout(_oldTitle);
@@ -131,19 +132,17 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
-  Widget _buildSetList() => ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < _workout.sets.length) {
-            return _buildSetItem(_workout.sets[index], index);
-          } else {
-            return null;
-          }
-        },
+  Widget _buildSetList() => ListView(
+        children: _workout.sets
+            .asMap()
+            .map((index, set) => MapEntry(index, _buildSetItem(set, index)))
+            .values
+            .toList(),
       );
 
   Widget _buildSetItem(Set set, int index) => Card(
-      key: Key(set.toRawJson()),
-      child: Column(
+          //key: Key(set.toRawJson()),
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -237,16 +236,16 @@ class _BuilderPageState extends State<BuilderPage> {
         ],
       ));
 
-  Widget _buildExerciseList(Set set, int setIndex) => ListView.builder(
-      shrinkWrap: true,
-      primary: false,
-      itemBuilder: (context, index) {
-        if (index < _workout.sets[setIndex].exercises.length) {
-          return _buildExerciseItem(setIndex, index, set.exercises[index].name);
-        } else {
-          return null;
-        }
-      });
+  Widget _buildExerciseList(Set set, int setIndex) => ListView(
+        shrinkWrap: true,
+        primary: false,
+        children: set.exercises
+            .asMap()
+            .keys
+            .map((index) =>
+                _buildExerciseItem(setIndex, index, set.exercises[index].name))
+            .toList(),
+      );
 
   Widget _buildExerciseItem(int setIndex, int exIndex, String name) => Card(
         color: Theme.of(context).backgroundColor,
@@ -265,7 +264,6 @@ class _BuilderPageState extends State<BuilderPage> {
                 child: TextFormField(
                   initialValue: name,
                   maxLength: 30,
-                  maxLengthEnforced: true,
                   inputFormatters: [LengthLimitingTextInputFormatter(30)],
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -351,13 +349,13 @@ class _BuilderPageState extends State<BuilderPage> {
               builder: (context) => AlertDialog(
                     content: Text(S.of(context).exitCheck),
                     actions: <Widget>[
-                      FlatButton(
+                      TextButton(
                         child: Text(S.of(context).no),
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
                       ),
-                      FlatButton(
+                      TextButton(
                         child: Text(S.of(context).yesExit),
                         onPressed: () {
                           Navigator.of(context).pop(true);
@@ -366,14 +364,13 @@ class _BuilderPageState extends State<BuilderPage> {
                     ],
                   ));
 
-          return value;
+          return value!;
         },
         child: Scaffold(
           appBar: AppBar(
             title: TextFormField(
                 initialValue: _workout.title,
                 maxLength: 30,
-                maxLengthEnforced: true,
                 inputFormatters: [LengthLimitingTextInputFormatter(30)],
                 maxLines: 1,
                 onChanged: (name) {

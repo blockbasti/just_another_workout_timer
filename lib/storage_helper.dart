@@ -8,7 +8,7 @@ import 'workout.dart';
 Future<String> get _localPath async {
   final directory = await getExternalStorageDirectory();
 
-  await Directory('${directory.path}/workouts').create();
+  await Directory('${directory!.path}/workouts').create();
 
   return directory.path;
 }
@@ -26,22 +26,17 @@ void writeWorkout(Workout workout) async {
 
 Future<bool> workoutExists(String title) async {
   final file = await _loadWorkoutFile(title);
-  return await file.exists();
+  return file.exists();
 }
 
 Future<Workout> loadWorkout(String title) async {
-  try {
-    final file = await _loadWorkoutFile(title);
+  final file = await _loadWorkoutFile(title);
+  var contents = await file.readAsString();
 
-    var contents = await file.readAsString();
-
-    return Workout.fromRawJson(contents);
-  } on Exception {
-    return null;
-  }
+  return Workout.fromRawJson(contents);
 }
 
-void deleteWorkout(String title) async {
+Future<void> deleteWorkout(String title) async {
   try {
     final file = await _loadWorkoutFile(title);
     file.delete();

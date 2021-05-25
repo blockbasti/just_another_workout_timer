@@ -7,12 +7,12 @@ import 'utils.dart';
 // ignore: must_be_immutable
 class NumberStepper extends StatefulWidget {
   NumberStepper(
-      {@required this.lowerLimit,
-      @required this.upperLimit,
-      @required this.value,
-      @required this.valueChanged,
-      @required this.formatNumber,
-      @required this.largeSteps});
+      {required this.lowerLimit,
+      required this.upperLimit,
+      required this.value,
+      required this.valueChanged,
+      required this.formatNumber,
+      required this.largeSteps});
 
   final int lowerLimit;
   final int upperLimit;

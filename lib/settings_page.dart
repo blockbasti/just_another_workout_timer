@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:preferences/dropdown_preference.dart';
-import 'package:preferences/preference_page.dart';
-import 'package:preferences/preference_title.dart';
-import 'package:preferences/preferences.dart';
+import 'package:pref/pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
@@ -18,7 +15,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _license = '';
+  late String _license;
 
   void _loadLicense() async {
     var lic = await rootBundle.loadString('LICENSE');
@@ -34,89 +31,104 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: AppBar(
           title: Text(S.of(context).settings),
         ),
-        body: PreferencePage([
-          PreferenceTitle(S.of(context).general),
-          DropdownPreference(
-            S.of(context).language,
-            'lang',
-            defaultVal: 'en',
-            values: ['en', 'de', 'it', 'fr'],
-            displayValues: ['English', 'Deutsch', 'Italiano', 'Français'],
-            onChange: (value) {
+        body: PrefPage(children: [
+          PrefTitle(title: Text(S.of(context).general)),
+          PrefDropdown(
+            title: Text(S.of(context).language),
+            items: [
+              DropdownMenuItem(
+                child: Text('English'),
+                value: 'en',
+              ),
+              DropdownMenuItem(child: Text('Deutsch'), value: 'de'),
+              DropdownMenuItem(child: Text('Italiano'), value: 'it'),
+              DropdownMenuItem(child: Text('Français'), value: 'fr'),
+            ],
+            onChange: (String value) {
               setState(() {
                 S.load(Locale(value));
               });
             },
+            pref: 'lang',
           ),
-          SwitchPreference(
-            S.of(context).keepScreenAwake,
-            'wakelock',
+          PrefSwitch(
+            title: Text(S.of(context).keepScreenAwake),
+            pref: 'wakelock',
           ),
-          SwitchPreference(S.of(context).settingHalfway, 'halftime'),
-          SwitchPreference(S.of(context).playTickEverySecond, 'ticks'),
-          PreferenceTitle(S.of(context).soundOutput),
-          RadioPreference(
-            S.of(context).noSound,
-            'none',
-            'sound',
-            desc: S.of(context).noSoundDesc,
+          PrefSwitch(
+              title: Text(S.of(context).settingHalfway), pref: 'halftime'),
+          PrefSwitch(
+              title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
+          PrefTitle(title: Text(S.of(context).soundOutput)),
+          PrefRadio(
+            title: Text(S.of(context).noSound),
+            value: 'none',
+            pref: 'sound',
+            subtitle: Text(S.of(context).noSoundDesc),
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = false;
             },
           ),
-          RadioPreference(
-            S.of(context).useTTS,
-            'tts',
-            'sound',
-            desc: S.of(context).useTTSDesc,
-            isDefault: true,
+          PrefRadio(
+            title: Text(S.of(context).useTTS),
+            value: 'tts',
+            pref: 'sound',
+            subtitle: Text(S.of(context).useTTSDesc),
             disabled: !TTSHelper.available,
             onSelect: () {
               TTSHelper.useTTS = true;
               SoundHelper.useSound = false;
             },
           ),
-          RadioPreference(
-            S.of(context).useSound,
-            'beep',
-            'sound',
-            desc: S.of(context).useSoundDesc,
+          PrefRadio(
+            title: Text(S.of(context).useSound),
+            value: 'beep',
+            pref: 'sound',
+            subtitle: Text(S.of(context).useSoundDesc),
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = true;
             },
           ),
-          PreferenceTitle(S.of(context).tts),
-          DropdownPreference(
-            S.of(context).ttsLang,
-            'tts_lang',
-            desc: S.of(context).ttsLangDesc,
-            defaultVal: 'en-US',
-            values: ['en-US', 'de-DE', 'it-IT', 'fr-FR'],
-            displayValues: ['English', 'Deutsch', 'Italiano', 'Français'],
+          PrefTitle(
+            title: Text(S.of(context).tts),
+          ),
+          PrefDropdown(
+            title: Text(S.of(context).ttsLang),
+            pref: 'tts_lang',
+            subtitle: Text(S.of(context).ttsLangDesc),
+            items: [
+              DropdownMenuItem(
+                child: Text('English'),
+                value: 'en-US',
+              ),
+              DropdownMenuItem(child: Text('Deutsch'), value: 'de-DE'),
+              DropdownMenuItem(child: Text('Italiano'), value: 'it-IT'),
+              DropdownMenuItem(child: Text('Français'), value: 'fr-FR'),
+            ],
             disabled: !TTSHelper.available,
-            onChange: (value) {
+            onChange: (String value) {
               TTSHelper.flutterTts.setLanguage(value);
             },
           ),
-          SwitchPreference(
-            S.of(context).announceUpcomingExercise,
-            'tts_next_announce',
-            desc: S.of(context).AnnounceUpcomingExerciseDesc,
+          PrefSwitch(
+            title: Text(S.of(context).announceUpcomingExercise),
+            pref: 'tts_next_announce',
+            subtitle: Text(S.of(context).AnnounceUpcomingExerciseDesc),
             disabled: !TTSHelper.available,
           ),
-          PreferenceTitle(S.of(context).licenses),
-          PreferenceText(
-            S.of(context).viewOnGithub,
+          PrefTitle(title: Text(S.of(context).licenses)),
+          PrefLabel(
+            title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
             onTap: () {
               launch(
                   'https://github.com/blockbasti/just_another_workout_timer');
             },
           ),
-          PreferenceText(
-            S.of(context).viewLicense,
+          PrefLabel(
+            title: Text(S.of(context).viewLicense),
             onTap: () {
               showDialog(
                   context: context,
@@ -140,8 +152,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ));
             },
           ),
-          PreferenceText(
-            S.of(context).viewOSSLicenses,
+          PrefLabel(
+            title: Text(S.of(context).viewOSSLicenses),
             onTap: () {
               Navigator.push(
                   context,

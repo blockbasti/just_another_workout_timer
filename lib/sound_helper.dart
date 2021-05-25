@@ -1,19 +1,19 @@
 import 'package:flutter/services.dart';
-import 'package:preferences/preference_service.dart';
+import 'package:prefs/prefs.dart';
 import 'package:soundpool/soundpool.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SoundHelper {
-  static Soundpool _soundpool;
-  static int _beepLowId;
-  static int _beepHighId;
-  static int _tickId;
+  static final Soundpool _soundpool = Soundpool(streamType: StreamType.music);
+  static int? _beepLowId;
+  static int? _beepHighId;
+  static int? _tickId;
+
   static bool useSound = false;
 
   static Future<void> loadSounds() async {
-    _soundpool ??= Soundpool(streamType: StreamType.music);
     await _loadSounds();
-    useSound = PrefService.getString('sound') == 'beep' ?? true;
+    useSound = Prefs.getString('sound') == 'beep';
   }
 
   static Future<void> _loadSounds() async {
@@ -26,22 +26,22 @@ class SoundHelper {
   }
 
   static void playBeepLow() {
-    if (useSound) _soundpool.play(_beepLowId);
+    if (useSound) _soundpool.play(_beepLowId!);
   }
 
   static void playBeepHigh() {
-    if (useSound) _soundpool.play(_beepHighId);
+    if (useSound) _soundpool.play(_beepHighId!);
   }
 
   static void playBeepTick() {
-    if (PrefService.getBool('ticks')) _soundpool.play(_tickId);
+    if (Prefs.getBool('ticks')) _soundpool.play(_tickId!);
   }
 
   static void playDouble() {
     if (useSound) {
-      _soundpool.play(_beepLowId);
+      _soundpool.play(_beepLowId!);
       Future.delayed(Duration(milliseconds: 200))
-          .then((value) => _soundpool.play(_beepLowId));
+          .then((value) => _soundpool.play(_beepLowId!));
     }
   }
 }
