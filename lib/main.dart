@@ -1,21 +1,30 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:just_another_workout_timer/sound_helper.dart';
-import 'package:just_another_workout_timer/storage_helper.dart';
-import 'package:just_another_workout_timer/tts_helper.dart';
-import 'package:just_another_workout_timer/workout.dart';
-import 'package:just_another_workout_timer/workout_builder.dart';
+import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
 
 import 'generated/l10n.dart';
+import 'home_page.dart';
+import 'sound_helper.dart';
+import 'storage_helper.dart';
+import 'tts_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GestureBinding.instance!.resamplingEnabled = true;
-  Prefs.init().then((_) => Future.wait(
-          [TTSHelper.init(), SoundHelper.loadSounds(), migrateFilenames()])
-      .then((_) => runApp(JAWTApp())));
+  await Prefs.init();
+  PrefServiceShared.init(defaults: {
+    'wakelock': true,
+    'halftime': true,
+    'ticks': false,
+    'tts_next_announce': true,
+    'sound': 'tts'
+  }).then((service) => Future.wait([
+        TTSHelper.init(),
+        SoundHelper.loadSounds(),
+        migrateFilenames(),
+      ]).then((_) => runApp(PrefService(child: JAWTApp(), service: service))));
 }
 
 class JAWTApp extends StatelessWidget {
@@ -29,7 +38,7 @@ class JAWTApp extends StatelessWidget {
             cardTheme: CardTheme(elevation: 4),
             unselectedWidgetColor: Colors.lightBlue[300],
             toggleableActiveColor: Colors.lightBlue[300]),
-        home: BuilderPage(workout: Workout(), newWorkout: true), //HomePage(),
+        home: HomePage(),
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -38,18 +47,18 @@ class JAWTApp extends StatelessWidget {
         ],
         supportedLocales: S.delegate.supportedLocales,
         localeListResolutionCallback: (locales, supportedLocales) {
-          if (Prefs.getString('lang', '') != '') {
-            final locale = Locale(Prefs.getString('lang'));
+          if (PrefService.of(context).get('lang') != null) {
+            final locale = Locale(PrefService.of(context).get('lang'));
             if (supportedLocales.contains(locale)) return locale;
           }
 
           for (var locale in locales!) {
             if (supportedLocales.contains(locale)) {
-              Prefs.setString('lang', locale.languageCode);
+              PrefService.of(context).set('lang', locale.languageCode);
               return locale;
             }
           }
-          Prefs.setString('lang', 'en');
+          PrefService.of(context).set('lang', 'en');
           return Locale('en');
         },
       );

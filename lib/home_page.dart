@@ -111,14 +111,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWorkoutList() => ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < workouts.length) {
-            return _buildWorkoutItem(workouts[index]);
-          } else {
-            return Container();
-          }
-        },
+  Widget _buildWorkoutList() => ListView(
+        children: workouts.map(_buildWorkoutItem).toList(),
       );
 
   Widget _buildWorkoutItem(Workout workout) => Card(
@@ -186,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                 })
           ],
         ),
-        body: Text('Test'), //_buildWorkoutList(),
+        body: _buildWorkoutList(),
         floatingActionButton: FloatingActionButton(
           heroTag: 'mainFAB',
           onPressed: () {

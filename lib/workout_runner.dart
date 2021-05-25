@@ -299,14 +299,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
     return SizedBox(
       height: 217,
       child: ScrollablePositionedList.builder(
-        itemBuilder: (context, index) {
-          if (index < set.exercises.length) {
-            return _buildSetItem(set.exercises[index],
-                set.exercises.indexOf(_currentExercise) == index);
-          } else {
-            return null;
-          }
-        },
+        itemBuilder: (context, index) => _buildSetItem(set.exercises[index],
+            set.exercises.indexOf(_currentExercise) == index),
         itemCount: set.exercises.length,
         itemScrollController: _itemScrollController,
         itemPositionsListener: _itemPositionsListener,

@@ -2,14 +2,14 @@ import 'dart:convert';
 
 class Workout {
   Workout({
-    title,
-    sets,
-  });
+    this.title = 'Workout',
+    List<Set>? sets,
+  }) {
+    this.sets = sets ?? [Set()];
+  }
 
-  String title = 'Workout';
-  List<Set> sets = [
-    Set(),
-  ];
+  String title;
+  late List<Set> sets;
 
   int get duration {
     var duration = 0;
@@ -58,12 +58,14 @@ class Workout {
 
 class Set {
   Set({
-    repetitions,
-    exercises,
-  });
+    this.repetitions = 1,
+    List<Exercise>? exercises,
+  }) {
+    this.exercises = exercises ?? [Exercise()];
+  }
 
-  int repetitions = 1;
-  List<Exercise> exercises = [];
+  int repetitions;
+  late List<Exercise> exercises;
 
   int get duration {
     var duration = 0;
@@ -107,13 +109,10 @@ class Set {
 }
 
 class Exercise {
-  Exercise({
-    name,
-    duration,
-  });
+  Exercise({this.name = 'Exercise', this.duration = 30});
 
-  String name = 'Exercise';
-  int duration = 30;
+  String name;
+  int duration;
 
   factory Exercise.fromRawJson(String str) =>
       Exercise.fromJson(json.decode(str));

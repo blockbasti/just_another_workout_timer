@@ -1,8 +1,6 @@
 name: just_another_workout_timer
 description: Just Another Workout Timer
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 version: 1.6.0+20210311
 
 environment:
@@ -19,8 +17,8 @@ dependencies:
   url_launcher:
   wakelock:
   soundpool: 2.0.0-nullsafety.0
-  intl_utils: 2.2.0
-  scrollable_positioned_list:
+  intl_utils: 2.3.0
+  scrollable_positioned_list: 0.2.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
 
@@ -45,5 +43,6 @@ flutter_icons:
   android: "launcher_icon"
   ios: false
   image_path: "assets/ic_launcher.png"
+
 flutter_intl:
   enabled: true

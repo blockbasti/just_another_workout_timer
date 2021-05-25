@@ -35,7 +35,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _addSet() {
     setState(() {
-      _workout.sets.add(Set());
+      _workout.sets.add(Set(exercises: []));
       _dirty = true;
     });
   }
@@ -73,9 +73,11 @@ class _BuilderPageState extends State<BuilderPage> {
               ));
       return;
     }
+
     setState(() {
       _workout.cleanUp();
     });
+
     if ((_newWorkout && await workoutExists(_workout.title)) ||
         (!_newWorkout &&
             _oldTitle != _workout.title &&
@@ -130,19 +132,17 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
-  Widget _buildSetList() => ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < _workout.sets.length) {
-            return _buildSetItem(_workout.sets[index], index);
-          } else {
-            return Container();
-          }
-        },
+  Widget _buildSetList() => ListView(
+        children: _workout.sets
+            .asMap()
+            .map((index, set) => MapEntry(index, _buildSetItem(set, index)))
+            .values
+            .toList(),
       );
 
   Widget _buildSetItem(Set set, int index) => Card(
-      key: Key(set.toRawJson()),
-      child: Column(
+          //key: Key(set.toRawJson()),
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -236,16 +236,16 @@ class _BuilderPageState extends State<BuilderPage> {
         ],
       ));
 
-  Widget _buildExerciseList(Set set, int setIndex) => ListView.builder(
-      shrinkWrap: true,
-      primary: false,
-      itemBuilder: (context, index) {
-        if (index < _workout.sets[setIndex].exercises.length) {
-          return _buildExerciseItem(setIndex, index, set.exercises[index].name);
-        } else {
-          return Container();
-        }
-      });
+  Widget _buildExerciseList(Set set, int setIndex) => ListView(
+        shrinkWrap: true,
+        primary: false,
+        children: set.exercises
+            .asMap()
+            .keys
+            .map((index) =>
+                _buildExerciseItem(setIndex, index, set.exercises[index].name))
+            .toList(),
+      );
 
   Widget _buildExerciseItem(int setIndex, int exIndex, String name) => Card(
         color: Theme.of(context).backgroundColor,

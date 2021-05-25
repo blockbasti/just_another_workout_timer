@@ -15,7 +15,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _license = '';
+  late String _license;
 
   void _loadLicense() async {
     var lic = await rootBundle.loadString('LICENSE');

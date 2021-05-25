@@ -26,7 +26,7 @@ void writeWorkout(Workout workout) async {
 
 Future<bool> workoutExists(String title) async {
   final file = await _loadWorkoutFile(title);
-  return await file.exists();
+  return file.exists();
 }
 
 Future<Workout> loadWorkout(String title) async {
