@@ -1,15 +1,16 @@
 import 'dart:convert';
 
 class Workout {
-  Workout({
-    this.title = 'Workout',
-    List<Set>? sets,
-  }) {
+  static const fileVersion = 2;
+
+  Workout(
+      {this.title = 'Workout', List<Set>? sets, this.version = fileVersion}) {
     this.sets = sets ?? [Set()];
   }
 
   String title;
   late List<Set> sets;
+  int version;
 
   int get duration {
     var duration = 0;
@@ -30,11 +31,13 @@ class Workout {
 
   factory Workout.fromJson(Map<String, dynamic> json) => Workout(
         title: json["title"],
+        version: json["version"],
         sets: List<Set>.from(json["sets"].map((x) => Set.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "title": title,
+        "version": version,
         "sets": List<dynamic>.from(sets.map((x) => x.toJson())),
       };
 }
