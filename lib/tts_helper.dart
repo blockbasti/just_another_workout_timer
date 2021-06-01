@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:prefs/prefs.dart';
 
-// ignore: avoid_classes_with_only_static_members
 /// handles everything related to TTS
 class TTSHelper {
   static FlutterTts flutterTts = FlutterTts();
@@ -13,14 +12,22 @@ class TTSHelper {
   /// enable/disable TTS output
   static bool useTTS = true;
 
+  static bool isTalking = false;
+
   static Future<void> init() async {
     flutterTts = FlutterTts();
 
     useTTS = Prefs.getString('sound') == 'tts';
 
     var ttsLang = Prefs.getString('tts_lang', 'en-US');
-    if (ttsLang.endsWith('*')) ttsLang = ttsLang.replaceAll('*', '');
     await Prefs.setString('tts_lang', ttsLang);
+
+    flutterTts.setStartHandler(() {
+      isTalking = true;
+    });
+    flutterTts.setCompletionHandler(() {
+      isTalking = false;
+    });
 
     try {
       await flutterTts

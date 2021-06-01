@@ -184,7 +184,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
             setMap[(_currentTime + exercise.duration / 2).round()] = () {
               if (Prefs.getString('sound') == 'beep') {
                 SoundHelper.playDouble();
-              } else if (Prefs.getString('sound') == 'tts') {
+              } else if (!TTSHelper.isTalking &&
+                  Prefs.getString('sound') == 'tts') {
                 TTSHelper.speak(S.of(context).halfwayDone);
               }
             };
@@ -467,9 +468,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
             FloatingActionButton(
               heroTag: 'FAB1',
               mini: true,
-              onPressed: () {
-                skipBackward();
-              },
+              onPressed: skipBackward,
               child: Icon(Icons.skip_previous),
             ),
             FloatingActionButton(
