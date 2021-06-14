@@ -81,13 +81,13 @@ class _HomePageState extends State<HomePage> {
   /// aks user if they want to delete a workout
   _showDeleteDialog(BuildContext context, Workout workout) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text(S.of(context).cancel),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
-    Widget continueButton = FlatButton(
+    Widget continueButton = TextButton(
       child: Text(S.of(context).delete),
       onPressed: () {
         deleteWorkout(workout.title);
@@ -155,7 +155,12 @@ class _HomePageState extends State<HomePage> {
               tooltip: S.of(context).deleteWorkout,
               onPressed: () {
                 _showDeleteDialog(context, workout);
-              })
+              }),
+          IconButton(
+              onPressed: () {
+                exportWorkout(workout.title);
+              },
+              icon: Icon(Icons.save_alt))
         ],
       ));
 

@@ -129,3 +129,22 @@ class Exercise {
         "duration": duration,
       };
 }
+
+class Backup {
+  List<Workout> workouts;
+
+  Backup({required this.workouts});
+
+  factory Backup.fromRawJson(String str) => Backup.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Backup.fromJson(Map<String, dynamic> json) => Backup(
+        workouts: List<Workout>.from(
+            json["workouts"].map((x) => Workout.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "workouts": List<dynamic>.from(workouts.map((x) => x.toJson())),
+      };
+}
