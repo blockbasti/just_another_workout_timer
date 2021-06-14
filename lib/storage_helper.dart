@@ -64,6 +64,7 @@ Future<void> writeWorkout(Workout workout, {bool fixDuplicates = false}) async {
   }
 
   final file = await _loadWorkoutFile(workout.title);
+
   file.writeAsString(workout.toRawJson(), flush: true);
 }
 
