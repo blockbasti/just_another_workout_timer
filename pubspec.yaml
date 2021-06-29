@@ -18,7 +18,7 @@ dependencies:
   url_launcher:
   wakelock:
   soundpool:
-  intl_utils: 2.3.0
+  intl_utils:
   scrollable_positioned_list: 0.2.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
