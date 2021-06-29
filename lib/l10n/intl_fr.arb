@@ -29,6 +29,7 @@
   "backup": "Backup",
   "export": "Export all workouts",
   "import": "Import a backup",
+  "importedCount": "Imported {count} workouts",
   "soundOutput": "Retour audio",
   "noSound": "Aucun effet sonore",
   "noSoundDesc": "Couper tous les sons",

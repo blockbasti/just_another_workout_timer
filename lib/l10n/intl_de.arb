@@ -28,6 +28,7 @@
   "backup": "Sicherung",
   "export": "Alle Workouts sichern",
   "import": "Sicherung laden",
+  "importedCount": "{count} Workouts importiert",
   "soundOutput": "Tonausgabe",
   "noSound": "kein Ton",
   "noSoundDesc": "Ton stummschalten",

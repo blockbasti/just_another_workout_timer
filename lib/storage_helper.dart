@@ -36,7 +36,7 @@ Future<void> exportAllWorkouts() async {
   await FlutterFileDialog.saveFile(params: params);
 }
 
-Future<void> importBackup() async {
+Future<int> importBackup() async {
   final params = OpenFileDialogParams(
       dialogType: OpenFileDialogType.document,
       fileExtensionsFilter: ['json'],
@@ -46,6 +46,9 @@ Future<void> importBackup() async {
     var backup = await File(filePath).readAsString();
     var workouts = Backup.fromRawJson(backup).workouts;
     workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
+    return Future.value(workouts.length);
+  } else {
+    return Future.value(0);
   }
 }
 
