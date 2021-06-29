@@ -156,7 +156,12 @@ class _HomePageState extends State<HomePage> {
               tooltip: S.of(context).deleteWorkout,
               onPressed: () {
                 _showDeleteDialog(context, workout);
-              })
+              }),
+          IconButton(
+              onPressed: () {
+                exportWorkout(workout.title);
+              },
+              icon: Icon(Icons.save_alt))
         ],
       ));
 

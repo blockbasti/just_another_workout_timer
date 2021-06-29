@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:just_another_workout_timer/storage_helper.dart';
 import 'package:pref/pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -60,6 +62,20 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text(S.of(context).settingHalfway), pref: 'halftime'),
           PrefSwitch(
               title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
+          PrefTitle(title: Text(S.of(context).backup)),
+          PrefLabel(
+            title: Text(S.of(context).export),
+            onTap: exportAllWorkouts,
+          ),
+          PrefLabel(
+            title: Text(S.of(context).import),
+            onTap: () => {
+              importBackup().then((value) => Fluttertoast.showToast(
+                  msg: S.of(context).importedCount(value),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER))
+            },
+          ),
           PrefTitle(title: Text(S.of(context).soundOutput)),
           PrefRadio(
             title: Text(S.of(context).noSound),
