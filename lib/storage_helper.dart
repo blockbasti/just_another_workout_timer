@@ -45,11 +45,21 @@ Future<void> importBackup() async {
   if (filePath != null && filePath.isNotEmpty) {
     var backup = await File(filePath).readAsString();
     var workouts = Backup.fromRawJson(backup).workouts;
-    workouts.forEach(writeWorkout);
+    workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
   }
 }
 
-void writeWorkout(Workout workout) async {
+Future<void> writeWorkout(Workout workout, {bool fixDuplicates = false}) async {
+  if (fixDuplicates) {
+    var counter = 2;
+    var newTitle = '${workout.title}';
+
+    while (await workoutExists(newTitle)) {
+      newTitle = '${workout.title}($counter)';
+    }
+    workout.title = newTitle;
+  }
+
   final file = await _loadWorkoutFile(workout.title);
   file.writeAsString(workout.toRawJson(), flush: true);
 }
