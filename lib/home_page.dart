@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import 'generated/l10n.dart';
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
     switch (_sortMode) {
       case 'alpha':
         {
-          sortedWorkouts.sort((w1, w2) => w1.title.compareTo(w2.title));
+          sortedWorkouts.sort((w1, w2) => compareNatural(w1.title, w2.title));
         }
         break;
 
@@ -81,13 +82,13 @@ class _HomePageState extends State<HomePage> {
   /// aks user if they want to delete a workout
   _showDeleteDialog(BuildContext context, Workout workout) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text(S.of(context).cancel),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
-    Widget continueButton = FlatButton(
+    Widget continueButton = TextButton(
       child: Text(S.of(context).delete),
       onPressed: () {
         deleteWorkout(workout.title);
