@@ -5,6 +5,14 @@ upload:
   files:
     - file: lib/l10n/intl_en.arb
       locale_code: en
+  params:
+    reviewed: true
+    tag_added:
+      - added
+    tag_removed:
+      - removed
+    tag_updated:
+      - updated
 download:
   files:
     - file: lib/l10n/intl_en.arb
@@ -17,3 +25,5 @@ download:
       locale_code: it
     - file: lib/l10n/intl_ru.arb
       locale_code: ru
+  params:
+    export_empty_as: main
