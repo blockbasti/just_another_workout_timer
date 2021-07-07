@@ -29,93 +29,102 @@ class NumberStepper extends StatefulWidget {
 class _CustomStepperState extends State<NumberStepper> {
   @override
   Widget build(BuildContext context) => widget.largeSteps
-      ? Row(
+      ? Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              width: 24,
-              child: FloatingActionButton(
-                heroTag: null,
-                child: Text(
-                  '-5',
-                  style: TextStyle(color: Colors.white),
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: ElevatedButton(
+                    child: Text(
+                      '+1',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        widget.value = widget.value == widget.upperLimit
+                            ? widget.upperLimit
+                            : widget.value += 1;
+                      });
+                      widget.valueChanged(widget.value);
+                    },
+                  ),
                 ),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onPressed: () {
-                  setState(() {
-                    widget.value = widget.value == widget.lowerLimit
-                        ? widget.lowerLimit
-                        : widget.value -= 5;
-                  });
-                  widget.valueChanged(widget.value);
-                },
-              ),
-            ),
-            Container(
-              width: 24,
-              child: FloatingActionButton(
-                child: Text('-1', style: TextStyle(color: Colors.white)),
-                heroTag: null,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onPressed: () {
-                  setState(() {
-                    widget.value = widget.value == widget.lowerLimit
-                        ? widget.lowerLimit
-                        : widget.value -= 1;
-                  });
-                  widget.valueChanged(widget.value);
-                },
-              ),
-            ),
-            Container(
-              //width: widget.iconSize*2,
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Text(
-                '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
-                style: TextStyle(
-                    fontSize: widget.iconSize * 0.9,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Container(
-              width: 24,
-              child: FloatingActionButton(
-                heroTag: null,
-                child: Text(
-                  '+1',
-                  style: TextStyle(color: Colors.white),
+                Container(
+                  width: 48,
+                  margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: ElevatedButton(
+                    child: Text('+5',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      setState(() {
+                        widget.value = widget.value == widget.upperLimit
+                            ? widget.upperLimit
+                            : widget.value += 5;
+                      });
+                      widget.valueChanged(widget.value);
+                    },
+                  ),
                 ),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onPressed: () {
-                  setState(() {
-                    widget.value = widget.value == widget.upperLimit
-                        ? widget.upperLimit
-                        : widget.value += 1;
-                  });
-                  widget.valueChanged(widget.value);
-                },
-              ),
+              ],
             ),
-            Container(
-              width: 24,
-              child: FloatingActionButton(
-                heroTag: null,
-                child: Text('+5', style: TextStyle(color: Colors.white)),
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                onPressed: () {
-                  setState(() {
-                    widget.value = widget.value == widget.upperLimit
-                        ? widget.upperLimit
-                        : widget.value += 5;
-                  });
-                  widget.valueChanged(widget.value);
-                },
-              ),
+            Row(
+              children: [
+                Container(
+                  //width: widget.iconSize*2,
+                  padding: EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
+                    style: TextStyle(
+                        fontSize: widget.iconSize, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Container(
+                  width: 48,
+                  margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: ElevatedButton(
+                    child: Text('-1',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                    onPressed: () {
+                      setState(() {
+                        widget.value = widget.value == widget.lowerLimit
+                            ? widget.lowerLimit
+                            : widget.value -= 1;
+                      });
+                      widget.valueChanged(widget.value);
+                    },
+                  ),
+                ),
+                Container(
+                  width: 48,
+                  margin: EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: ElevatedButton(
+                    child: Text(
+                      '-5',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        widget.value = widget.value == widget.lowerLimit
+                            ? widget.lowerLimit
+                            : widget.value -= 5;
+                      });
+                      widget.valueChanged(widget.value);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         )
@@ -138,7 +147,7 @@ class _CustomStepperState extends State<NumberStepper> {
               child: Text(
                 '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
                 style: TextStyle(
-                    fontSize: widget.iconSize * 0.9,
+                    fontSize: widget.iconSize * 1.2,
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
