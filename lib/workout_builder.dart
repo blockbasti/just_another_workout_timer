@@ -132,7 +132,16 @@ class _BuilderPageState extends State<BuilderPage> {
     });
   }
 
-  Widget _buildSetList() => ListView(
+  Widget _buildSetList() => ReorderableListView(
+        onReorder: (oldIndex, newIndex) {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          setState(() {
+            var set = _workout.sets.removeAt(oldIndex);
+            _workout.sets.insert(newIndex, set);
+          });
+        },
         children: _workout.sets
             .asMap()
             .map((index, set) => MapEntry(index, _buildSetItem(set, index)))
@@ -140,105 +149,98 @@ class _BuilderPageState extends State<BuilderPage> {
             .toList(),
       );
 
-  Widget _buildSetItem(Set set, int index) => Card(
-          //key: Key(set.toRawJson()),
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              IconButton(
-                  icon: Icon(Icons.delete),
-                  tooltip: S.of(context).deleteSet,
-                  onPressed: () {
-                    _deleteSet(index);
-                  }),
-              Expanded(
-                child: ListTile(
-                  title: Text(
-                    S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
-                  ),
-                  subtitle: Text('${Utils.formatSeconds(set.duration)}'),
-                ),
-              ),
-              Text(S.of(context).repetitions),
-              NumberStepper(
-                  lowerLimit: 1,
-                  upperLimit: 99,
-                  largeSteps: false,
-                  formatNumber: false,
-                  value: set.repetitions,
-                  valueChanged: (repetitions) {
-                    setState(() {
-                      set.repetitions = repetitions;
-                      _dirty = true;
-                    });
-                  })
-            ],
-          ),
-          _buildExerciseList(set, index),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceBetween,
+  Widget _buildSetItem(Set set, int index) =>
+      ReorderableDelayedDragStartListener(
+          index: index,
+          key: Key(set.toRawJson()),
+          child: Card(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.fitness_center),
-                    tooltip: S.of(context).addExercise,
-                    onPressed: () {
-                      _addExercise(index, false);
-                    },
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child: ReorderableDragStartListener(
+                        child: Icon(Icons.drag_handle), index: index),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.pause_circle_filled),
-                    tooltip: S.of(context).addRest,
-                    onPressed: () {
-                      _addExercise(index, true);
-                    },
+                  Expanded(
+                    child: ListTile(
+                      title: Text(
+                        S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
+                      ),
+                      subtitle: Text('${Utils.formatSeconds(set.duration)}'),
+                    ),
                   ),
+                  Text(S.of(context).repetitions),
+                  NumberStepper(
+                      lowerLimit: 1,
+                      upperLimit: 99,
+                      largeSteps: false,
+                      formatNumber: false,
+                      value: set.repetitions,
+                      valueChanged: (repetitions) {
+                        setState(() {
+                          set.repetitions = repetitions;
+                          _dirty = true;
+                        });
+                      })
                 ],
               ),
-              Row(
+              _buildExerciseList(set, index),
+              ButtonBar(
+                alignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.copy),
-                    tooltip: S.of(context).duplicate,
-                    onPressed: () => _duplicateSet(index),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.fitness_center),
+                        tooltip: S.of(context).addExercise,
+                        onPressed: () {
+                          _addExercise(index, false);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.pause_circle_filled),
+                        tooltip: S.of(context).addRest,
+                        onPressed: () {
+                          _addExercise(index, true);
+                        },
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_upward),
-                    tooltip: S.of(context).moveSetUp,
-                    onPressed: index - 1 >= 0
-                        ? () {
-                            setState(() {
-                              _workout.moveSet(index, moveUp: true);
-                              _dirty = true;
-                            });
-                          }
-                        : null,
+                  Row(
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.delete),
+                          tooltip: S.of(context).deleteSet,
+                          onPressed: () {
+                            _deleteSet(index);
+                          }),
+                      IconButton(
+                        icon: Icon(Icons.copy),
+                        tooltip: S.of(context).duplicate,
+                        onPressed: () => _duplicateSet(index),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_downward),
-                    tooltip: S.of(context).moveSetDown,
-                    onPressed: index + 1 < _workout.sets.length
-                        ? () {
-                            setState(() {
-                              _workout.moveSet(index, moveUp: false);
-                              _dirty = true;
-                            });
-                          }
-                        : null,
-                  )
                 ],
-              ),
+              )
             ],
-          )
-        ],
-      ));
+          )));
 
-  Widget _buildExerciseList(Set set, int setIndex) => ListView(
+  Widget _buildExerciseList(Set set, int setIndex) => ReorderableListView(
         shrinkWrap: true,
         primary: false,
+        onReorder: (oldIndex, newIndex) {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          setState(() {
+            var ex = _workout.sets[setIndex].exercises.removeAt(oldIndex);
+            _workout.sets[setIndex].exercises.insert(newIndex, ex);
+          });
+        },
         children: set.exercises
             .asMap()
             .keys
@@ -247,95 +249,81 @@ class _BuilderPageState extends State<BuilderPage> {
             .toList(),
       );
 
-  Widget _buildExerciseItem(int setIndex, int exIndex, String name) => Card(
-        color: Theme.of(context).backgroundColor,
-        child: Row(
-          key: Key(_workout.sets[setIndex].exercises[exIndex].toRawJson()),
-          children: [
-            IconButton(
-              icon: Icon(Icons.delete),
-              tooltip: S.of(context).deleteExercise,
-              onPressed: () {
-                _deleteExercise(setIndex, exIndex);
-              },
-            ),
-            Expanded(
-                flex: 1,
-                child: TextFormField(
-                  initialValue: name,
-                  maxLength: 30,
-                  inputFormatters: [LengthLimitingTextInputFormatter(30)],
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    labelText: S.of(context).exercise,
-                  ),
-                  onChanged: (text) {
-                    _workout.sets[setIndex].exercises[exIndex].name = text;
-                    _dirty = true;
-                  },
-                )),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+  Widget _buildExerciseItem(int setIndex, int exIndex, String name) =>
+      ReorderableDelayedDragStartListener(
+          index: exIndex,
+          key: Key('$setIndex-$exIndex-$name'),
+          child: Card(
+            color: Theme.of(context).backgroundColor,
+            child: Row(
+              key: Key(_workout.sets[setIndex].exercises[exIndex].toRawJson()),
               children: [
-                NumberStepper(
-                  lowerLimit: 1,
-                  upperLimit: 999,
-                  largeSteps: true,
-                  formatNumber: true,
-                  value: _workout.sets[setIndex].exercises[exIndex].duration,
-                  valueChanged: (duration) {
-                    setState(() {
-                      _workout.sets[setIndex].exercises[exIndex].duration =
-                          duration;
-                      _dirty = true;
-                      _lastDuration = duration;
-                    });
-                  },
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  child: ReorderableDragStartListener(
+                      child: Icon(Icons.drag_handle), index: exIndex),
                 ),
-                Row(
+                Expanded(
+                    child: Column(
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_upward),
-                      padding: EdgeInsets.zero,
-                      tooltip: S.of(context).moveExerciseUp,
-                      onPressed: exIndex - 1 >= 0
-                          ? () {
-                              setState(() {
-                                _workout.sets[setIndex]
-                                    .moveExercise(exIndex, moveUp: true);
-                                _dirty = true;
-                              });
-                            }
-                          : null,
+                    TextFormField(
+                      initialValue: name,
+                      maxLength: 30,
+                      inputFormatters: [LengthLimitingTextInputFormatter(30)],
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        labelText: S.of(context).exercise,
+                      ),
+                      onChanged: (text) {
+                        _workout.sets[setIndex].exercises[exIndex].name = text;
+                        _dirty = true;
+                      },
                     ),
-                    IconButton(
-                      icon: Icon(Icons.arrow_downward),
-                      padding: EdgeInsets.zero,
-                      tooltip: S.of(context).moveExerciseDown,
-                      onPressed:
-                          exIndex + 1 < _workout.sets[setIndex].exercises.length
-                              ? () {
-                                  setState(() {
-                                    _workout.sets[setIndex]
-                                        .moveExercise(exIndex, moveUp: false);
-                                    _dirty = true;
-                                  });
-                                }
-                              : null,
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.copy),
-                      tooltip: S.of(context).duplicate,
-                      onPressed: () => _duplicateExercise(setIndex, exIndex),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          tooltip: S.of(context).deleteExercise,
+                          onPressed: () {
+                            _deleteExercise(setIndex, exIndex);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.copy),
+                          tooltip: S.of(context).duplicate,
+                          onPressed: () =>
+                              _duplicateExercise(setIndex, exIndex),
+                        ),
+                      ],
+                    )
+                  ],
+                )),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    NumberStepper(
+                      lowerLimit: 1,
+                      upperLimit: 999,
+                      largeSteps: true,
+                      formatNumber: true,
+                      value:
+                          _workout.sets[setIndex].exercises[exIndex].duration,
+                      valueChanged: (duration) {
+                        setState(() {
+                          _workout.sets[setIndex].exercises[exIndex].duration =
+                              duration;
+                          _dirty = true;
+                          _lastDuration = duration;
+                        });
+                      },
                     ),
                   ],
-                )
+                ),
               ],
             ),
-          ],
-        ),
-      );
+          ));
 
   @override
   Widget build(BuildContext context) => WillPopScope(

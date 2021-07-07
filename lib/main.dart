@@ -32,12 +32,13 @@ class JAWTApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         title: 'Just Another Workout Timer',
         theme: ThemeData(
-            brightness: Brightness.dark,
-            primaryColor: Colors.blue[800],
-            accentColor: Colors.lightBlue[300],
-            cardTheme: CardTheme(elevation: 4),
-            unselectedWidgetColor: Colors.lightBlue[300],
-            toggleableActiveColor: Colors.lightBlue[300]),
+          brightness: Brightness.dark,
+          primaryColor: Colors.blue[800],
+          accentColor: Colors.lightBlue[300],
+          cardTheme: CardTheme(elevation: 4),
+          unselectedWidgetColor: Colors.lightBlue[300],
+          toggleableActiveColor: Colors.lightBlue[300],
+        ),
         home: HomePage(),
         localizationsDelegates: [
           S.delegate,
