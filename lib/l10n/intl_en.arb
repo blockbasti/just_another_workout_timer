@@ -143,5 +143,7 @@
   "yes": "Yes",
   "@yes": {},
   "yesExit": "Yes, exit",
-  "@yesExit": {}
+  "@yesExit": {},
+  "expanded_setlist": "Expanded set list",
+  "expanded_setlist_info": "Always show full set"
 }

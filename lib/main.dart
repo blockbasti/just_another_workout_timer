@@ -19,7 +19,8 @@ void main() async {
     'halftime': true,
     'ticks': false,
     'tts_next_announce': true,
-    'sound': 'tts'
+    'sound': 'tts',
+    'expanded_setlist': false
   }).then((service) => Future.wait([
         TTSHelper.init(),
         SoundHelper.loadSounds(),
