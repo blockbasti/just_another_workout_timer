@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:prefs/prefs.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
@@ -297,16 +298,25 @@ class _WorkoutPageState extends State<WorkoutPage> {
   Widget _buildCurrentSetList(Set? set) {
     if (set == null) return Container();
 
-    return SizedBox(
-      height: 217,
-      child: ScrollablePositionedList.builder(
-        itemBuilder: (context, index) => _buildSetItem(set.exercises[index],
-            set.exercises.indexOf(_currentExercise) == index),
-        itemCount: set.exercises.length,
-        itemScrollController: _itemScrollController,
-        itemPositionsListener: _itemPositionsListener,
-      ),
+    var list = ScrollablePositionedList.builder(
+      itemBuilder: (context, index) => _buildSetItem(set.exercises[index],
+          set.exercises.indexOf(_currentExercise) == index),
+      itemCount: set.exercises.length,
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
     );
+
+    if (!Prefs.getBool('expanded_setlist', false)) {
+      return SizedBox(
+        height: 217,
+        child: list,
+      );
+    } else {
+      return SizedBox(
+        height: 72 * set.exercises.length + 1,
+        child: list,
+      );
+    }
   }
 
   Widget _buildNextSetList(Set? set) {
