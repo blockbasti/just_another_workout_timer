@@ -29,6 +29,7 @@ dev_dependencies:
   #integration_test:
   flutter_launcher_icons:
   flutter_oss_licenses:
+  flutter_native_splash:
   effective_dart:
 
 flutter:
@@ -47,3 +48,12 @@ flutter_icons:
 
 flutter_intl:
   enabled: true
+
+flutter_native_splash:
+  color: "#303030"
+  image: "assets/ic_launcher.png"
+  android_gravity: center
+  android: true
+  ios: false
+  web: false
+  android12: true
