@@ -424,6 +424,13 @@ class _WorkoutPageState extends State<WorkoutPage> {
                           TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
+                    _nextExercise != null
+                        ? Text(
+                            '${S.of(context).nextExercise(_nextExercise?.name ?? '')}',
+                            style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
+                          )
+                        : Container(),
                   ],
                 ),
               ),
