@@ -19,18 +19,22 @@ dependencies:
   wakelock:
   soundpool:
   intl_utils:
-  scrollable_positioned_list: 0.2.0-nullsafety.0
+  json_annotation:
+  scrollable_positioned_list: ^0.2.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  #integration_test:
   flutter_launcher_icons:
   flutter_oss_licenses:
   flutter_native_splash:
   effective_dart:
+  json_serializable: ^5.0.0
+  build_runner:
+
+dependency_overrides:
+  meta: ^1.7.0
+  analyzer: ^2.0.0
 
 flutter:
   uses-material-design: true
@@ -48,6 +52,8 @@ flutter_icons:
 
 flutter_intl:
   enabled: true
+  localizely:
+    project_id: 6e3724ce-b0c2-459a-a840-311eb82328da
 
 flutter_native_splash:
   color: "#303030"

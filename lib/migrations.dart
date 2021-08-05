@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'storage_helper.dart';
 import 'utils.dart';
+import 'workout.dart';
 
 class Migrations {
-  static final Map<int?, Function> _migrations = {null: _migrateV0toV1};
+  static late List<Workout> _workouts;
 
   static Future<void> _migrateFilenames() async {
     final path = await localPath;
@@ -17,9 +18,30 @@ class Migrations {
     });
   }
 
-  static Future<void> _migrateV0toV1() async {}
+  static Future<void> _migrate(Workout workout, int index) async {
+    while (workout.version < Workout.fileVersion) {
+      switch (workout.version) {
+        case 1:
+          _migrateV1toV2(workout, index);
+          break;
+      }
+    }
+  }
+
+  static Future<void> _migrateV1toV2(Workout workout, int index) async {
+    workout.version = 2;
+    if (workout.position == -1) {
+      workout.position = index;
+    }
+    writeWorkout(workout);
+  }
 
   static Future<void> runMigrations() async {
     await _migrateFilenames();
+    _workouts = await getAllWorkouts();
+
+    for (var workout in _workouts.asMap().entries) {
+      await _migrate(workout.value, workout.key);
+    }
   }
 }

@@ -75,10 +75,6 @@ jobs:
           flutter pub get
           sh ./scripts/generate_code.sh
 
-      - name: Run Tests
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        run: flutter test
-
       - name: Build APKs
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         run: flutter build apk
