@@ -6,8 +6,8 @@ import 'package:prefs/prefs.dart';
 
 import 'generated/l10n.dart';
 import 'home_page.dart';
+import 'migrations.dart';
 import 'sound_helper.dart';
-import 'storage_helper.dart';
 import 'tts_helper.dart';
 
 void main() async {
@@ -24,7 +24,7 @@ void main() async {
   }).then((service) => Future.wait([
         TTSHelper.init(),
         SoundHelper.loadSounds(),
-        migrateFilenames(),
+        Migrations.runMigrations()
       ]).then((_) => runApp(PrefService(child: JAWTApp(), service: service))));
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -152,7 +154,7 @@ class _BuilderPageState extends State<BuilderPage> {
   Widget _buildSetItem(Set set, int index) =>
       ReorderableDelayedDragStartListener(
           index: index,
-          key: Key(set.toRawJson()),
+          key: Key(jsonEncode(set.toJson())),
           child: Card(
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +258,8 @@ class _BuilderPageState extends State<BuilderPage> {
           child: Card(
             color: Theme.of(context).backgroundColor,
             child: Row(
-              key: Key(_workout.sets[setIndex].exercises[exIndex].toRawJson()),
+              key: Key(jsonEncode(
+                  _workout.sets[setIndex].exercises[exIndex].toJson())),
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6),

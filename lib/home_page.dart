@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import 'generated/l10n.dart';
@@ -19,8 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Workout> workouts = [];
-  IconData _sortIcon = Icons.sort_by_alpha;
-  String _sortMode = 'alpha';
 
   @override
   void initState() {
@@ -32,51 +29,17 @@ class _HomePageState extends State<HomePage> {
 
   /// load all workouts from disk and populate list
   _loadWorkouts() async {
-    var data = await getAllWorkouts();
-
-    setState(() {
-      workouts = _sortWorkouts(data);
-    });
+    getAllWorkouts().then((value) => setState(() {
+          workouts = value;
+          _saveSorting();
+        }));
   }
 
-  _updateSortMode() {
-    switch (_sortMode) {
-      case 'alpha':
-        {
-          _sortIcon = Icons.sort;
-          _sortMode = 'duration';
-        }
-        break;
-
-      case 'duration':
-        {
-          _sortIcon = Icons.sort_by_alpha;
-          _sortMode = 'alpha';
-        }
-        break;
-
-      default:
-        _sortIcon = Icons.sort_by_alpha;
+  _saveSorting() {
+    for (var workout in workouts.asMap().entries) {
+      workout.value.position = workout.key;
+      writeWorkout(workout.value);
     }
-    _loadWorkouts();
-  }
-
-  _sortWorkouts(List<Workout> workouts) {
-    var sortedWorkouts = List<Workout>.from(workouts);
-    switch (_sortMode) {
-      case 'alpha':
-        {
-          sortedWorkouts.sort((w1, w2) => compareNatural(w1.title, w2.title));
-        }
-        break;
-
-      case 'duration':
-        {
-          sortedWorkouts.sort((w1, w2) => w2.duration.compareTo(w1.duration));
-        }
-        break;
-    }
-    return sortedWorkouts;
   }
 
   /// aks user if they want to delete a workout
@@ -112,13 +75,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWorkoutList() => ListView(
+  Widget _buildWorkoutList() => ReorderableListView(
+        onReorder: (oldIndex, newIndex) {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          setState(() {
+            var workout = workouts.removeAt(oldIndex);
+            workouts.insert(newIndex, workout);
+          });
+          _saveSorting();
+        },
         children: workouts.map(_buildWorkoutItem).toList(),
       );
 
   Widget _buildWorkoutItem(Workout workout) => Card(
-          child: Row(
+      key: Key(workout.toJson().toString()),
+      child: Row(
         children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 4),
+            child: ReorderableDragStartListener(
+                child: Icon(Icons.drag_handle), index: workout.position),
+          ),
           Expanded(
             child: ListTile(
               title: Text(workout.title),
@@ -170,11 +149,6 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text(S.of(context).workouts),
           actions: [
-            IconButton(
-                icon: Icon(_sortIcon),
-                onPressed: () {
-                  setState(_updateSortMode);
-                }),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () {

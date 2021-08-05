@@ -1,15 +1,29 @@
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'workout.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Workout {
-  Workout({
-    this.title = 'Workout',
-    List<Set>? sets,
-  }) {
+  static const fileVersion = 2;
+
+  Workout(
+      {this.title = 'Workout',
+      List<Set>? sets,
+      this.version = fileVersion,
+      this.position = -1}) {
     this.sets = sets ?? [Set()];
   }
 
+  @JsonKey(required: true)
   String title;
+  @JsonKey(required: true)
   late List<Set> sets;
+
+  @JsonKey(defaultValue: 1)
+  int version;
+
+  @JsonKey(defaultValue: -1)
+  int position;
 
   int get duration {
     var duration = 0;
@@ -24,21 +38,12 @@ class Workout {
     sets.removeWhere((set) => set.exercises.isEmpty);
   }
 
-  factory Workout.fromRawJson(String str) => Workout.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Workout.fromJson(Map<String, dynamic> json) => Workout(
-        title: json["title"],
-        sets: List<Set>.from(json["sets"].map((x) => Set.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "title": title,
-        "sets": List<dynamic>.from(sets.map((x) => x.toJson())),
-      };
+  factory Workout.fromJson(Map<String, dynamic> json) =>
+      _$WorkoutFromJson(json);
+  Map<String, dynamic> toJson() => _$WorkoutToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
 class Set {
   Set({
     this.repetitions = 1,
@@ -47,7 +52,10 @@ class Set {
     this.exercises = exercises ?? [Exercise()];
   }
 
+  @JsonKey(required: true)
   int repetitions;
+
+  @JsonKey(required: true)
   late List<Exercise> exercises;
 
   int get duration {
@@ -58,59 +66,32 @@ class Set {
     return duration * repetitions;
   }
 
-  factory Set.fromRawJson(String str) => Set.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Set.fromJson(Map<String, dynamic> json) => Set(
-        repetitions: json["repetitions"],
-        exercises: List<Exercise>.from(
-            json["exercises"].map((x) => Exercise.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "repetitions": repetitions,
-        "exercises": List<dynamic>.from(exercises.map((x) => x.toJson())),
-      };
+  factory Set.fromJson(Map<String, dynamic> json) => _$SetFromJson(json);
+  Map<String, dynamic> toJson() => _$SetToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
 class Exercise {
   Exercise({this.name = 'Exercise', this.duration = 30});
 
+  @JsonKey(required: true)
   String name;
+
+  @JsonKey(required: true, defaultValue: 30)
   int duration;
 
-  factory Exercise.fromRawJson(String str) =>
-      Exercise.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Exercise.fromJson(Map<String, dynamic> json) => Exercise(
-        name: json["name"],
-        duration: json["duration"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "duration": duration,
-      };
+  factory Exercise.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseFromJson(json);
+  Map<String, dynamic> toJson() => _$ExerciseToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
 class Backup {
+  @JsonKey(required: true)
   List<Workout> workouts;
 
   Backup({required this.workouts});
 
-  factory Backup.fromRawJson(String str) => Backup.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Backup.fromJson(Map<String, dynamic> json) => Backup(
-        workouts: List<Workout>.from(
-            json["workouts"].map((x) => Workout.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "workouts": List<dynamic>.from(workouts.map((x) => x.toJson())),
-      };
+  factory Backup.fromJson(Map<String, dynamic> json) => _$BackupFromJson(json);
+  Map<String, dynamic> toJson() => _$BackupToJson(this);
 }
