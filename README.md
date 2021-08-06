@@ -71,9 +71,7 @@
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" alt="Settings Screen" width="250">
 
 ### How To Backup & Restore Your Workouts
-*Just Another Workout Timer* saves your workouts to local storage at `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`. Just copy this folder to your desired backup location.<br>
-To restore a backup, simply paste the contents of the backed up workout folder back into `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`.<br>
-The workouts are now available in the app again.
+You can export individual workouts or create an export of all your workouts and import them later. You can also transfer them to another device.
 
 <!-- ROADMAP -->
 ## Roadmap
