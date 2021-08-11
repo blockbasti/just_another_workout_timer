@@ -34,9 +34,7 @@ class TTSHelper {
           .setLanguage(ttsLang)
           .timeout(Duration(seconds: 1))
           .then((_) async {
-        await flutterTts.setSpeechRate(1.0);
         await flutterTts.setVolume(1.0);
-        await flutterTts.setPitch(1.0);
       });
     } on TimeoutException {
       available = false;
