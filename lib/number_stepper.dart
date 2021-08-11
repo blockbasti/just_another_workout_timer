@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 
+import 'generated/l10n.dart';
 import 'utils.dart';
 
 /// display a value with + and - buttons
@@ -27,6 +29,67 @@ class NumberStepper extends StatefulWidget {
 }
 
 class _CustomStepperState extends State<NumberStepper> {
+  bool _isEditingText = false;
+  late TextEditingController _editingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _editingController = TextEditingController(text: widget.value.toString());
+  }
+
+  @override
+  void dispose() {
+    _editingController.dispose();
+    super.dispose();
+  }
+
+  Widget _editTitleTextField() {
+    if (_isEditingText) {
+      return Center(
+        child: SizedBox(
+            width: 112,
+            child: TextField(
+                maxLines: 1,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                //maxLength: 4,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                onSubmitted: (newValue) {
+                  setState(() {
+                    var _oldVal = widget.value;
+                    try {
+                      widget.value = int.parse(newValue);
+                    } on FormatException {
+                      widget.value = _oldVal;
+                    } finally {
+                      widget.valueChanged(widget.value);
+                      _isEditingText = false;
+                    }
+                  });
+                },
+                autofocus: true,
+                controller: _editingController,
+                decoration:
+                    InputDecoration(suffixText: S.of(context).seconds))),
+      );
+    }
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _isEditingText = true;
+          });
+        },
+        child: Text(
+          '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
+          style:
+              TextStyle(fontSize: widget.iconSize, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) => widget.largeSteps
       ? Column(
@@ -77,12 +140,7 @@ class _CustomStepperState extends State<NumberStepper> {
                 Container(
                   //width: widget.iconSize*2,
                   padding: EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
-                    style: TextStyle(
-                        fontSize: widget.iconSize, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
+                  child: _editTitleTextField(),
                 ),
               ],
             ),
