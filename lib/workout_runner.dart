@@ -217,6 +217,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 curve: Curves.easeInOutCubic,
               );
               _remainingSeconds = exercise.duration;
+              if (_currentSet == set) {
+                SoundHelper.playBeepHigh();
+              } else {
+                SoundHelper.playTriple();
+              }
               _currentSet = set;
               _prevExercise = _locPrevExercise;
               _nextExercise = _locNextExercise;
@@ -224,7 +229,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
               _nextSet = _locNextSet;
               _currentReps = rep;
               TTSHelper.speak(exercise.name);
-              SoundHelper.playBeepHigh();
             });
           };
           _currentTime += exercise.duration;

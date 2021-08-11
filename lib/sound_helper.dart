@@ -4,10 +4,13 @@ import 'package:soundpool/soundpool.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SoundHelper {
-  static final Soundpool _soundpool = Soundpool(streamType: StreamType.music);
-  static int? _beepLowId;
-  static int? _beepHighId;
-  static int? _tickId;
+  static final Soundpool _soundpool = Soundpool.fromOptions(
+      options: SoundpoolOptions(
+    streamType: StreamType.music,
+  ));
+  static late int _beepLowId;
+  static late int _beepHighId;
+  static late int _tickId;
 
   static bool useSound = false;
 
@@ -26,22 +29,32 @@ class SoundHelper {
   }
 
   static void playBeepLow() {
-    if (useSound) _soundpool.play(_beepLowId!);
+    if (useSound) _soundpool.play(_beepLowId);
   }
 
   static void playBeepHigh() {
-    if (useSound) _soundpool.play(_beepHighId!);
+    if (useSound) _soundpool.play(_beepHighId);
   }
 
   static void playBeepTick() {
-    if (Prefs.getBool('ticks')) _soundpool.play(_tickId!);
+    if (Prefs.getBool('ticks')) _soundpool.play(_tickId);
   }
 
   static void playDouble() {
     if (useSound) {
-      _soundpool.play(_beepLowId!);
+      _soundpool.play(_beepLowId);
       Future.delayed(Duration(milliseconds: 200))
-          .then((value) => _soundpool.play(_beepLowId!));
+          .then((value) => _soundpool.play(_beepLowId));
+    }
+  }
+
+  static void playTriple() {
+    if (useSound) {
+      _soundpool.play(_beepHighId);
+      Future.delayed(Duration(milliseconds: 150))
+          .then((value) => _soundpool.play(_beepHighId))
+          .then((value) => Future.delayed(Duration(milliseconds: 150))
+              .then((value) => _soundpool.play(_beepHighId)));
     }
   }
 }
