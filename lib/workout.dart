@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'workout.g.dart';
 
@@ -46,14 +47,19 @@ class Workout {
 @JsonSerializable(explicitToJson: true)
 class Set {
   Set({
+    String? id,
     this.repetitions = 1,
     List<Exercise>? exercises,
   }) {
+    this.id = id ?? Uuid().v4();
     this.exercises = exercises ?? [Exercise()];
   }
 
   @JsonKey(required: true)
   int repetitions;
+
+  @JsonKey()
+  late String id;
 
   @JsonKey(required: true)
   late List<Exercise> exercises;
@@ -72,10 +78,15 @@ class Set {
 
 @JsonSerializable(explicitToJson: true)
 class Exercise {
-  Exercise({this.name = 'Exercise', this.duration = 30});
+  Exercise({String? id, this.name = 'Exercise', this.duration = 30}) {
+    this.id = id ?? Uuid().v4();
+  }
 
   @JsonKey(required: true)
   String name;
+
+  @JsonKey()
+  late String id;
 
   @JsonKey(required: true, defaultValue: 30)
   int duration;
