@@ -34,6 +34,7 @@ Set _$SetFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['repetitions', 'exercises'],
   );
   return Set(
+    id: json['id'] as String?,
     repetitions: json['repetitions'] as int? ?? 1,
     exercises: (json['exercises'] as List<dynamic>?)
         ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
@@ -43,6 +44,7 @@ Set _$SetFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$SetToJson(Set instance) => <String, dynamic>{
       'repetitions': instance.repetitions,
+      'id': instance.id,
       'exercises': instance.exercises.map((e) => e.toJson()).toList(),
     };
 
@@ -52,6 +54,7 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
     requiredKeys: const ['name', 'duration'],
   );
   return Exercise(
+    id: json['id'] as String?,
     name: json['name'] as String? ?? 'Exercise',
     duration: json['duration'] as int? ?? 30,
   );
@@ -59,6 +62,7 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ExerciseToJson(Exercise instance) => <String, dynamic>{
       'name': instance.name,
+      'id': instance.id,
       'duration': instance.duration,
     };
 

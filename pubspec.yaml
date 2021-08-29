@@ -23,6 +23,7 @@ dependencies:
   scrollable_positioned_list: ^0.2.0-nullsafety.0
   flutter_localizations:
     sdk: flutter
+  uuid:
 
 dev_dependencies:
   flutter_launcher_icons:
