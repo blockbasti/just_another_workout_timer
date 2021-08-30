@@ -3,7 +3,7 @@ description: Just Another Workout Timer
 
 version: 2.0.0+20210830
 
-environment:
+version: 1.8.0+20210830
   sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
