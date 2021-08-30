@@ -19,14 +19,6 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Write versioncode to pubspec.yml
-        env:
-          TAG: ${{ steps.changelog.outputs.version }}
-        run: |
-          export VERSION=$(grep -oP '(?<=version: )(\d\.\d\.\d)' ./pubspec.yaml)
-          export TIMESTAMP=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "4,4s/.*/version\: $VERSION\+$TIMESTAMP/" pubspec.yaml
-
       - name: Build full changelog
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
@@ -44,7 +36,14 @@ jobs:
           skip-on-empty: 'true'
           skip-version-file: 'false'
           skip-commit: 'true'
-          pre-changelog-generation: './scripts/pre_changelog.js'
+
+      - name: Write versioncode to pubspec.yml
+        env:
+          VERSION: ${{ steps.changelog.outputs.version }}
+        run: |
+          #export VERSION=$(grep -oP '(?<=version: )(\d\.\d\.\d)' ./pubspec.yaml)
+          export TIMESTAMP=$(printf '%(%Y%m%d)T\n' -1)
+          sed -i -E -e "4,4s/.*/version\: $VERSION\+$TIMESTAMP/" pubspec.yaml
 
       - name: Write changelog to fastlane
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
