@@ -1,3 +1,28 @@
+# [1.7.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.6.0...v1.7.0) (2021-05-18)
+
+
+### Bug Fixes
+
+* change header of homepage (fixes [#53](https://github.com/blockbasti/just_another_workout_timer/issues/53)) ([30f9df8](https://github.com/blockbasti/just_another_workout_timer/commit/30f9df8dbecb5b82a39533adcea4d8e041ce139f))
+* change header of homepage (fixes [#53](https://github.com/blockbasti/just_another_workout_timer/issues/53)) ([ba2280b](https://github.com/blockbasti/just_another_workout_timer/commit/ba2280b14be25b0d79eef6f1686779b9944accfa))
+* remove special characters from filenames (fixes [#54](https://github.com/blockbasti/just_another_workout_timer/issues/54)) ([1e82082](https://github.com/blockbasti/just_another_workout_timer/commit/1e820820ee75fa3347045ccdfa0e16c0e2e670f5))
+* remove special characters from filenames (fixes [#54](https://github.com/blockbasti/just_another_workout_timer/issues/54)) ([5995b3b](https://github.com/blockbasti/just_another_workout_timer/commit/5995b3b10a46a8f2ae5218e2bac6732c3f574a9b))
+
+
+### Features
+
+* add french language ([#48](https://github.com/blockbasti/just_another_workout_timer/issues/48)) ([9c15421](https://github.com/blockbasti/just_another_workout_timer/commit/9c15421ceb7e432d4b5b741a5b2a3c0754f72b2e))
+* add french language ([#48](https://github.com/blockbasti/just_another_workout_timer/issues/48)) ([f83bf23](https://github.com/blockbasti/just_another_workout_timer/commit/f83bf235997a8ae61093285bff2736b081196d6a))
+* add italian language ([1bd3836](https://github.com/blockbasti/just_another_workout_timer/commit/1bd3836afd531ba228e207429c2e7b8f2a6d149f))
+* add italian language ([1c1b3f3](https://github.com/blockbasti/just_another_workout_timer/commit/1c1b3f3243837ebb8cddad083082104e7337ef40))
+* add toast when saving and exit builder (implements [#47](https://github.com/blockbasti/just_another_workout_timer/issues/47)) ([f1cb6bf](https://github.com/blockbasti/just_another_workout_timer/commit/f1cb6bf5d1ddd917cc5e8e221d9b4607adbf32ba))
+* add toast when saving and exit builder (implements [#47](https://github.com/blockbasti/just_another_workout_timer/issues/47)) ([8c6094e](https://github.com/blockbasti/just_another_workout_timer/commit/8c6094e903aa001159cc51eda58e8d4d8038e615))
+* update sounds ([f1f01cc](https://github.com/blockbasti/just_another_workout_timer/commit/f1f01cc8efe3273859a577a4ccc4fc32e50dd7b8))
+* use last duration for new exercises (closes [#51](https://github.com/blockbasti/just_another_workout_timer/issues/51)) ([f3c238c](https://github.com/blockbasti/just_another_workout_timer/commit/f3c238c36cfc0aa2e09f5ed11dd996ba42140437))
+* use last duration for new exercises (closes [#51](https://github.com/blockbasti/just_another_workout_timer/issues/51)) ([78ded67](https://github.com/blockbasti/just_another_workout_timer/commit/78ded672be207e6ce877aa5d4f3a629af968b011))
+
+
+
 # [1.6.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.5.0...v1.6.0) (2021-03-11)
 
 
