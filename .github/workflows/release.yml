@@ -19,6 +19,15 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: Write versioncode to pubspec.yml
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          TAG: ${{ steps.changelog.outputs.version }}
+        run: |
+          export VERSION=$(grep -oP '(?<=version: )(\d\.\d\.\d)' ./pubspec.yaml)
+          export TIMESTAMP=$(printf '%(%Y%m%d)T\n' -1)
+          sed -i -E -e "4,4s/.*/version\: $VERSION\+$TIMESTAMP/" pubspec.yaml
+
       - name: Build full changelog
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
@@ -34,16 +43,9 @@ jobs:
           output-file: 'CHANGELOG.md'
           release-count: 0
           skip-on-empty: 'true'
-          skip-version-file: 'false'
+          skip-version-file: 'true'
           skip-commit: 'true'
-
-      - name: Write versioncode to pubspec.yml
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        env:
-          TAG: ${{ steps.changelog.outputs.version }}
-        run: |
-          export VERSION=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "6,6s/.*/version\: $TAG\+$VERSION/" pubspec.yaml
+          pre-changelog-generation: './scripts/pre_changelog.js'
 
       - name: Write changelog to fastlane
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
@@ -107,7 +109,7 @@ jobs:
           commitish: ${{ steps.get_commit.outputs.sha }}
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
 
       - name: Upload Release Asset
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
