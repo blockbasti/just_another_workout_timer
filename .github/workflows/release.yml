@@ -42,7 +42,7 @@ jobs:
           output-file: 'CHANGELOG.md'
           release-count: 0
           skip-on-empty: 'true'
-          skip-version-file: 'true'
+          skip-version-file: 'false'
           skip-commit: 'true'
           pre-changelog-generation: './scripts/pre_changelog.js'
 
