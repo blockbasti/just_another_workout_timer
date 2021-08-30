@@ -1,8 +1,8 @@
 exports.preVersionGeneration = preVersionGeneration, exports.preTagGeneration = preTagGeneration;
-function preVersionGeneration(version: string): string {
+function preVersionGeneration(version) {
     version = process.env.VERSION;
 }
 
-function preTagGeneration(tag: string): string {
+function preTagGeneration(tag){
     tag = 'v' + process.env.VERSION;
 }
