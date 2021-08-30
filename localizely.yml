@@ -1,0 +1,29 @@
+config_version: 1.0
+project_id: 6e3724ce-b0c2-459a-a840-311eb82328da
+file_type: flutter_arb
+upload:
+  files:
+    - file: lib/l10n/intl_en.arb
+      locale_code: en
+  params:
+    reviewed: true
+    tag_added:
+      - added
+    tag_removed:
+      - removed
+    tag_updated:
+      - updated
+download:
+  files:
+    - file: lib/l10n/intl_en.arb
+      locale_code: en
+    - file: lib/l10n/intl_de.arb
+      locale_code: de
+    - file: lib/l10n/intl_fr.arb
+      locale_code: fr
+    - file: lib/l10n/intl_it.arb
+      locale_code: it
+    - file: lib/l10n/intl_ru.arb
+      locale_code: ru
+  params:
+    export_empty_as: main

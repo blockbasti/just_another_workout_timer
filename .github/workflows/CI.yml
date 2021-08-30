@@ -16,17 +16,13 @@ jobs:
           java-version: '14.x'
       - uses: subosito/flutter-action@v1
         with:
-          #channel: 'stable'
-          flutter-version: '1.22.6'
+          channel: 'stable'
 
       - name: Setup Flutter
         run: |
           flutter config --no-analytics
           flutter pub get
           sh ./scripts/generate_code.sh
-
-      - name: Run Tests
-        run: flutter test
       
       - name: Build APKs
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1) --debug

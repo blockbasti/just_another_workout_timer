@@ -17,8 +17,7 @@ jobs:
           java-version: '14.x'
       - uses: subosito/flutter-action@v1
         with:
-          #channel: 'stable'
-          flutter-version: '1.22.6'
+          channel: 'stable'
 
       - name: Build full changelog
         id: changelog
@@ -75,10 +74,6 @@ jobs:
           flutter config --no-analytics
           flutter pub get
           sh ./scripts/generate_code.sh
-
-      - name: Run Tests
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        run: flutter test
 
       - name: Build APKs
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
