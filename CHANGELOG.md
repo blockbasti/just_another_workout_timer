@@ -1,28 +1,3 @@
-# [1.8.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.7.0...v1.8.0) (2021-08-30)
-
-
-### Bug Fixes
-
-* add permission for TTS (fixes [#62](https://github.com/blockbasti/just_another_workout_timer/issues/62)) ([0a17581](https://github.com/blockbasti/just_another_workout_timer/commit/0a175813422a314ac6e30db73dc3d0d37dc9d28c))
-* add uuid to sets and exercises to prevent key duplication ([a437d8a](https://github.com/blockbasti/just_another_workout_timer/commit/a437d8a089d2455a8984cfdd3f29a969127c6456))
-* fix sort order on home screen (fixes [#67](https://github.com/blockbasti/just_another_workout_timer/issues/67)) ([10a8243](https://github.com/blockbasti/just_another_workout_timer/commit/10a82437b5b03c37c7dd8c3661828b8f9647b92f))
-* stop TTS if already playing (fixes [#64](https://github.com/blockbasti/just_another_workout_timer/issues/64)) ([c1eeba5](https://github.com/blockbasti/just_another_workout_timer/commit/c1eeba5e691bf7cf8cd6af17cff6b3dfab1cbb37))
-
-
-### Features
-
-* add russian language ([#73](https://github.com/blockbasti/just_another_workout_timer/issues/73)) ([f14d85e](https://github.com/blockbasti/just_another_workout_timer/commit/f14d85e5d5b0d3edc5cbef23bb699b730fc3e58c))
-* enter duration of exercises manually (closes [#79](https://github.com/blockbasti/just_another_workout_timer/issues/79)) ([d299493](https://github.com/blockbasti/just_another_workout_timer/commit/d299493326166adea547da0994380bc534ef6115))
-* importing and exporting of workouts (closes [#49](https://github.com/blockbasti/just_another_workout_timer/issues/49)) ([#74](https://github.com/blockbasti/just_another_workout_timer/issues/74)) ([80f8f6b](https://github.com/blockbasti/just_another_workout_timer/commit/80f8f6b0a286ad9c29bb2ee11046b6771e79eec2))
-* improve splash screen ([4fba97b](https://github.com/blockbasti/just_another_workout_timer/commit/4fba97b853463f7fdbb4ec8c2c1245352ac842c6))
-* improvements to builder page (closes [#60](https://github.com/blockbasti/just_another_workout_timer/issues/60)) ([6fdecaf](https://github.com/blockbasti/just_another_workout_timer/commit/6fdecaf8d8e76b6d743ebe405597027d0d031506))
-* option for extended set list in workouts (closes [#68](https://github.com/blockbasti/just_another_workout_timer/issues/68)) ([09cb1b9](https://github.com/blockbasti/just_another_workout_timer/commit/09cb1b9784d9c4b941b2d244c4c08cfc8563b12f))
-* show next exercise in header (closes [#46](https://github.com/blockbasti/just_another_workout_timer/issues/46)) ([1083cab](https://github.com/blockbasti/just_another_workout_timer/commit/1083cabf9029738c5dcb92cb8ee01cbffe582b82))
-* triple tone at the end of a set (closes [#55](https://github.com/blockbasti/just_another_workout_timer/issues/55)) ([a4e4f4a](https://github.com/blockbasti/just_another_workout_timer/commit/a4e4f4ab95c0eceea57ab0c222c38f8563c8c4f6))
-* upgrade to Flutter 2 ([d819326](https://github.com/blockbasti/just_another_workout_timer/commit/d819326bd351319b93ed59b259bada1643a25489))
-
-
-
 # [1.7.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.6.0...v1.7.0) (2021-05-18)
 
 
