@@ -91,6 +91,23 @@ Future<void> deleteWorkout(String title) async {
   } on Exception {}
 }
 
+Future<void> createBackup() async {
+  final path = await localPath;
+
+  var dir = Directory('$path/workouts');
+  var dirbak = Directory('$path/backup');
+  try {
+    dirbak.deleteSync();
+  } on Exception catch (_) {}
+  dirbak.createSync();
+
+  Utils.copyDirectory(dir, dirbak);
+  var backup = Backup(workouts: await getAllWorkouts());
+  var backupfile = File('${dirbak.path}/backup.json');
+  backupfile.writeAsBytesSync(
+      Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
+}
+
 Future<List<Workout>> getAllWorkouts() async {
   final path = await localPath;
 

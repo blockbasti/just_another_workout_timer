@@ -37,6 +37,7 @@ class Migrations {
   }
 
   static Future<void> runMigrations() async {
+    await createBackup();
     await _migrateFilenames();
     _workouts = await getAllWorkouts();
 

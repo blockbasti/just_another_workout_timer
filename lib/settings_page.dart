@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:just_another_workout_timer/storage_helper.dart';
 import 'package:pref/pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
 import 'oss_license_page.dart';
 import 'sound_helper.dart';
+import 'storage_helper.dart';
 import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
