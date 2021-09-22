@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
+import 'package:path/path.dart' as path;
 
 import 'workout.dart';
 
@@ -17,4 +20,19 @@ class Utils {
         : compareNatural(w1.title, w2.title));
     return workouts;
   }
+
+  // https://gist.github.com/tobischw/98dcd2563eec9a2a87bda8299055358a
+  static void copyDirectory(Directory source, Directory destination) =>
+      source.listSync(recursive: false).forEach((var entity) {
+        if (entity is Directory) {
+          var newDirectory = Directory(
+              path.join(destination.absolute.path, path.basename(entity.path)));
+          newDirectory.createSync();
+
+          copyDirectory(entity.absolute, newDirectory);
+        } else if (entity is File) {
+          entity.copySync(
+              path.join(destination.path, path.basename(entity.path)));
+        }
+      });
 }

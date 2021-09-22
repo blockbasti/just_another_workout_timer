@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:just_another_workout_timer/storage_helper.dart';
 import 'package:pref/pref.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
 import 'oss_license_page.dart';
 import 'sound_helper.dart';
+import 'storage_helper.dart';
 import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
@@ -34,7 +35,12 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text(S.of(context).settings),
         ),
         body: PrefPage(children: [
-          PrefTitle(title: Text(S.of(context).general)),
+          PrefTitle(
+            title: Text(
+              S.of(context).general,
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
           PrefDropdown(
             title: Text(S.of(context).language),
             items: [
@@ -54,6 +60,17 @@ class _SettingsPageState extends State<SettingsPage> {
             },
             pref: 'lang',
           ),
+          PrefDropdown(
+              title: Text(S.of(context).language),
+              pref: 'theme',
+              onChange: (_) {
+                Phoenix.rebirth(context);
+              },
+              items: [
+                DropdownMenuItem(child: Text('Dark'), value: 'dark'),
+                DropdownMenuItem(child: Text('Light'), value: 'light'),
+                DropdownMenuItem(child: Text('System'), value: 'system'),
+              ]),
           PrefSwitch(
             title: Text(S.of(context).keepScreenAwake),
             pref: 'wakelock',
@@ -66,7 +83,9 @@ class _SettingsPageState extends State<SettingsPage> {
               title: Text(S.of(context).expanded_setlist),
               subtitle: Text(S.of(context).expanded_setlist_info),
               pref: 'expanded_setlist'),
-          PrefTitle(title: Text(S.of(context).backup)),
+          PrefTitle(
+              title: Text(S.of(context).backup,
+                  style: TextStyle(color: Colors.blue))),
           PrefLabel(
             title: Text(S.of(context).export),
             onTap: exportAllWorkouts,
@@ -80,7 +99,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   gravity: ToastGravity.CENTER))
             },
           ),
-          PrefTitle(title: Text(S.of(context).soundOutput)),
+          PrefTitle(
+              title: Text(S.of(context).soundOutput,
+                  style: TextStyle(color: Colors.blue))),
           PrefRadio(
             title: Text(S.of(context).noSound),
             value: 'none',
@@ -113,7 +134,8 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           PrefTitle(
-            title: Text(S.of(context).tts),
+            title:
+                Text(S.of(context).tts, style: TextStyle(color: Colors.blue)),
           ),
           PrefDropdown(
             title: Text(S.of(context).ttsLang),
@@ -140,7 +162,9 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text(S.of(context).AnnounceUpcomingExerciseDesc),
             disabled: !TTSHelper.available,
           ),
-          PrefTitle(title: Text(S.of(context).licenses)),
+          PrefTitle(
+              title: Text(S.of(context).licenses,
+                  style: TextStyle(color: Colors.blue))),
           PrefLabel(
             title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
