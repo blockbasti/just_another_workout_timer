@@ -420,7 +420,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                               : _currentExercise.duration),
                       minHeight: 6,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).accentColor),
+                          Theme.of(context).colorScheme.secondary),
                     ),
                     Text(
                       '${_currentExercise.name}',
