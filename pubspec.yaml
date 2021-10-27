@@ -50,8 +50,6 @@ flutter_icons:
 
 flutter_intl:
   enabled: true
-  localizely:
-    project_id: 6e3724ce-b0c2-459a-a840-311eb82328da
 
 flutter_native_splash:
   color: "#FFFFFF"
