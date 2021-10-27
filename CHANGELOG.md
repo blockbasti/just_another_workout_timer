@@ -1,3 +1,17 @@
+# [1.9.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.8.0...v1.9.0) (2021-09-22)
+
+
+### Bug Fixes
+
+* create backup before migrations ([42c683d](https://github.com/blockbasti/just_another_workout_timer/commit/42c683d0e82c0c072e05c20d5853b4d3902281f0))
+
+
+### Features
+
+* improved theming ([03f5d14](https://github.com/blockbasti/just_another_workout_timer/commit/03f5d1431781adc944aca4f493457fbb8d5bdb37))
+
+
+
 # [1.8.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.7.0...v1.8.0) (2021-08-30)
 
 
