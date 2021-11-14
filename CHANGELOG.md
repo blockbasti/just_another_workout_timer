@@ -1,3 +1,13 @@
+## [1.9.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.9.0...v1.9.1) (2021-11-14)
+
+
+### Bug Fixes
+
+* fix editing of duplicated sets/exercises (fixes [#96](https://github.com/blockbasti/just_another_workout_timer/issues/96)) ([da21d1e](https://github.com/blockbasti/just_another_workout_timer/commit/da21d1e0e5a721eb7f15b0c555544cc06b03393f))
+* update translations ([d868bee](https://github.com/blockbasti/just_another_workout_timer/commit/d868beed8f7ac666b37a79d6244932577501dd2f))
+
+
+
 # [1.9.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.8.0...v1.9.0) (2021-09-22)
 
 
