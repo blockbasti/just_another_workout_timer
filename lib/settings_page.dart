@@ -61,15 +61,18 @@ class _SettingsPageState extends State<SettingsPage> {
             pref: 'lang',
           ),
           PrefDropdown(
-              title: Text(S.of(context).language),
+              title: Text(S.of(context).theme),
               pref: 'theme',
               onChange: (_) {
                 Phoenix.rebirth(context);
               },
               items: [
-                DropdownMenuItem(child: Text('Dark'), value: 'dark'),
-                DropdownMenuItem(child: Text('Light'), value: 'light'),
-                DropdownMenuItem(child: Text('System'), value: 'system'),
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_dark), value: 'dark'),
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_light), value: 'light'),
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_system), value: 'system'),
               ]),
           PrefSwitch(
             title: Text(S.of(context).keepScreenAwake),
