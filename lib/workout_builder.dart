@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uuid/uuid.dart';
 
 import 'generated/l10n.dart';
 import 'number_stepper.dart';
@@ -48,18 +49,20 @@ class _BuilderPageState extends State<BuilderPage> {
   }
 
   void _duplicateSet(int index) {
+    var newSet = Set.fromJson(_workout.sets[index].toJson());
+    newSet.id = Uuid().v4();
     setState(() {
-      _workout.sets.insert(index, Set.fromJson(_workout.sets[index].toJson()));
+      _workout.sets.insert(index, newSet);
       _dirty = true;
     });
   }
 
   void _duplicateExercise(int setIndex, int exIndex) {
+    var newEx =
+        Exercise.fromJson(_workout.sets[setIndex].exercises[exIndex].toJson());
+    newEx.id = Uuid().v4();
     setState(() {
-      _workout.sets[setIndex].exercises.insert(
-          exIndex,
-          Exercise.fromJson(
-              _workout.sets[setIndex].exercises[exIndex].toJson()));
+      _workout.sets[setIndex].exercises.insert(exIndex, newEx);
       _dirty = true;
     });
   }
