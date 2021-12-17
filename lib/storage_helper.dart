@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,8 +24,9 @@ Future<File> _loadWorkoutFile(String title) async {
 Future<void> exportWorkout(String title) async {
   var workout = await loadWorkout(title: title);
   var backup = Backup(workouts: [workout]);
+
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+      data: Uint8List.fromList(JsonMapper.serialize(backup).codeUnits),
       fileName: '${Utils.removeSpecialChar(title)}.json');
   await FlutterFileDialog.saveFile(params: params);
 }
@@ -33,7 +34,7 @@ Future<void> exportWorkout(String title) async {
 Future<void> exportAllWorkouts() async {
   var backup = Backup(workouts: await getAllWorkouts());
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+      data: Uint8List.fromList(JsonMapper.serialize(backup).codeUnits),
       fileName: 'Backup.json');
   await FlutterFileDialog.saveFile(params: params);
 }
@@ -46,7 +47,8 @@ Future<int> importBackup() async {
   final filePath = await FlutterFileDialog.pickFile(params: params);
   if (filePath != null && filePath.isNotEmpty) {
     var backup = await File(filePath).readAsString();
-    var workouts = Backup.fromJson(jsonDecode(backup)).workouts;
+
+    var workouts = JsonMapper.deserialize<Backup>(backup)!.workouts;
     workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
     await Migrations.runMigrations();
     return Future.value(workouts.length);
@@ -69,7 +71,7 @@ Future<void> writeWorkout(Workout workout, {bool fixDuplicates = false}) async {
 
   final file = await _loadWorkoutFile(workout.title);
 
-  file.writeAsString(jsonEncode(workout.toJson()), flush: true);
+  file.writeAsString(JsonMapper.serialize(workout), flush: true);
 }
 
 Future<bool> workoutExists(String title) async {
@@ -81,7 +83,7 @@ Future<Workout> loadWorkout({String? title, File? workoutFile}) async {
   final file = workoutFile ?? await _loadWorkoutFile(title!);
   var contents = await file.readAsString();
 
-  return Workout.fromJson(jsonDecode(contents));
+  return JsonMapper.deserialize<Workout>(contents)!;
 }
 
 Future<void> deleteWorkout(String title) async {
@@ -104,8 +106,7 @@ Future<void> createBackup() async {
   Utils.copyDirectory(dir, dirbak);
   var backup = Backup(workouts: await getAllWorkouts());
   var backupfile = File('${dirbak.path}/backup.json');
-  backupfile.writeAsBytesSync(
-      Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
+  backupfile.writeAsStringSync(JsonMapper.serialize(backup));
 }
 
 Future<List<Workout>> getAllWorkouts() async {

@@ -1,29 +1,32 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:dart_json_mapper/dart_json_mapper.dart'
+    show Json, JsonProperty, jsonSerializable;
 import 'package:uuid/uuid.dart';
 
-part 'workout.g.dart';
-
-@JsonSerializable(explicitToJson: true)
+@jsonSerializable
 class Workout {
-  static const fileVersion = 2;
+  static const fileVersion = 3;
 
   Workout(
-      {this.title = 'Workout',
+      {String? id,
+      this.title = 'Workout',
       List<Set>? sets,
       this.version = fileVersion,
       this.position = -1}) {
+    this.id = id ?? Uuid().v4();
     this.sets = sets ?? [Set()];
   }
-
-  @JsonKey(required: true)
+  @JsonProperty()
+  late String id;
+  @JsonProperty(required: true)
   String title;
-  @JsonKey(required: true)
+
+  @JsonProperty(required: true)
   late List<Set> sets;
 
-  @JsonKey(defaultValue: 1)
+  @JsonProperty(defaultValue: 1)
   int version;
 
-  @JsonKey(defaultValue: -1)
+  @JsonProperty(defaultValue: -1)
   int position;
 
   int get duration {
@@ -38,13 +41,9 @@ class Workout {
   void cleanUp() {
     sets.removeWhere((set) => set.exercises.isEmpty);
   }
-
-  factory Workout.fromJson(Map<String, dynamic> json) =>
-      _$WorkoutFromJson(json);
-  Map<String, dynamic> toJson() => _$WorkoutToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
+@jsonSerializable
 class Set {
   Set({
     String? id,
@@ -52,16 +51,16 @@ class Set {
     List<Exercise>? exercises,
   }) {
     this.id = id ?? Uuid().v4();
-    this.exercises = exercises ?? [Exercise()];
+    this.exercises = exercises ?? [];
   }
 
-  @JsonKey(required: true)
+  @JsonProperty(required: true)
   int repetitions;
 
-  @JsonKey()
+  @JsonProperty()
   late String id;
 
-  @JsonKey(required: true)
+  @JsonProperty(required: true)
   late List<Exercise> exercises;
 
   int get duration {
@@ -71,38 +70,57 @@ class Set {
 
     return duration * repetitions;
   }
-
-  factory Set.fromJson(Map<String, dynamic> json) => _$SetFromJson(json);
-  Map<String, dynamic> toJson() => _$SetToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class Exercise {
-  Exercise({String? id, this.name = 'Exercise', this.duration = 30}) {
+@jsonSerializable
+enum ExerciseType { counted, timed }
+
+@jsonSerializable
+@Json(discriminatorProperty: 'type')
+abstract class Exercise {
+  Exercise(
+      {String? id,
+      required this.type,
+      this.name = 'Exercise',
+      this.duration = 30}) {
     this.id = id ?? Uuid().v4();
   }
 
-  @JsonKey(required: true)
+  @JsonProperty(required: true)
   String name;
 
-  @JsonKey()
+  @JsonProperty()
   late String id;
 
-  @JsonKey(required: true, defaultValue: 30)
+  @JsonProperty(required: true, defaultValue: 30)
   int duration;
 
-  factory Exercise.fromJson(Map<String, dynamic> json) =>
-      _$ExerciseFromJson(json);
-  Map<String, dynamic> toJson() => _$ExerciseToJson(this);
+  final ExerciseType type;
 }
 
-@JsonSerializable(explicitToJson: true)
+@jsonSerializable
+@Json(discriminatorValue: ExerciseType.timed)
+class TimedExercise extends Exercise {
+  TimedExercise({String? id, name = 'Exercise', duration = 30})
+      : super(id: id, type: ExerciseType.timed, name: name, duration: duration);
+}
+
+@jsonSerializable
+@Json(discriminatorValue: ExerciseType.counted)
+class CountedExercise extends Exercise {
+  CountedExercise({String? id, name = 'Exercise', this.count = 30})
+      : super(id: id, type: ExerciseType.counted, name: name, duration: 0);
+
+  @JsonProperty(required: true, defaultValue: 30)
+  int count;
+
+  int get duration => count * 2;
+}
+
+@jsonSerializable
 class Backup {
-  @JsonKey(required: true)
+  @JsonProperty(required: true)
   List<Workout> workouts;
 
   Backup({required this.workouts});
-
-  factory Backup.fromJson(Map<String, dynamic> json) => _$BackupFromJson(json);
-  Map<String, dynamic> toJson() => _$BackupToJson(this);
 }

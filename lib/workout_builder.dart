@@ -1,3 +1,4 @@
+import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,7 +50,8 @@ class _BuilderPageState extends State<BuilderPage> {
   }
 
   void _duplicateSet(int index) {
-    var newSet = Set.fromJson(_workout.sets[index].toJson());
+    var newSet =
+        JsonMapper.deserialize(JsonMapper.serialize(_workout.sets[index]));
     newSet.id = Uuid().v4();
     setState(() {
       _workout.sets.insert(index, newSet);
@@ -58,8 +60,8 @@ class _BuilderPageState extends State<BuilderPage> {
   }
 
   void _duplicateExercise(int setIndex, int exIndex) {
-    var newEx =
-        Exercise.fromJson(_workout.sets[setIndex].exercises[exIndex].toJson());
+    var newEx = JsonMapper.deserialize(
+        JsonMapper.serialize(_workout.sets[setIndex].exercises[exIndex]));
     newEx.id = Uuid().v4();
     setState(() {
       _workout.sets[setIndex].exercises.insert(exIndex, newEx);
@@ -121,7 +123,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _addExercise(int setIndex, bool isRest) {
     setState(() {
-      _workout.sets[setIndex].exercises.add(Exercise(
+      _workout.sets[setIndex].exercises.add(TimedExercise(
           name: isRest ? S.of(context).rest : S.of(context).exercise,
           duration: _lastDuration));
       _dirty = true;

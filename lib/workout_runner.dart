@@ -242,7 +242,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         setState(() {
           _workoutDone = true;
           _currentExercise =
-              Exercise(name: S.of(context).workoutComplete, duration: 1);
+              TimedExercise(name: S.of(context).workoutComplete, duration: 1);
         });
       };
 
@@ -281,7 +281,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     setState(() {
       _workoutDone = false;
       _currentSet = Set(exercises: [], repetitions: 1);
-      _currentExercise = Exercise(duration: 0, name: '');
+      _currentExercise = TimedExercise(duration: 0, name: '');
       _currentReps = 1;
 
       _nextSet = Set(exercises: [], repetitions: 1);

@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
       );
 
   Widget _buildWorkoutItem(Workout workout) => Card(
-      key: Key(workout.toJson().toString()),
+      key: Key(workout.id),
       child: Row(
         children: [
           Container(

@@ -10,6 +10,7 @@ import 'package:prefs/prefs.dart';
 
 import 'generated/l10n.dart';
 import 'home_page.dart';
+import 'main.mapper.g.dart' show initializeJsonMapper;
 import 'migrations.dart';
 import 'sound_helper.dart';
 import 'tts_helper.dart';
@@ -17,6 +18,7 @@ import 'tts_helper.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GestureBinding.instance!.resamplingEnabled = true;
+  initializeJsonMapper();
   await Prefs.init();
 
   PrefServiceShared.init(defaults: {
