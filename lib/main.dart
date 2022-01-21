@@ -37,6 +37,7 @@ void main() async {
           PrefService(child: Phoenix(child: JAWTApp()), service: service))));
 }
 
+// ignore: must_be_immutable
 class JAWTApp extends StatelessWidget {
   ThemeMode? _brightness;
 
