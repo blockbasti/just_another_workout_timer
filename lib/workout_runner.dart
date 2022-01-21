@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:prefs/prefs.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
