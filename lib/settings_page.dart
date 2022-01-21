@@ -52,6 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
               DropdownMenuItem(child: Text('Italiano'), value: 'it'),
               DropdownMenuItem(child: Text('Français'), value: 'fr'),
               DropdownMenuItem(child: Text('Русский'), value: 'ru'),
+              DropdownMenuItem(child: Text('Türkçe'), value: 'tr'),
             ],
             onChange: (String value) {
               setState(() {
@@ -153,6 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
               DropdownMenuItem(child: Text('Italiano'), value: 'it-IT'),
               DropdownMenuItem(child: Text('Français'), value: 'fr-FR'),
               DropdownMenuItem(child: Text('Русский'), value: 'ru-RU'),
+              DropdownMenuItem(child: Text('Türkçe'), value: 'tr-TR'),
             ],
             disabled: !TTSHelper.available,
             onChange: (String value) {
