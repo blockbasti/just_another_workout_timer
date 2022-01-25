@@ -45,7 +45,10 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefDropdown(
             title: Text(S.of(context).language),
-            items: Languages.languages.map((lang) => DropdownMenuItem(child: Text(lang.displayName), value: lang.localeCode)).toList(),
+            items: Languages.languages
+                .map((lang) => DropdownMenuItem(
+                    child: Text(lang.displayName), value: lang.localeCode))
+                .toList(),
             onChange: (String value) {
               var lang = Languages.fromLocaleCode(value);
               setState(() {
@@ -146,12 +149,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 .asMap()
                 .entries
                 .map((voice) => DropdownMenuItem(
-                        child: Text('${S.of(context).voice} ${voice.key+1} (${voice.value.name})'),
-                        value: voice.value.name))
+                    child: Text(
+                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})'),
+                    value: voice.value.name))
                 .toList(),
             disabled: !TTSHelper.available,
             onChange: (String value) {
-              TTSHelper.flutterTts.setVoice({"name": value, "locale": Prefs.getString('tts_lang', 'en-US')});
+              TTSHelper.flutterTts.setVoice({
+                "name": value,
+                "locale": Prefs.getString('tts_lang', 'en-US')
+              });
             },
           ),
           PrefSwitch(

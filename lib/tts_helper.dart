@@ -40,7 +40,8 @@ class TTSHelper {
       var voice = TTSVoice(e.entries.first.value, e.entries.last.value);
       return voice;
     }).toList(growable: true);
-    voices.retainWhere((voice) => Languages.languageCodes.contains(voice.locale));
+    voices
+        .retainWhere((voice) => Languages.languageCodes.contains(voice.locale));
 
     useTTS = Prefs.getString('sound') == 'tts';
 
@@ -48,7 +49,7 @@ class TTSHelper {
     await Prefs.setString('tts_lang', ttsLang);
 
     var ttsVoice = Prefs.getString('tts_voice', "");
-    if(ttsVoice == "") {
+    if (ttsVoice == "") {
       ttsVoice = voices.firstWhere((voice) => voice.locale == ttsLang).name;
       await Prefs.setString('tts_voice', ttsVoice);
     }
@@ -77,11 +78,12 @@ class TTSHelper {
   }
 
   static void setLanguage(String languageCode) async {
-    if(!available) return;
+    if (!available) return;
     Prefs.setString("tts_lang", languageCode);
     await flutterTts.setLanguage(languageCode);
 
-    var ttsVoice = voices.firstWhere((voice) => voice.locale == languageCode).name;
+    var ttsVoice =
+        voices.firstWhere((voice) => voice.locale == languageCode).name;
     await Prefs.setString('tts_voice', ttsVoice);
     await flutterTts.setVoice({"name": ttsVoice, "locale": languageCode});
   }

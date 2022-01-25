@@ -90,7 +90,8 @@ class JAWTApp extends StatelessWidget {
         }
 
         for (var locale in locales!) {
-          if (supportedLocales.any((element) => element.languageCode == locale.languageCode)) {
+          if (supportedLocales
+              .any((element) => element.languageCode == locale.languageCode)) {
             PrefService.of(context).set('lang', locale.languageCode);
             return locale;
           }

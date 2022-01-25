@@ -18,11 +18,9 @@ class Languages {
     AppLanguage("Türkçe", "tr", "tr-TR")
   ];
 
-  static List<String> get languageCodes => languages.map((lang) => lang.languageCode).toList();
+  static List<String> get languageCodes =>
+      languages.map((lang) => lang.languageCode).toList();
 
-  static Map<String,String> get mapLocaleDisplayName => Map.fromIterable(languages, key: (lang) => lang.localeCode, value: (lang) => lang.displayName);
-
-  static Map<String,String> get mapLanguageDisplayName => Map.fromIterable(languages, key: (lang) => lang.languageCode, value: (lang) => lang.displayName);
-  
-  static AppLanguage fromLocaleCode(String localeCode) => languages.firstWhere((lang) => lang.localeCode == localeCode, orElse: null);
-  }
+  static AppLanguage fromLocaleCode(String localeCode) => languages
+      .firstWhere((lang) => lang.localeCode == localeCode, orElse: null);
+}
