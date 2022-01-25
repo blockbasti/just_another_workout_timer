@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:just_another_workout_timer/languages.dart';
 import 'package:pref/pref.dart';
+import 'package:prefs/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
@@ -43,19 +45,15 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefDropdown(
             title: Text(S.of(context).language),
-            items: [
-              DropdownMenuItem(
-                child: Text('English'),
-                value: 'en',
-              ),
-              DropdownMenuItem(child: Text('Deutsch'), value: 'de'),
-              DropdownMenuItem(child: Text('Italiano'), value: 'it'),
-              DropdownMenuItem(child: Text('Français'), value: 'fr'),
-              DropdownMenuItem(child: Text('Русский'), value: 'ru'),
-            ],
+            items: Languages.languages
+                .map((lang) => DropdownMenuItem(
+                    child: Text(lang.displayName), value: lang.localeCode))
+                .toList(),
             onChange: (String value) {
+              var lang = Languages.fromLocaleCode(value);
               setState(() {
-                S.load(Locale(value));
+                S.load(Locale(lang.localeCode));
+                TTSHelper.setLanguage(lang.languageCode);
               });
             },
             pref: 'lang',
@@ -141,22 +139,26 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text(S.of(context).tts, style: TextStyle(color: Colors.blue)),
           ),
           PrefDropdown(
-            title: Text(S.of(context).ttsLang),
-            pref: 'tts_lang',
-            subtitle: Text(S.of(context).ttsLangDesc),
-            items: [
-              DropdownMenuItem(
-                child: Text('English'),
-                value: 'en-US',
-              ),
-              DropdownMenuItem(child: Text('Deutsch'), value: 'de-DE'),
-              DropdownMenuItem(child: Text('Italiano'), value: 'it-IT'),
-              DropdownMenuItem(child: Text('Français'), value: 'fr-FR'),
-              DropdownMenuItem(child: Text('Русский'), value: 'ru-RU'),
-            ],
+            title: Text(S.of(context).ttsVoice),
+            pref: 'tts_voice',
+            subtitle: Text(S.of(context).ttsVoiceDesc),
+            items: TTSHelper.voices
+                .where((voice) =>
+                    voice.locale == Prefs.getString('tts_lang', 'en-US'))
+                .toList()
+                .asMap()
+                .entries
+                .map((voice) => DropdownMenuItem(
+                    child: Text(
+                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})'),
+                    value: voice.value.name))
+                .toList(),
             disabled: !TTSHelper.available,
             onChange: (String value) {
-              TTSHelper.flutterTts.setLanguage(value);
+              TTSHelper.flutterTts.setVoice({
+                "name": value,
+                "locale": Prefs.getString('tts_lang', 'en-US')
+              });
             },
           ),
           PrefSwitch(

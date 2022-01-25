@@ -13,20 +13,24 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: '14.x'
+          java-version: "14.x"
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'stable'
+          channel: "stable"
+      - uses: actions/cache@v2
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: flutter-install-cache
 
       - name: Setup Flutter
         run: |
           flutter config --no-analytics
           flutter pub get
           sh ./scripts/generate_code.sh
-      
+
       - name: Build APKs
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1) --debug
-      
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v2.2.2
         with:

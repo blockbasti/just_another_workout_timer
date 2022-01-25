@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:prefs/prefs.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
@@ -308,6 +307,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       itemCount: set.exercises.length,
       itemScrollController: _itemScrollController,
       itemPositionsListener: _itemPositionsListener,
+      shrinkWrap: true,
     );
 
     if (!Prefs.getBool('expanded_setlist', false)) {
@@ -316,10 +316,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
         child: list,
       );
     } else {
-      return SizedBox(
-        height: 72 * set.exercises.length + 1,
-        child: list,
-      );
+      return list;
     }
   }
 
