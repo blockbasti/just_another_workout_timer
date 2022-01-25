@@ -484,7 +484,7 @@ packages:
       name: prefs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.0"
+    version: "3.4.0+01"
   process:
     dependency: transitive
     description:
@@ -818,7 +818,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.7"
+    version: "2.3.8"
   xdg_directories:
     dependency: transitive
     description:
