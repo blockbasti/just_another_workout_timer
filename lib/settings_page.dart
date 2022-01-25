@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pref/pref.dart';
+import 'package:prefs/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
@@ -159,6 +160,25 @@ class _SettingsPageState extends State<SettingsPage> {
             disabled: !TTSHelper.available,
             onChange: (String value) {
               TTSHelper.flutterTts.setLanguage(value);
+            },
+          ),
+          PrefDropdown(
+            title: Text(S.of(context).ttsVoice),
+            pref: 'tts_voice',
+            subtitle: Text(S.of(context).ttsVoiceDesc),
+            items: TTSHelper.voices
+                .where((voice) =>
+                    voice.locale == Prefs.getString('tts_lang', 'en-US'))
+                .toList()
+                .asMap()
+                .entries
+                .map((voice) => DropdownMenuItem(
+                        child: Text('${S.of(context).voice} ${voice.key+1} (${voice.value.name})'),
+                        value: voice.value.name))
+                .toList(),
+            disabled: !TTSHelper.available,
+            onChange: (String value) {
+              TTSHelper.flutterTts.setVoice({"name": value, "locale": Prefs.getString('tts_lang', 'en-US')});
             },
           ),
           PrefSwitch(
