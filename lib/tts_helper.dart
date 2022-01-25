@@ -80,6 +80,10 @@ class TTSHelper {
     if(!available) return;
     Prefs.setString("tts_lang", languageCode);
     await flutterTts.setLanguage(languageCode);
+
+    var ttsVoice = voices.firstWhere((voice) => voice.locale == languageCode).name;
+    await Prefs.setString('tts_voice', ttsVoice);
+    await flutterTts.setVoice({"name": ttsVoice, "locale": languageCode});
   }
 
   static void speak(String text) async {
