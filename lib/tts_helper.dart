@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:prefs/prefs.dart';
 
+import 'languages.dart';
+
 class TTSVoice {
   String name;
   String locale;
@@ -38,14 +40,7 @@ class TTSHelper {
       var voice = TTSVoice(e.entries.first.value, e.entries.last.value);
       return voice;
     }).toList(growable: true);
-    voices.retainWhere((voice) => [
-          'de-DE',
-          'it-IT',
-          'fr-FR',
-          'en-US',
-          'ru-RU',
-          'tr-TR'
-        ].contains(voice.locale));
+    voices.retainWhere((voice) => Languages.languageCodes.contains(voice.locale));
 
     useTTS = Prefs.getString('sound') == 'tts';
 
@@ -79,6 +74,12 @@ class TTSHelper {
       await Prefs.setString('sound', 'beep');
       return;
     }
+  }
+
+  static void setLanguage(String languageCode) async {
+    if(!available) return;
+    Prefs.setString("tts_lang", languageCode);
+    await flutterTts.setLanguage(languageCode);
   }
 
   static void speak(String text) async {
