@@ -1,3 +1,20 @@
+# [1.10.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.9.1...v1.10.0) (2022-01-25)
+
+
+### Bug Fixes
+
+* default language selection ([70d2d16](https://github.com/blockbasti/just_another_workout_timer/commit/70d2d1677be37be66f3c0a637dc5b198fce460aa))
+* set first TTS voice when changing language ([0190bb4](https://github.com/blockbasti/just_another_workout_timer/commit/0190bb42c17646c06a3d01896150273826f94407))
+
+
+### Features
+
+* add turkish language ([a8256f7](https://github.com/blockbasti/just_another_workout_timer/commit/a8256f738129d6b66f1db335411320ba32d4ee72))
+* merge language selections in settings ([d522cd0](https://github.com/blockbasti/just_another_workout_timer/commit/d522cd059e346858a52ba7130c73104f7b96a106))
+* select voice for TTS (closes [#98](https://github.com/blockbasti/just_another_workout_timer/issues/98)) ([8f87f96](https://github.com/blockbasti/just_another_workout_timer/commit/8f87f968e36c552ec9e3da0944de2cbf0121cd45))
+
+
+
 ## [1.9.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.9.0...v1.9.1) (2021-11-14)
 
 
