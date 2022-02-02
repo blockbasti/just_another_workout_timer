@@ -173,7 +173,7 @@ class _CustomStepperState extends State<NumberStepper> {
                     ),
                     onPressed: () {
                       setState(() {
-                        widget.value = widget.value == widget.lowerLimit
+                        widget.value = widget.value -5 < widget.lowerLimit
                             ? widget.lowerLimit
                             : widget.value -= 5;
                       });
