@@ -4,7 +4,7 @@ description: Just Another Workout Timer
 version: 1.10.0+20220125
 
 environment:
-  sdk: ">=2.15.1 <3.0.0"
+  sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
   flutter:
