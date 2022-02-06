@@ -76,7 +76,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
   final String name;
   final Map<String, dynamic> json;
 
-  String get version => json['version'];
+  String get version => json['version'] ?? "";
   String? get description => json['description'];
   String get licenseText => json['license'];
   String? get homepage => json['homepage'];
@@ -111,7 +111,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
                     child: InkWell(
                       child: Text(homepage!,
                           style: const TextStyle(
-                              color: Colors.blue,
+                              /* color: Colors.blue, */
                               decoration: TextDecoration.underline)),
                       onTap: () => launch(homepage!),
                     )),

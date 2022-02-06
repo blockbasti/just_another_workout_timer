@@ -60,26 +60,34 @@ class JAWTApp extends StatelessWidget {
       title: 'Just Another Workout Timer',
       themeMode: _brightness,
       theme: ThemeData(
+          useMaterial3: true,
           brightness: Brightness.light,
-          toggleableActiveColor: Colors.blue,
-          backgroundColor: Colors.white54,
-          colorScheme: ColorScheme.highContrastLight().copyWith(
-              secondary: Colors.blue,
-              secondaryVariant: Colors.blue,
-              primary: Colors.blue,
-              primaryVariant: Colors.blueAccent)),
+          colorSchemeSeed: Colors.blue,
+          toggleableActiveColor: Colors.blue[800],
+          cardTheme: CardTheme(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.black12, width: 1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          )),
       darkTheme: ThemeData(
+          useMaterial3: true,
           brightness: Brightness.dark,
-          toggleableActiveColor: Colors.blue,
-          colorScheme: ColorScheme.highContrastDark().copyWith(
-              secondary: Colors.blue,
-              secondaryVariant: Colors.blue,
-              primary: Colors.blue,
-              primaryVariant: Colors.blueAccent)),
+          colorSchemeSeed: Colors.blue,
+          toggleableActiveColor: Colors.blueAccent[100],
+          cardTheme: CardTheme(
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.black12, width: 1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+          )),
       home: HomePage(),
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,

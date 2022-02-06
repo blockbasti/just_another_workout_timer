@@ -103,7 +103,7 @@ class _CustomStepperState extends State<NumberStepper> {
                     child: Text(
                       '+1',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       setState(() {
@@ -121,7 +121,7 @@ class _CustomStepperState extends State<NumberStepper> {
                   child: ElevatedButton(
                     child: Text('+5',
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
+                            fontWeight: FontWeight.bold)),
                     onPressed: () {
                       setState(() {
                         widget.value = widget.value == widget.upperLimit
@@ -151,7 +151,7 @@ class _CustomStepperState extends State<NumberStepper> {
                   child: ElevatedButton(
                     child: Text('-1',
                         style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
+                            fontWeight: FontWeight.bold)),
                     onPressed: () {
                       setState(() {
                         widget.value = widget.value == widget.lowerLimit
@@ -169,7 +169,7 @@ class _CustomStepperState extends State<NumberStepper> {
                     child: Text(
                       '-5',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       setState(() {

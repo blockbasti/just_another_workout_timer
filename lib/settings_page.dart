@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:just_another_workout_timer/languages.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
+import 'languages.dart';
 import 'oss_license_page.dart';
 import 'sound_helper.dart';
 import 'storage_helper.dart';
@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
           PrefTitle(
             title: Text(
               S.of(context).general,
-              style: TextStyle(color: Colors.blue),
+              /* style: TextStyle(color: Colors.blue), */
             ),
           ),
           PrefDropdown(
@@ -86,7 +86,7 @@ class _SettingsPageState extends State<SettingsPage> {
               pref: 'expanded_setlist'),
           PrefTitle(
               title: Text(S.of(context).backup,
-                  style: TextStyle(color: Colors.blue))),
+                  /* style: TextStyle(color: Colors.blue) */)),
           PrefLabel(
             title: Text(S.of(context).export),
             onTap: exportAllWorkouts,
@@ -102,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefTitle(
               title: Text(S.of(context).soundOutput,
-                  style: TextStyle(color: Colors.blue))),
+                  /* style: TextStyle(color: Colors.blue) */)),
           PrefRadio(
             title: Text(S.of(context).noSound),
             value: 'none',
@@ -136,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefTitle(
             title:
-                Text(S.of(context).tts, style: TextStyle(color: Colors.blue)),
+                Text(S.of(context).tts, /* style: TextStyle(color: Colors.blue) */),
           ),
           PrefDropdown(
             title: Text(S.of(context).ttsVoice),
@@ -169,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefTitle(
               title: Text(S.of(context).licenses,
-                  style: TextStyle(color: Colors.blue))),
+                  /* style: TextStyle(color: Colors.blue) */)),
           PrefLabel(
             title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
