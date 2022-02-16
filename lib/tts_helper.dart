@@ -47,9 +47,15 @@ class TTSHelper {
       return;
     }
 
+    if(voices.isEmpty) {
+      _ttsUnavailable();
+      return;
+    }
+
     useTTS = Prefs.getString('sound') == 'tts';
 
     var ttsLang = Prefs.getString('tts_lang', 'en-US');
+    if(!Languages.languageCodes.contains(ttsLang)) ttsLang = 'en-US';
     await Prefs.setString('tts_lang', ttsLang);
 
     var ttsVoice = Prefs.getString('tts_voice', "");
