@@ -1,5 +1,5 @@
 {
-    "@@locale": "de",
+    "@@locale": "en",
     "addExercise": "Übung hinzufügen",
     "addRest": "Pause hinzufügen",
     "addSet": "Satz hinzufügen",
@@ -23,8 +23,6 @@
     "exercise": "Übung",
     "exerciseOf": "Übung {currentIndex} von {total}",
     "exitCheck": "Möchtest du wirklich beenden?",
-    "expanded_setlist": "Erweiterte Anzeige von Sätzen",
-    "expanded_setlist_info": "Immer ganzen Satz anzeigen",
     "export": "Alle Workouts sichern",
     "firstExercise": "Beginnen mit: {name}",
     "general": "Allgemein",
@@ -53,7 +51,6 @@
     "rest": "Pause",
     "saved": "Gespeichert",
     "saveWorkout": "Workout speichern",
-    "seconds": "Sekunden",
     "setIndex": "Satz {number}",
     "setOf": "Satz {currentIndex} von {total}",
     "settingHalfway": "Ansage oder Ton in der Hälfte der Übung abspielen",
@@ -78,8 +75,11 @@
     "workouts": "Workouts",
     "yes": "Ja",
     "yesExit": "Ja",
+    "expanded_setlist": "Erweiterte Anzeige von Sätzen",
+    "expanded_setlist_info": "Immer ganzen Satz anzeigen",
+    "seconds": "Sekunden",
     "theme": "Design",
     "theme_dark": "Dunkel",
     "theme_light": "Hell",
     "theme_system": "System"
-  }
+}
