@@ -1,5 +1,5 @@
 {
-    "@@locale": "tr",
+    "@@locale": "it",
     "addExercise": "Aggiungi un esercizio",
     "addRest": "Aggiungi una pausa",
     "addSet": "Aggiungi una sessione",
@@ -23,6 +23,8 @@
     "exercise": "Esercizio",
     "exerciseOf": "Esercizio {currentIndex} di {total}",
     "exitCheck": "Vuoi veramente uscire?",
+    "expanded_setlist": "Expanded set list",
+    "expanded_setlist_info": "Always show full set",
     "export": "Export all workouts",
     "firstExercise": "Inizia con: {name}",
     "general": "Generale",
@@ -51,6 +53,7 @@
     "rest": "Riposo",
     "saved": "Salvato",
     "saveWorkout": "Salva l'allenamento",
+    "seconds": "Secondi",
     "setIndex": "Sessione {number}",
     "setOf": "Sessione {currentIndex} di {total}",
     "settingHalfway": "Suona un segnale o annuncia la metà esercizio durante l'esercizio stesso",
@@ -74,12 +77,5 @@
     "workoutComplete": "Allenamento completato!",
     "workouts": "allenamenti",
     "yes": "si",
-    "yesExit": "Si",
-    "expanded_setlist": "Expanded set list",
-    "expanded_setlist_info": "Always show full set",
-    "seconds": "Secondi",
-    "theme": "Tema",
-    "theme_dark": "Koyu",
-    "theme_light": "Açık",
-    "theme_system": "Sistem"
+    "yesExit": "Si"
 }
