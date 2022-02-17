@@ -2,4 +2,4 @@ files:
   - source: /lib/l10n/intl_en.arb
     translation: /lib/l10n/intl_%two_letters_code%.arb
   - source: /fastlane/metadata/android/en-US/*_description.txt
-    translation: /fastlane/metadata/android/%locale%/%original_file_name%.txt
+    translation: /fastlane/metadata/android/%locale%/%original_file_name%
