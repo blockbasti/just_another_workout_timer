@@ -81,5 +81,8 @@
     "theme": "Design",
     "theme_dark": "Dunkel",
     "theme_light": "Hell",
-    "theme_system": "System"
+    "theme_system": "System",
+    "@@@locale": {
+        "description": "--> locale"
+    }
 }
