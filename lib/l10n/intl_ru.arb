@@ -1,5 +1,5 @@
 {
-    "@@locale": "ru",
+    "@@locale": "en",
     "addExercise": "Добавить упражнение",
     "addRest": "Добавить отдых",
     "addSet": "Добавить комплекс упражнений",
@@ -23,8 +23,6 @@
     "exercise": "Упражнение",
     "exerciseOf": "Упражнение {currentIndex} из {total}",
     "exitCheck": "Вы уверены, что хотите выйти?",
-    "expanded_setlist": "Expanded set list",
-    "expanded_setlist_info": "Always show full set",
     "export": "Export all workouts",
     "firstExercise": "Сначала: {name}",
     "general": "Общее",
@@ -53,7 +51,6 @@
     "rest": "Отдых",
     "saved": "Сохранено",
     "saveWorkout": "Сохранить тренировку",
-    "seconds": "Секунды",
     "setIndex": "Комплекс {number}",
     "setOf": "Комплекс {currentIndex} из {total}",
     "settingHalfway": "Воспроизвести звук или объявление на половине тренировки",
@@ -77,5 +74,12 @@
     "workoutComplete": "Тренировка завершена",
     "workouts": "Тренировки",
     "yes": "Да",
-    "yesExit": "Да, выйти"
-  }
+    "yesExit": "Да, выйти",
+    "expanded_setlist": "Expanded set list",
+    "expanded_setlist_info": "Always show full set",
+    "seconds": "Секунды",
+    "theme": "Theme",
+    "theme_dark": "Dark",
+    "theme_light": "Light",
+    "theme_system": "System"
+}
