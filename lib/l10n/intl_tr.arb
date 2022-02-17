@@ -81,5 +81,8 @@
     "theme": "Tema",
     "theme_dark": "Koyu",
     "theme_light": "Açık",
-    "theme_system": "Sistem"
+    "theme_system": "Sistem",
+    "@@@locale": {
+        "description": "--> locale"
+    }
 }
