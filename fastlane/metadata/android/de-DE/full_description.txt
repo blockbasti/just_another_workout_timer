@@ -3,7 +3,7 @@
 * Füge Übungen zu längeren Sätzen hinzu
 * Text-to-Speech Ansagen
 * Modernes Material Design, gebaut mit Flutter
-* ohne Werbung
-* kostenlos und quelloffen
+* Ganz ohne Werbung
+* Kostenlos und quelloffen
 
 Github: https://github.com/blockbasti/just_another_workout_timer
