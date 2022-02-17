@@ -1,5 +1,5 @@
 {
-    "@@locale": "en",
+    "@@locale": "fr",
     "addExercise": "Ajouter exercice",
     "addRest": "Ajouter repos",
     "addSet": "Ajouter série",
@@ -23,6 +23,8 @@
     "exercise": "Exercice",
     "exerciseOf": "Exercice {currentIndex} sur {total}",
     "exitCheck": "Voulez-vous vraiment quitter ?",
+    "expanded_setlist": "Liste de série étendue",
+    "expanded_setlist_info": "Toujours afficher la série entière",
     "export": "Exporter les entraînements",
     "firstExercise": "Premier : {name}",
     "general": "Général",
@@ -51,6 +53,7 @@
     "rest": "Repos",
     "saved": "Enregistré",
     "saveWorkout": "Enregistrer entrainement",
+    "seconds": "Secondes",
     "setIndex": "Série {number}",
     "setOf": "Série {currentIndex} sur {total}",
     "settingHalfway": "Jouer un son ou une annonce à mi-parcours d'un exercice",
@@ -74,12 +77,5 @@
     "workoutComplete": "Entrainement terminé",
     "workouts": "Programmes",
     "yes": "Oui",
-    "yesExit": "Oui, quitter",
-    "expanded_setlist": "Liste de série étendue",
-    "expanded_setlist_info": "Toujours afficher la série entière",
-    "seconds": "Secondes",
-    "theme": "Theme",
-    "theme_dark": "Dark",
-    "theme_light": "Light",
-    "theme_system": "System"
-}
+    "yesExit": "Oui, quitter"
+  }
