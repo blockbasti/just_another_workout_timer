@@ -10,18 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tts: 3.3.3
-  path_provider: 2.0.8
+  path_provider: 2.0.9
   flutter_file_dialog: 2.3.0
   pref: 2.5.0
   fluttertoast: 8.0.8
   prefs: 3.4.0+01
-  url_launcher: 6.0.18
+  url_launcher: 6.0.20
   wakelock: 0.6.1+1
-  soundpool: 2.2.0
+  soundpool: 2.3.0
   intl_utils: 2.6.1
   json_annotation: 4.4.0
   flutter_phoenix: 1.0.0
-  flutter_native_splash: 2.0.1+1
+  flutter_native_splash: 2.0.4
   scrollable_positioned_list: 0.2.3
   flutter_localizations:
     sdk: flutter

@@ -4,8 +4,11 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+[![Crowdin](https://badges.crowdin.net/just_another_workout_timer/localized.svg)](https://crowdin.com)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X8827HU)
-
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/blockbasti/just_another_workout_timer/CI/main?style=for-the-badge)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/blockbasti/just_another_workout_timer?style=for-the-badge)
+![F-Droid](https://img.shields.io/f-droid/v/com.blockbasti.justanotherworkouttimer?style=for-the-badge)
 
 <!-- PROJECT LOGO -->
 <br />
