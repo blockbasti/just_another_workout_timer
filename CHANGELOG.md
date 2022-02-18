@@ -1,3 +1,12 @@
+## [1.11.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.0...v1.11.1) (2022-02-18)
+
+
+### Bug Fixes
+
+* crash when loading TTS (fixes [#108](https://github.com/blockbasti/just_another_workout_timer/issues/108)) ([1cdd6b5](https://github.com/blockbasti/just_another_workout_timer/commit/1cdd6b57e68963043de2feb8a5eeddd00cc22615))
+
+
+
 # [1.11.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.10.0...v1.11.0) (2022-02-07)
 
 
