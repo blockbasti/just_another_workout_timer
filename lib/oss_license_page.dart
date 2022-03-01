@@ -39,7 +39,7 @@ class OssLicensesPage extends StatelessWidget {
       }
     }
     for (var key in lm.keys) {
-      ossLicenses[key] = {'license': lm[key].join('\n')};
+      ossLicenses[key] = {'license': lm[key]!.join('\n')};
     }
     return ossKeys..sort();
   }
@@ -57,7 +57,7 @@ class OssLicensesPage extends StatelessWidget {
               padding: const EdgeInsets.all(0),
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
-                final key = snapshot.data[index];
+                final key = snapshot.data![index];
                 final ossl = ossLicenses[key];
                 final version = ossl['version'];
                 final desc = ossl['description'];
@@ -76,12 +76,12 @@ class MiscOssLicenseSingle extends StatelessWidget {
   final String name;
   final Map<String, dynamic> json;
 
-  String get version => json['version'];
-  String get description => json['description'];
+  String get version => json['version'] ?? "";
+  String? get description => json['description'];
   String get licenseText => json['license'];
-  String get homepage => json['homepage'];
+  String? get homepage => json['homepage'];
 
-  MiscOssLicenseSingle({this.name, this.json});
+  MiscOssLicenseSingle({required this.name, required this.json});
 
   String _bodyText() => licenseText.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
@@ -91,7 +91,7 @@ class MiscOssLicenseSingle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text('$name ${version ?? ''}')),
+        appBar: AppBar(title: Text('$name $version')),
         body: Container(
             color: Theme.of(context).canvasColor,
             child: ListView(children: <Widget>[
@@ -99,21 +99,21 @@ class MiscOssLicenseSingle extends StatelessWidget {
                 Padding(
                     padding: const EdgeInsets.only(
                         top: 12.0, left: 12.0, right: 12.0),
-                    child: Text(description,
+                    child: Text(description!,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyText2
+                            .bodyText2!
                             .copyWith(fontWeight: FontWeight.bold))),
               if (homepage != null)
                 Padding(
                     padding: const EdgeInsets.only(
                         top: 12.0, left: 12.0, right: 12.0),
                     child: InkWell(
-                      child: Text(homepage,
+                      child: Text(homepage!,
                           style: const TextStyle(
-                              color: Colors.blue,
+                              /* color: Colors.blue, */
                               decoration: TextDecoration.underline)),
-                      onTap: () => launch(homepage),
+                      onTap: () => launch(homepage!),
                     )),
               if (description != null || homepage != null) const Divider(),
               Padding(

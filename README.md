@@ -4,8 +4,11 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-
-
+[![Crowdin](https://badges.crowdin.net/just_another_workout_timer/localized.svg)](https://crowdin.com)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/X8X8827HU)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/blockbasti/just_another_workout_timer/CI/main?style=for-the-badge)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/blockbasti/just_another_workout_timer?style=for-the-badge)
+![F-Droid](https://img.shields.io/f-droid/v/com.blockbasti.justanotherworkouttimer?style=for-the-badge)
 
 <!-- PROJECT LOGO -->
 <br />
@@ -71,9 +74,7 @@
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" alt="Settings Screen" width="250">
 
 ### How To Backup & Restore Your Workouts
-*Just Another Workout Timer* saves your workouts to local storage at `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`. Just copy this folder to your desired backup location.<br>
-To restore a backup, simply paste the contents of the backed up workout folder back into `Android/data/com.blockbasti.justanotherworkouttimer/files/workouts`.<br>
-The workouts are now available in the app again.
+You can export individual workouts or create an export of all your workouts and import them later. You can also transfer them to another device.
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -90,6 +91,14 @@ Contributions are what make the open source community such an amazing place to l
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+### Building the app
+
+1. Run `flutter pub get`
+2. Run `./scripts/generate_code.sh` or 
+`flutter pub run flutter_oss_licenses:generate.dart` and
+`flutter pub run intl_utils:generate` to generate licenses and translations
+3. Run `flutter build apk` or run using your IDE
 
 <!-- LICENSE -->
 ## License

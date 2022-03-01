@@ -11,3 +11,6 @@ linter:
     prefer_expression_function_bodies: true
     prefer_typing_uninitialized_variables: true
     use_function_type_syntax_for_parameters: true
+    avoid_function_literals_in_foreach_calls: false
+    avoid_classes_with_only_static_members: false
+    avoid_types_on_closure_parameters: false

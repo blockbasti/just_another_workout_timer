@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:preferences/dropdown_preference.dart';
-import 'package:preferences/preference_page.dart';
-import 'package:preferences/preference_title.dart';
-import 'package:preferences/preferences.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pref/pref.dart';
+import 'package:prefs/prefs.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'generated/l10n.dart';
+import 'languages.dart';
 import 'oss_license_page.dart';
 import 'sound_helper.dart';
+import 'storage_helper.dart';
 import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
@@ -18,7 +20,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _license = '';
+  late String _license;
 
   void _loadLicense() async {
     var lic = await rootBundle.loadString('LICENSE');
@@ -34,90 +36,150 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: AppBar(
           title: Text(S.of(context).settings),
         ),
-        body: PreferencePage([
-          PreferenceTitle(S.of(context).general),
-          DropdownPreference(
-            S.of(context).language,
-            'lang',
-            defaultVal: 'en',
-            values: ['en', 'de'],
-            displayValues: [S.of(context).english, S.of(context).german],
-            onChange: (value) {
+        body: PrefPage(children: [
+          PrefTitle(
+            title: Text(
+              S.of(context).general,
+              /* style: TextStyle(color: Colors.blue), */
+            ),
+          ),
+          PrefDropdown(
+            title: Text(S.of(context).language),
+            items: Languages.languages
+                .map((lang) => DropdownMenuItem(
+                    child: Text(lang.displayName), value: lang.localeCode))
+                .toList(),
+            onChange: (String value) {
+              var lang = Languages.fromLocaleCode(value);
               setState(() {
-                S.load(Locale(value));
+                S.load(Locale(lang.localeCode));
+                TTSHelper.setLanguage(lang.languageCode);
               });
             },
+            pref: 'lang',
           ),
-          SwitchPreference(
-            S.of(context).keepScreenAwake,
-            'wakelock',
+          PrefDropdown(
+              title: Text(S.of(context).theme),
+              pref: 'theme',
+              onChange: (_) {
+                Phoenix.rebirth(context);
+              },
+              items: [
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_dark), value: 'dark'),
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_light), value: 'light'),
+                DropdownMenuItem(
+                    child: Text(S.of(context).theme_system), value: 'system'),
+              ]),
+          PrefSwitch(
+            title: Text(S.of(context).keepScreenAwake),
+            pref: 'wakelock',
           ),
-          SwitchPreference(S.of(context).settingHalfway, 'halftime'),
-          SwitchPreference(S.of(context).playTickEverySecond, 'ticks'),
-          PreferenceTitle(S.of(context).soundOutput),
-          RadioPreference(
-            S.of(context).noSound,
-            'none',
-            'sound',
-            desc: S.of(context).noSoundDesc,
+          PrefSwitch(
+              title: Text(S.of(context).settingHalfway), pref: 'halftime'),
+          PrefSwitch(
+              title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
+          PrefSwitch(
+              title: Text(S.of(context).expanded_setlist),
+              subtitle: Text(S.of(context).expanded_setlist_info),
+              pref: 'expanded_setlist'),
+          PrefTitle(
+              title: Text(S.of(context).backup,
+                  /* style: TextStyle(color: Colors.blue) */)),
+          PrefLabel(
+            title: Text(S.of(context).export),
+            onTap: exportAllWorkouts,
+          ),
+          PrefLabel(
+            title: Text(S.of(context).import),
+            onTap: () => {
+              importBackup().then((value) => Fluttertoast.showToast(
+                  msg: S.of(context).importedCount(value),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER))
+            },
+          ),
+          PrefTitle(
+              title: Text(S.of(context).soundOutput,
+                  /* style: TextStyle(color: Colors.blue) */)),
+          PrefRadio(
+            title: Text(S.of(context).noSound),
+            value: 'none',
+            pref: 'sound',
+            subtitle: Text(S.of(context).noSoundDesc),
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = false;
             },
           ),
-          RadioPreference(
-            S.of(context).useTTS,
-            'tts',
-            'sound',
-            desc: S.of(context).useTTSDesc,
-            isDefault: true,
+          PrefRadio(
+            title: Text(S.of(context).useTTS),
+            value: 'tts',
+            pref: 'sound',
+            subtitle: Text(S.of(context).useTTSDesc),
             disabled: !TTSHelper.available,
             onSelect: () {
               TTSHelper.useTTS = true;
               SoundHelper.useSound = false;
             },
           ),
-          RadioPreference(
-            S.of(context).useSound,
-            'beep',
-            'sound',
-            desc: S.of(context).useSoundDesc,
+          PrefRadio(
+            title: Text(S.of(context).useSound),
+            value: 'beep',
+            pref: 'sound',
+            subtitle: Text(S.of(context).useSoundDesc),
             onSelect: () {
               TTSHelper.useTTS = false;
               SoundHelper.useSound = true;
             },
           ),
-          PreferenceTitle(S.of(context).tts),
-          DropdownPreference(
-            S.of(context).ttsLang,
-            'tts_lang',
-            desc: S.of(context).ttsLangDesc,
-            defaultVal: (TTSHelper.languages.isNotEmpty
-                ? TTSHelper.languages.first
-                : ''),
-            values: TTSHelper.languages,
+          PrefTitle(
+            title:
+                Text(S.of(context).tts, /* style: TextStyle(color: Colors.blue) */),
+          ),
+          PrefDropdown(
+            title: Text(S.of(context).ttsVoice),
+            pref: 'tts_voice',
+            subtitle: Text(S.of(context).ttsVoiceDesc),
+            items: TTSHelper.voices
+                .where((voice) =>
+                    voice.locale == Prefs.getString('tts_lang', 'en-US'))
+                .toList()
+                .asMap()
+                .entries
+                .map((voice) => DropdownMenuItem(
+                    child: Text(
+                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})'),
+                    value: voice.value.name))
+                .toList(),
             disabled: !TTSHelper.available,
-            onChange: (value) {
-              TTSHelper.flutterTts.setLanguage(value);
+            onChange: (String value) {
+              TTSHelper.flutterTts.setVoice({
+                "name": value,
+                "locale": Prefs.getString('tts_lang', 'en-US')
+              });
             },
           ),
-          SwitchPreference(
-            S.of(context).announceUpcomingExercise,
-            'tts_next_announce',
-            desc: S.of(context).AnnounceUpcomingExerciseDesc,
+          PrefSwitch(
+            title: Text(S.of(context).announceUpcomingExercise),
+            pref: 'tts_next_announce',
+            subtitle: Text(S.of(context).AnnounceUpcomingExerciseDesc),
             disabled: !TTSHelper.available,
           ),
-          PreferenceTitle(S.of(context).licenses),
-          PreferenceText(
-            S.of(context).viewOnGithub,
+          PrefTitle(
+              title: Text(S.of(context).licenses,
+                  /* style: TextStyle(color: Colors.blue) */)),
+          PrefLabel(
+            title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
             onTap: () {
               launch(
                   'https://github.com/blockbasti/just_another_workout_timer');
             },
           ),
-          PreferenceText(
-            S.of(context).viewLicense,
+          PrefLabel(
+            title: Text(S.of(context).viewLicense),
             onTap: () {
               showDialog(
                   context: context,
@@ -141,8 +203,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ));
             },
           ),
-          PreferenceText(
-            S.of(context).viewOSSLicenses,
+          PrefLabel(
+            title: Text(S.of(context).viewOSSLicenses),
             onTap: () {
               Navigator.push(
                   context,

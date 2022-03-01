@@ -17,8 +17,7 @@ jobs:
           java-version: '14.x'
       - uses: subosito/flutter-action@v1
         with:
-          #channel: 'stable'
-          flutter-version: '1.22.6'
+          channel: 'stable'
 
       - name: Build full changelog
         id: changelog
@@ -39,12 +38,12 @@ jobs:
           skip-commit: 'true'
 
       - name: Write versioncode to pubspec.yml
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
-          TAG: ${{ steps.changelog.outputs.version }}
+          VERSION: ${{ steps.changelog.outputs.version }}
         run: |
-          export VERSION=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "6,6s/.*/version\: $TAG\+$VERSION/" pubspec.yaml
+          #export VERSION=$(grep -oP '(?<=version: )(\d\.\d\.\d)' ./pubspec.yaml)
+          export TIMESTAMP=$(printf '%(%Y%m%d)T\n' -1)
+          sed -i -E -e "4,4s/.*/version\: $VERSION\+$TIMESTAMP/" pubspec.yaml
 
       - name: Write changelog to fastlane
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
@@ -69,14 +68,16 @@ jobs:
           message: 'chore: commit files during release'
           add: "['fastlane/metadata/android/en-US/changelogs/*.txt', 'pubspec.yaml', 'CHANGELOG.md']"
 
-      - name: Build APKs
+      - name: Setup Flutter
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         run: |
           flutter config --no-analytics
           flutter pub get
-          flutter test
-          flutter pub run flutter_oss_licenses:generate.dart
-          flutter build apk
+          sh ./scripts/generate_code.sh
+
+      - name: Build APKs
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        run: flutter build apk
 
       - name: Sign APK
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
@@ -89,7 +90,7 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "30.0.2"
+          BUILD_TOOLS_VERSION: "31.0.0"
 
       - name: Get last commit id
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
@@ -106,7 +107,7 @@ jobs:
           commitish: ${{ steps.get_commit.outputs.sha }}
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
 
       - name: Upload Release Asset
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
