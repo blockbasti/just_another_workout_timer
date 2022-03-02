@@ -81,8 +81,5 @@
     "theme": "Thème",
     "theme_dark": "Dark",
     "theme_light": "Light",
-    "theme_system": "Système",
-    "@@@locale": {
-        "description": "--> locale"
-    }
+    "theme_system": "Système"
 }
