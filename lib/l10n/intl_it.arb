@@ -29,7 +29,7 @@
     "theme": "Tema",
     "theme_dark": "Scuro",
     "theme_light": "Chiaro",
-    "theme_system": "Tema di sistema"
+    "theme_system": "Tema di sistema",
     "firstExercise": "Inizia con: {name}",
     "general": "Generale",
     "halfwayDone": "Metà esercizio",
