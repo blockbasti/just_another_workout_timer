@@ -1,5 +1,5 @@
 {
-    "@@locale": "en",
+    "@@locale": "tr",
     "addExercise": "Übung hinzufügen",
     "addRest": "Pause hinzufügen",
     "addSet": "Satz hinzufügen",
@@ -81,8 +81,5 @@
     "theme": "Design",
     "theme_dark": "Dunkel",
     "theme_light": "Hell",
-    "theme_system": "System",
-    "@@@locale": {
-        "description": "--> locale"
-    }
+    "theme_system": "System"
 }
