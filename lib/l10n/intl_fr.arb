@@ -1,5 +1,5 @@
 {
-    "@@locale": "en",
+    "@@locale": "tr",
     "addExercise": "Ajouter exercice",
     "addRest": "Ajouter repos",
     "addSet": "Ajouter série",
@@ -78,8 +78,8 @@
     "expanded_setlist": "Liste de série étendue",
     "expanded_setlist_info": "Toujours afficher la série entière",
     "seconds": "Secondes",
-    "theme": "Thème",
-    "theme_dark": "Dark",
-    "theme_light": "Light",
-    "theme_system": "Système"
+    "theme": "Tema",
+    "theme_dark": "Koyu",
+    "theme_light": "Açık",
+    "theme_system": "Sistem"
 }
