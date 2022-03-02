@@ -103,6 +103,10 @@
     "expanded_setlist": "Espandi la Sessione",
     "expanded_setlist_info": "Mostra sempre tutta la sessione",
     "export": "Esporta tutti gli allenamenti",
+    "theme": "Tema",
+    "theme_dark": "Scuro",
+    "theme_light": "Chiaro",
+    "theme_system": "Di sistema"
     "firstExercise": "Inizia con: {name}",
     "general": "Generale",
     "halfwayDone": "Metà esercizio eseguito",
