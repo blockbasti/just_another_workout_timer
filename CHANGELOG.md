@@ -1,3 +1,13 @@
+## [1.11.2](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.1...v1.11.2) (2022-03-17)
+
+
+### Bug Fixes
+
+* Fix loading of backup files with malformed utf8 encoding ([#114](https://github.com/blockbasti/just_another_workout_timer/issues/114)) ([e80c23d](https://github.com/blockbasti/just_another_workout_timer/commit/e80c23d0ceca27948f48b8d309e9505bb854a991))
+* IT translation update ([#113](https://github.com/blockbasti/just_another_workout_timer/issues/113)) ([12c4757](https://github.com/blockbasti/just_another_workout_timer/commit/12c4757ba8767a5ed239bd0373f6e7432f477207))
+
+
+
 ## [1.11.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.0...v1.11.1) (2022-02-18)
 
 
