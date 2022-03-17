@@ -1,7 +1,7 @@
 name: just_another_workout_timer
 description: Just Another Workout Timer
 
-version: 1.10.0+20220125
+version: 1.11.2+20220317
 
 environment:
   sdk: ">=2.16.0 <3.0.0"

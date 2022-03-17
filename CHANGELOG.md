@@ -1,3 +1,37 @@
+## [1.11.2](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.1...v1.11.2) (2022-03-17)
+
+
+### Bug Fixes
+
+* Fix loading of backup files with malformed utf8 encoding ([#114](https://github.com/blockbasti/just_another_workout_timer/issues/114)) ([e80c23d](https://github.com/blockbasti/just_another_workout_timer/commit/e80c23d0ceca27948f48b8d309e9505bb854a991))
+* IT translation update ([#113](https://github.com/blockbasti/just_another_workout_timer/issues/113)) ([12c4757](https://github.com/blockbasti/just_another_workout_timer/commit/12c4757ba8767a5ed239bd0373f6e7432f477207))
+
+
+
+## [1.11.1](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.0...v1.11.1) (2022-02-18)
+
+
+### Bug Fixes
+
+* crash when loading TTS (fixes [#108](https://github.com/blockbasti/just_another_workout_timer/issues/108)) ([1cdd6b5](https://github.com/blockbasti/just_another_workout_timer/commit/1cdd6b57e68963043de2feb8a5eeddd00cc22615))
+
+
+
+# [1.11.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.10.0...v1.11.0) (2022-02-07)
+
+
+### Bug Fixes
+
+* avoid negative time on exercise ([#106](https://github.com/blockbasti/just_another_workout_timer/issues/106)) ([0cefe4f](https://github.com/blockbasti/just_another_workout_timer/commit/0cefe4f9de797cf7f2678c4e4ccee53b3efd080e))
+* fix crash with no TTS service installed (fixes [#108](https://github.com/blockbasti/just_another_workout_timer/issues/108)) ([b087fb5](https://github.com/blockbasti/just_another_workout_timer/commit/b087fb54b606168e4ca2d409ae675f871e44bbbf))
+
+
+### Features
+
+* use Material3 ([6ef7858](https://github.com/blockbasti/just_another_workout_timer/commit/6ef7858c93de57af785860a6d853619f0ae57853))
+
+
+
 # [1.10.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.9.1...v1.10.0) (2022-01-25)
 
 
