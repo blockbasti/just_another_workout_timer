@@ -45,7 +45,17 @@ Future<int> importBackup() async {
       allowEditing: false);
   final filePath = await FlutterFileDialog.pickFile(params: params);
   if (filePath != null && filePath.isNotEmpty) {
-    var backup = await File(filePath).readAsString();
+    String backup;
+    var file = File(filePath);
+    try {
+      backup = await file.readAsString();
+    } on FileSystemException {
+      // It might happen that encoding of files gets corrupted somehow.
+      // Therefore loading is tried again with 'allowMalformed' flag.
+      var bytes = await file.readAsBytes();
+      backup = utf8.decode(bytes, allowMalformed: true);
+      // TODO: What to do here? Log error? Show warning?
+    }
     var workouts = Backup.fromJson(jsonDecode(backup)).workouts;
     workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
     await Migrations.runMigrations();
