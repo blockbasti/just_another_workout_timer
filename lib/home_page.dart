@@ -10,19 +10,19 @@ import 'workout_runner.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
-  HomePage() : super();
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   List<Workout> workouts = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadWorkouts();
     });
   }
@@ -94,33 +94,29 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 4),
-            child: ReorderableDragStartListener(
-                child: Icon(Icons.drag_handle), index: workout.position),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: ReorderableDragStartListener(index: workout.position, child: const Icon(Icons.drag_handle)),
           ),
           Expanded(
             child: ListTile(
               title: Text(workout.title),
-              subtitle: Text(S
-                  .of(context)
-                  .durationWithTime(Utils.formatSeconds(workout.duration))),
+              subtitle: Text(S.of(context).durationWithTime(Utils.formatSeconds(workout.duration))),
             ),
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             tooltip: S.of(context).editWorkout,
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      BuilderPage(workout: workout, newWorkout: false),
+                  builder: (context) => BuilderPage(workout: workout, newWorkout: false),
                 ),
               ).then((value) => _loadWorkouts());
             },
           ),
           IconButton(
-              icon: Icon(Icons.play_circle_fill),
+              icon: const Icon(Icons.play_circle_fill),
               tooltip: S.of(context).startWorkout,
               onPressed: () {
                 Navigator.push(
@@ -131,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                 ).then((value) => _loadWorkouts());
               }),
           IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               tooltip: S.of(context).deleteWorkout,
               onPressed: () {
                 _showDeleteDialog(context, workout);
@@ -140,7 +136,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 exportWorkout(workout.title);
               },
-              icon: Icon(Icons.save_alt))
+              icon: const Icon(Icons.save_alt))
         ],
       ));
 
@@ -150,13 +146,9 @@ class _HomePageState extends State<HomePage> {
           title: Text(S.of(context).workouts),
           actions: [
             IconButton(
-                icon: Icon(Icons.settings),
+                icon: const Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettingsPage()))
-                      .then((value) => _loadWorkouts());
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage())).then((value) => _loadWorkouts());
                 })
           ],
         ),
@@ -175,7 +167,7 @@ class _HomePageState extends State<HomePage> {
             ).then((value) => _loadWorkouts());
           },
           tooltip: S.of(context).addWorkout,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       );
 }

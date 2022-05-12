@@ -7,11 +7,7 @@ part 'workout.g.dart';
 class Workout {
   static const fileVersion = 2;
 
-  Workout(
-      {this.title = 'Workout',
-      List<Set>? sets,
-      this.version = fileVersion,
-      this.position = -1}) {
+  Workout({this.title = 'Workout', List<Set>? sets, this.version = fileVersion, this.position = -1}) {
     this.sets = sets ?? [Set()];
   }
 
@@ -39,8 +35,7 @@ class Workout {
     sets.removeWhere((set) => set.exercises.isEmpty);
   }
 
-  factory Workout.fromJson(Map<String, dynamic> json) =>
-      _$WorkoutFromJson(json);
+  factory Workout.fromJson(Map<String, dynamic> json) => _$WorkoutFromJson(json);
   Map<String, dynamic> toJson() => _$WorkoutToJson(this);
 }
 
@@ -51,7 +46,7 @@ class Set {
     this.repetitions = 1,
     List<Exercise>? exercises,
   }) {
-    this.id = id ?? Uuid().v4();
+    this.id = id ?? const Uuid().v4();
     this.exercises = exercises ?? [Exercise()];
   }
 
@@ -79,7 +74,7 @@ class Set {
 @JsonSerializable(explicitToJson: true)
 class Exercise {
   Exercise({String? id, this.name = 'Exercise', this.duration = 30}) {
-    this.id = id ?? Uuid().v4();
+    this.id = id ?? const Uuid().v4();
   }
 
   @JsonKey(required: true)
@@ -91,8 +86,7 @@ class Exercise {
   @JsonKey(required: true, defaultValue: 30)
   int duration;
 
-  factory Exercise.fromJson(Map<String, dynamic> json) =>
-      _$ExerciseFromJson(json);
+  factory Exercise.fromJson(Map<String, dynamic> json) => _$ExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$ExerciseToJson(this);
 }
 

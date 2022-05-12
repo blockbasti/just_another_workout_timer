@@ -25,24 +25,18 @@ Future<void> exportWorkout(String title) async {
   var workout = await loadWorkout(title: title);
   var backup = Backup(workouts: [workout]);
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
-      fileName: '${Utils.removeSpecialChar(title)}.json');
+      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits), fileName: '${Utils.removeSpecialChar(title)}.json');
   await FlutterFileDialog.saveFile(params: params);
 }
 
 Future<void> exportAllWorkouts() async {
   var backup = Backup(workouts: await getAllWorkouts());
-  final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
-      fileName: 'Backup.json');
+  final params = SaveFileDialogParams(data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits), fileName: 'Backup.json');
   await FlutterFileDialog.saveFile(params: params);
 }
 
 Future<int> importBackup() async {
-  final params = OpenFileDialogParams(
-      dialogType: OpenFileDialogType.document,
-      fileExtensionsFilter: ['json'],
-      allowEditing: false);
+  const params = OpenFileDialogParams(dialogType: OpenFileDialogType.document, fileExtensionsFilter: ['json'], allowEditing: false);
   final filePath = await FlutterFileDialog.pickFile(params: params);
   if (filePath != null && filePath.isNotEmpty) {
     String backup;
@@ -68,7 +62,7 @@ Future<int> importBackup() async {
 Future<void> writeWorkout(Workout workout, {bool fixDuplicates = false}) async {
   if (fixDuplicates) {
     var counter = 2;
-    var newTitle = '${workout.title}';
+    var newTitle = workout.title;
 
     while (await workoutExists(newTitle)) {
       newTitle = '${workout.title}($counter)';
@@ -98,6 +92,7 @@ Future<void> deleteWorkout(String title) async {
   try {
     final file = await _loadWorkoutFile(title);
     file.delete();
+    // ignore: empty_catches
   } on Exception {}
 }
 
@@ -114,19 +109,14 @@ Future<void> createBackup() async {
   Utils.copyDirectory(dir, dirbak);
   var backup = Backup(workouts: await getAllWorkouts());
   var backupfile = File('${dirbak.path}/backup.json');
-  backupfile.writeAsBytesSync(
-      Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
+  backupfile.writeAsBytesSync(Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
 }
 
 Future<List<Workout>> getAllWorkouts() async {
   final path = await localPath;
 
   var dir = Directory('$path/workouts');
-  var titles = dir
-      .listSync()
-      .map((e) => e.path.split("/").last.split(".").first)
-      .toList();
-  var list =
-      (await Future.wait(titles.map((t) async => await loadWorkout(title: t))));
+  var titles = dir.listSync().map((e) => e.path.split("/").last.split(".").first).toList();
+  var list = (await Future.wait(titles.map((t) async => await loadWorkout(title: t))));
   return Utils.sortWorkouts(list);
 }

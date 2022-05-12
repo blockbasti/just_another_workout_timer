@@ -35,7 +35,7 @@ class TTSHelper {
 
     // populate the list of available TTS voices
     try {
-      List<dynamic> allVoices = await flutterTts.getVoices.timeout(Duration(seconds: 1));
+      List<dynamic> allVoices = await flutterTts.getVoices.timeout(const Duration(seconds: 1));
       voices = allVoices.map((element) {
         Map e = element;
         var voice = TTSVoice(e.entries.first.value, e.entries.last.value);
@@ -47,7 +47,7 @@ class TTSHelper {
       return;
     }
 
-    if(voices.isEmpty) {
+    if (voices.isEmpty) {
       _ttsUnavailable();
       return;
     }
@@ -55,7 +55,7 @@ class TTSHelper {
     useTTS = Prefs.getString('sound') == 'tts';
 
     var ttsLang = Prefs.getString('tts_lang', 'en-US');
-    if(!Languages.languageCodes.contains(ttsLang)) ttsLang = 'en-US';
+    if (!Languages.languageCodes.contains(ttsLang)) ttsLang = 'en-US';
     await Prefs.setString('tts_lang', ttsLang);
 
     var ttsVoice = Prefs.getString('tts_voice', "");
@@ -72,7 +72,7 @@ class TTSHelper {
     });
 
     try {
-      await flutterTts.setLanguage(ttsLang).timeout(Duration(seconds: 1)).then((_) async {
+      await flutterTts.setLanguage(ttsLang).timeout(const Duration(seconds: 1)).then((_) async {
         await flutterTts.setVolume(1.0);
         await flutterTts.setVoice({"name": ttsVoice, "locale": ttsLang});
       });

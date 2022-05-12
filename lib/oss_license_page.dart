@@ -6,7 +6,9 @@ import 'generated/l10n.dart';
 import 'oss_licenses.dart';
 
 class FlutterLicense extends LicenseEntry {
+  @override
   final List<String> packages;
+  @override
   final List<LicenseParagraph> paragraphs;
 
   FlutterLicense(this.packages, this.paragraphs);
@@ -14,6 +16,8 @@ class FlutterLicense extends LicenseEntry {
 
 /// display all used packages and their license
 class OssLicensesPage extends StatelessWidget {
+  const OssLicensesPage({Key? key}) : super(key: key);
+
   static Future<List<Package>> loadLicenses() async {
     // merging non-dart dependency list using LicenseRegistry.
     final lm = <String, List<String>>{};
@@ -37,7 +41,7 @@ class OssLicensesPage extends StatelessWidget {
       ));
     }
 
-    licenses.add(Package(
+    licenses.add(const Package(
         name: 'Metronome 1kHz (weak pulse)',
         description: '',
         authors: ['unfa'],
@@ -83,7 +87,7 @@ class OssLicensesPage extends StatelessWidget {
 class MiscOssLicenseSingle extends StatelessWidget {
   final Package package;
 
-  MiscOssLicenseSingle({required this.package});
+  const MiscOssLicenseSingle({Key? key, required this.package}) : super(key: key);
 
   String _bodyText() => package.license!.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);

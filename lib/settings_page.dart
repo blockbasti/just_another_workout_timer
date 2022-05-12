@@ -4,7 +4,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'generated/l10n.dart';
 import 'languages.dart';
@@ -15,11 +15,13 @@ import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
+
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   late String _license;
 
   void _loadLicense() async {
@@ -45,10 +47,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           PrefDropdown(
             title: Text(S.of(context).language),
-            items: Languages.languages
-                .map((lang) => DropdownMenuItem(
-                    child: Text(lang.displayName), value: lang.localeCode))
-                .toList(),
+            items: Languages.languages.map((lang) => DropdownMenuItem(value: lang.localeCode, child: Text(lang.displayName))).toList(),
             onChange: (String value) {
               var lang = Languages.fromLocaleCode(value);
               setState(() {
@@ -65,28 +64,22 @@ class _SettingsPageState extends State<SettingsPage> {
                 Phoenix.rebirth(context);
               },
               items: [
-                DropdownMenuItem(
-                    child: Text(S.of(context).theme_dark), value: 'dark'),
-                DropdownMenuItem(
-                    child: Text(S.of(context).theme_light), value: 'light'),
-                DropdownMenuItem(
-                    child: Text(S.of(context).theme_system), value: 'system'),
+                DropdownMenuItem(value: 'dark', child: Text(S.of(context).theme_dark)),
+                DropdownMenuItem(value: 'light', child: Text(S.of(context).theme_light)),
+                DropdownMenuItem(value: 'system', child: Text(S.of(context).theme_system)),
               ]),
           PrefSwitch(
             title: Text(S.of(context).keepScreenAwake),
             pref: 'wakelock',
           ),
+          PrefSwitch(title: Text(S.of(context).settingHalfway), pref: 'halftime'),
+          PrefSwitch(title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
           PrefSwitch(
-              title: Text(S.of(context).settingHalfway), pref: 'halftime'),
-          PrefSwitch(
-              title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
-          PrefSwitch(
-              title: Text(S.of(context).expanded_setlist),
-              subtitle: Text(S.of(context).expanded_setlist_info),
-              pref: 'expanded_setlist'),
+              title: Text(S.of(context).expanded_setlist), subtitle: Text(S.of(context).expanded_setlist_info), pref: 'expanded_setlist'),
           PrefTitle(
-              title: Text(S.of(context).backup,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).backup, /* style: TextStyle(color: Colors.blue) */
+          )),
           PrefLabel(
             title: Text(S.of(context).export),
             onTap: exportAllWorkouts,
@@ -95,14 +88,13 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text(S.of(context).import),
             onTap: () => {
               importBackup().then((value) => Fluttertoast.showToast(
-                  msg: S.of(context).importedCount(value),
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER))
+                  msg: S.of(context).importedCount(value), toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER))
             },
           ),
           PrefTitle(
-              title: Text(S.of(context).soundOutput,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).soundOutput, /* style: TextStyle(color: Colors.blue) */
+          )),
           PrefRadio(
             title: Text(S.of(context).noSound),
             value: 'none',
@@ -135,30 +127,25 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           PrefTitle(
-            title:
-                Text(S.of(context).tts, /* style: TextStyle(color: Colors.blue) */),
+            title: Text(
+              S.of(context).tts, /* style: TextStyle(color: Colors.blue) */
+            ),
           ),
           PrefDropdown(
             title: Text(S.of(context).ttsVoice),
             pref: 'tts_voice',
             subtitle: Text(S.of(context).ttsVoiceDesc),
             items: TTSHelper.voices
-                .where((voice) =>
-                    voice.locale == Prefs.getString('tts_lang', 'en-US'))
+                .where((voice) => voice.locale == Prefs.getString('tts_lang', 'en-US'))
                 .toList()
                 .asMap()
                 .entries
-                .map((voice) => DropdownMenuItem(
-                    child: Text(
-                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})'),
-                    value: voice.value.name))
+                .map((voice) =>
+                    DropdownMenuItem(value: voice.value.name, child: Text('${S.of(context).voice} ${voice.key + 1} (${voice.value.name})')))
                 .toList(),
             disabled: !TTSHelper.available,
             onChange: (String value) {
-              TTSHelper.flutterTts.setVoice({
-                "name": value,
-                "locale": Prefs.getString('tts_lang', 'en-US')
-              });
+              TTSHelper.flutterTts.setVoice({"name": value, "locale": Prefs.getString('tts_lang', 'en-US')});
             },
           ),
           PrefSwitch(
@@ -168,14 +155,14 @@ class _SettingsPageState extends State<SettingsPage> {
             disabled: !TTSHelper.available,
           ),
           PrefTitle(
-              title: Text(S.of(context).licenses,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).licenses, /* style: TextStyle(color: Colors.blue) */
+          )),
           PrefLabel(
             title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
             onTap: () {
-              launch(
-                  'https://github.com/blockbasti/just_another_workout_timer');
+              launchUrlString('https://github.com/blockbasti/just_another_workout_timer');
             },
           ),
           PrefLabel(
@@ -187,15 +174,14 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Text(
                                 S.of(context).title,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Text(_license),
                             )
                           ],
@@ -209,7 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OssLicensesPage(),
+                    builder: (context) => const OssLicensesPage(),
                   ));
             },
           )

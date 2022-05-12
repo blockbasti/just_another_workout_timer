@@ -16,7 +16,7 @@ import 'tts_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  GestureBinding.instance!.resamplingEnabled = true;
+  GestureBinding.instance.resamplingEnabled = true;
   await Prefs.init();
 
   PrefServiceShared.init(defaults: {
@@ -27,21 +27,18 @@ void main() async {
     'tts_next_announce': true,
     'sound': 'tts',
     'expanded_setlist': false
-  }).then((service) => Future.wait([
-        TTSHelper.init(),
-        SoundHelper.loadSounds(),
-        Migrations.runMigrations()
-      ]).then((_) => runApp(
-          PrefService(child: Phoenix(child: JAWTApp()), service: service))));
+  }).then((service) => Future.wait([TTSHelper.init(), SoundHelper.loadSounds(), Migrations.runMigrations()])
+      .then((_) => runApp(PrefService(service: service, child: Phoenix(child: JAWTApp())))));
 }
 
 class JAWTApp extends StatelessWidget {
   ThemeMode? _brightness;
 
+  JAWTApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     switch (PrefService.of(context).get('theme')) {
@@ -67,7 +64,7 @@ class JAWTApp extends StatelessWidget {
           cardTheme: CardTheme(
             elevation: 4,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.black12, width: 1),
+              side: const BorderSide(color: Colors.black12, width: 1),
               borderRadius: BorderRadius.circular(4),
             ),
           )),
@@ -79,12 +76,12 @@ class JAWTApp extends StatelessWidget {
           cardTheme: CardTheme(
             elevation: 4,
             shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.black12, width: 1),
+              side: const BorderSide(color: Colors.black12, width: 1),
               borderRadius: BorderRadius.circular(4),
             ),
           )),
-      home: HomePage(),
-      localizationsDelegates: [
+      home: const HomePage(),
+      localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
@@ -98,14 +95,13 @@ class JAWTApp extends StatelessWidget {
         }
 
         for (var locale in locales!) {
-          if (supportedLocales
-              .any((element) => element.languageCode == locale.languageCode)) {
+          if (supportedLocales.any((element) => element.languageCode == locale.languageCode)) {
             PrefService.of(context).set('lang', locale.languageCode);
             return locale;
           }
         }
         PrefService.of(context).set('lang', 'en');
-        return Locale('en');
+        return const Locale('en');
       },
     );
   }
