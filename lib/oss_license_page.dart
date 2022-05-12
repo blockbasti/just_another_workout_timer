@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'generated/l10n.dart';
 import 'oss_licenses.dart';
@@ -14,34 +14,41 @@ class FlutterLicense extends LicenseEntry {
 
 /// display all used packages and their license
 class OssLicensesPage extends StatelessWidget {
-  static Future<List<String>> loadLicenses() async {
-    Stream<LicenseEntry> licenses() async* {
-      yield FlutterLicense([
-        'Sound Effects'
-      ], [
-        LicenseParagraph(
-            'CC-0\nhttps://freesound.org/people/unfa/sounds/243749/', 0)
-      ]);
-    }
-
-    LicenseRegistry.addLicense(licenses);
-
-    // merging non-dart based dependency list using LicenseRegistry.
-    final ossKeys = ossLicenses.keys.toList();
+  static Future<List<Package>> loadLicenses() async {
+    // merging non-dart dependency list using LicenseRegistry.
     final lm = <String, List<String>>{};
     await for (var l in LicenseRegistry.licenses) {
       for (var p in l.packages) {
-        if (!ossKeys.contains(p)) {
-          final lp = lm.putIfAbsent(p, () => []);
-          lp.addAll(l.paragraphs.map((p) => p.text));
-          ossKeys.add(p);
-        }
+        final lp = lm.putIfAbsent(p, () => []);
+        lp.addAll(l.paragraphs.map((p) => p.text));
       }
     }
+    final licenses = ossLicenses.toList();
     for (var key in lm.keys) {
-      ossLicenses[key] = {'license': lm[key]!.join('\n')};
+      licenses.add(Package(
+        name: key,
+        description: '',
+        authors: [],
+        version: '',
+        license: lm[key]!.join('\n\n'),
+        isMarkdown: false,
+        isSdk: false,
+        isDirectDependency: false,
+      ));
     }
-    return ossKeys..sort();
+
+    licenses.add(Package(
+        name: 'Metronome 1kHz (weak pulse)',
+        description: '',
+        authors: ['unfa'],
+        version: '',
+        license: 'CC-0',
+        isMarkdown: false,
+        isSdk: false,
+        isDirectDependency: false,
+        homepage: 'https://freesound.org/people/unfa/sounds/243749/'));
+
+    return licenses..sort((a, b) => a.name.compareTo(b.name));
   }
 
   static final _licenses = loadLicenses();
@@ -51,39 +58,34 @@ class OssLicensesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.of(context).ossLicenses),
       ),
-      body: FutureBuilder<List<String>>(
+      body: FutureBuilder<List<Package>>(
           future: _licenses,
+          initialData: const [],
           builder: (context, snapshot) => ListView.separated(
               padding: const EdgeInsets.all(0),
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
-                final key = snapshot.data![index];
-                final ossl = ossLicenses[key];
-                final version = ossl['version'];
-                final desc = ossl['description'];
+                final package = snapshot.data![index];
                 return ListTile(
-                    title: Text('$key ${version ?? ''}'),
-                    subtitle: desc != null ? Text(desc) : null,
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            MiscOssLicenseSingle(name: key, json: ossl))));
+                  title: Text('${package.name} ${package.version}'),
+                  subtitle: package.description.isNotEmpty ? Text(package.description) : null,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MiscOssLicenseSingle(package: package),
+                    ),
+                  ),
+                );
               },
               separatorBuilder: (context, index) => const Divider())));
 }
 
 class MiscOssLicenseSingle extends StatelessWidget {
-  final String name;
-  final Map<String, dynamic> json;
+  final Package package;
 
-  String get version => json['version'] ?? "";
-  String? get description => json['description'];
-  String get licenseText => json['license'];
-  String? get homepage => json['homepage'];
+  MiscOssLicenseSingle({required this.package});
 
-  MiscOssLicenseSingle({required this.name, required this.json});
-
-  String _bodyText() => licenseText.split('\n').map((line) {
+  String _bodyText() => package.license!.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
         line = line.trim();
         return line;
@@ -91,36 +93,25 @@ class MiscOssLicenseSingle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: Text('$name $version')),
+        appBar: AppBar(title: Text('${package.name} ${package.version}')),
         body: Container(
             color: Theme.of(context).canvasColor,
             child: ListView(children: <Widget>[
-              if (description != null)
+              if (package.description.isNotEmpty)
                 Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12.0, left: 12.0, right: 12.0),
-                    child: Text(description!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(fontWeight: FontWeight.bold))),
-              if (homepage != null)
+                    padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
+                    child: Text(package.description, style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold))),
+              if (package.homepage != null)
                 Padding(
-                    padding: const EdgeInsets.only(
-                        top: 12.0, left: 12.0, right: 12.0),
+                    padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
                     child: InkWell(
-                      child: Text(homepage!,
-                          style: const TextStyle(
-                              /* color: Colors.blue, */
-                              decoration: TextDecoration.underline)),
-                      onTap: () => launch(homepage!),
+                      child: Text(package.homepage!, style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
+                      onTap: () => launchUrlString(package.homepage!),
                     )),
-              if (description != null || homepage != null) const Divider(),
+              if (package.description.isNotEmpty || package.homepage != null) const Divider(),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                child: Text(_bodyText(),
-                    style: Theme.of(context).textTheme.bodyText2),
+                padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
+                child: Text(_bodyText(), style: Theme.of(context).textTheme.bodyText2),
               ),
             ])),
       );
