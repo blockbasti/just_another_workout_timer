@@ -91,7 +91,7 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "31.0.0"
+          BUILD_TOOLS_VERSION: "32.0.0"
 
       - name: Get last commit id
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
