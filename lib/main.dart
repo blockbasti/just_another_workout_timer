@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
@@ -56,35 +57,16 @@ class JAWTApp extends StatelessWidget {
     return MaterialApp(
       title: 'Just Another Workout Timer',
       themeMode: _brightness,
-      theme: ThemeData(
+      theme: NordTheme.light().copyWith(
           useMaterial3: true,
-          brightness: Brightness.light,
-          colorSchemeSeed: Colors.blue,
-          toggleableActiveColor: Colors.blue[800],
-          cardTheme: CardTheme(
+          cardTheme: const CardTheme(
             elevation: 4,
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Colors.black12, width: 1),
-              borderRadius: BorderRadius.circular(4),
-            ),
           )),
-      darkTheme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorSchemeSeed: Colors.blue,
-          toggleableActiveColor: Colors.blueAccent[100],
-          cardTheme: CardTheme(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(color: Colors.black12, width: 1),
-              borderRadius: BorderRadius.circular(4),
-            ),
-          )),
+      darkTheme: NordTheme.dark().copyWith(useMaterial3: true, cardTheme: const CardTheme(elevation: 4)),
       home: const HomePage(),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,

@@ -26,6 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   uuid: 3.0.6
+  flutter_nord_theme: 2.1.0
 
 dev_dependencies:
   flutter_launcher_icons: 0.9.2
@@ -52,8 +53,8 @@ flutter_intl:
   enabled: true
 
 flutter_native_splash:
-  color: "#FFFFFF"
-  color_dark: "#303030"
+  color: "#D8DEE9"
+  color_dark: "#2E3440"
   image: "assets/ic_launcher.png"
   fullscreen: true
   android_gravity: center

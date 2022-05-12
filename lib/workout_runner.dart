@@ -262,7 +262,7 @@ class WorkoutPageState extends State<WorkoutPage> {
 
   void _timerStop() {
     setState(() {
-      _timer!.cancel();
+      _timer?.cancel();
     });
   }
 
@@ -346,7 +346,6 @@ class WorkoutPageState extends State<WorkoutPage> {
           title: Text(_workout.title),
         ),
         bottomNavigationBar: BottomAppBar(
-            //shape: const AutomaticNotchedShape(ContinuousRectangleBorder(), CircleBorder()),
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

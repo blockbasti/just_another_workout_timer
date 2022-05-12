@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -236,7 +237,7 @@ class BuilderPageState extends State<BuilderPage> {
       index: exIndex,
       key: Key(_workout.sets[setIndex].exercises[exIndex].id),
       child: Card(
-        color: Theme.of(context).backgroundColor,
+        color: Theme.of(context).brightness == Brightness.dark ? NordColors.polarNight.darkest : NordColors.snowStorm.lightest,
         child: Row(
           key: Key(_workout.sets[setIndex].exercises[exIndex].id),
           children: [
