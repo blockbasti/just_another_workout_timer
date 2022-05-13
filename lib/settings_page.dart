@@ -42,12 +42,14 @@ class SettingsPageState extends State<SettingsPage> {
           PrefTitle(
             title: Text(
               S.of(context).general,
-              /* style: TextStyle(color: Colors.blue), */
             ),
           ),
           PrefDropdown(
             title: Text(S.of(context).language),
-            items: Languages.languages.map((lang) => DropdownMenuItem(value: lang.localeCode, child: Text(lang.displayName))).toList(),
+            items: Languages.languages
+                .map((lang) => DropdownMenuItem(
+                    value: lang.localeCode, child: Text(lang.displayName)))
+                .toList(),
             onChange: (String value) {
               var lang = Languages.fromLocaleCode(value);
               setState(() {
@@ -64,21 +66,28 @@ class SettingsPageState extends State<SettingsPage> {
                 Phoenix.rebirth(context);
               },
               items: [
-                DropdownMenuItem(value: 'dark', child: Text(S.of(context).theme_dark)),
-                DropdownMenuItem(value: 'light', child: Text(S.of(context).theme_light)),
-                DropdownMenuItem(value: 'system', child: Text(S.of(context).theme_system)),
+                DropdownMenuItem(
+                    value: 'dark', child: Text(S.of(context).theme_dark)),
+                DropdownMenuItem(
+                    value: 'light', child: Text(S.of(context).theme_light)),
+                DropdownMenuItem(
+                    value: 'system', child: Text(S.of(context).theme_system)),
               ]),
           PrefSwitch(
             title: Text(S.of(context).keepScreenAwake),
             pref: 'wakelock',
           ),
-          PrefSwitch(title: Text(S.of(context).settingHalfway), pref: 'halftime'),
-          PrefSwitch(title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
           PrefSwitch(
-              title: Text(S.of(context).expanded_setlist), subtitle: Text(S.of(context).expanded_setlist_info), pref: 'expanded_setlist'),
+              title: Text(S.of(context).settingHalfway), pref: 'halftime'),
+          PrefSwitch(
+              title: Text(S.of(context).playTickEverySecond), pref: 'ticks'),
+          PrefSwitch(
+              title: Text(S.of(context).expanded_setlist),
+              subtitle: Text(S.of(context).expanded_setlist_info),
+              pref: 'expanded_setlist'),
           PrefTitle(
               title: Text(
-            S.of(context).backup, /* style: TextStyle(color: Colors.blue) */
+            S.of(context).backup,
           )),
           PrefLabel(
             title: Text(S.of(context).export),
@@ -87,13 +96,15 @@ class SettingsPageState extends State<SettingsPage> {
           PrefLabel(
             title: Text(S.of(context).import),
             onTap: () => {
-              importBackup().then((value) => Fluttertoast.showToast(
-                  msg: S.of(context).importedCount(value), toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER))
+              importFile(true).then((value) => Fluttertoast.showToast(
+                  msg: S.of(context).importedCount(value),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER))
             },
           ),
           PrefTitle(
               title: Text(
-            S.of(context).soundOutput, /* style: TextStyle(color: Colors.blue) */
+            S.of(context).soundOutput,
           )),
           PrefRadio(
             title: Text(S.of(context).noSound),
@@ -128,7 +139,7 @@ class SettingsPageState extends State<SettingsPage> {
           ),
           PrefTitle(
             title: Text(
-              S.of(context).tts, /* style: TextStyle(color: Colors.blue) */
+              S.of(context).tts,
             ),
           ),
           PrefDropdown(
@@ -136,16 +147,22 @@ class SettingsPageState extends State<SettingsPage> {
             pref: 'tts_voice',
             subtitle: Text(S.of(context).ttsVoiceDesc),
             items: TTSHelper.voices
-                .where((voice) => voice.locale == Prefs.getString('tts_lang', 'en-US'))
+                .where((voice) =>
+                    voice.locale == Prefs.getString('tts_lang', 'en-US'))
                 .toList()
                 .asMap()
                 .entries
-                .map((voice) =>
-                    DropdownMenuItem(value: voice.value.name, child: Text('${S.of(context).voice} ${voice.key + 1} (${voice.value.name})')))
+                .map((voice) => DropdownMenuItem(
+                    value: voice.value.name,
+                    child: Text(
+                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})')))
                 .toList(),
             disabled: !TTSHelper.available,
             onChange: (String value) {
-              TTSHelper.flutterTts.setVoice({"name": value, "locale": Prefs.getString('tts_lang', 'en-US')});
+              TTSHelper.flutterTts.setVoice({
+                "name": value,
+                "locale": Prefs.getString('tts_lang', 'en-US')
+              });
             },
           ),
           PrefSwitch(
@@ -156,13 +173,14 @@ class SettingsPageState extends State<SettingsPage> {
           ),
           PrefTitle(
               title: Text(
-            S.of(context).licenses, /* style: TextStyle(color: Colors.blue) */
+            S.of(context).licenses,
           )),
           PrefLabel(
             title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
             onTap: () {
-              launchUrlString('https://github.com/blockbasti/just_another_workout_timer');
+              launchUrlString(
+                  'https://github.com/blockbasti/just_another_workout_timer');
             },
           ),
           PrefLabel(
@@ -177,7 +195,8 @@ class SettingsPageState extends State<SettingsPage> {
                               padding: const EdgeInsets.all(8),
                               child: Text(
                                 S.of(context).title,
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
                             Padding(

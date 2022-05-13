@@ -15,6 +15,7 @@
     "deleteExercise": "Delete exercise",
     "deleteSet": "Delete set",
     "deleteWorkout": "Delete workout",
+    "shareWorkout": "Share workout",
     "duplicate": "Duplicate",
     "durationLeft": "{timeLeft} of {timeTotal} left",
     "durationWithTime": "Duration: {formattedTime}",

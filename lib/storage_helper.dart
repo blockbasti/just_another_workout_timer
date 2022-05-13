@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'migrations.dart';
 import 'utils.dart';
@@ -25,35 +26,58 @@ Future<void> exportWorkout(String title) async {
   var workout = await loadWorkout(title: title);
   var backup = Backup(workouts: [workout]);
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits), fileName: '${Utils.removeSpecialChar(title)}.json');
+      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+      fileName: '${Utils.removeSpecialChar(title)}.json');
   await FlutterFileDialog.saveFile(params: params);
+}
+
+Future<void> shareWorkout(String title) async {
+  final path = await localPath;
+  Share.shareFiles(['$path/workouts/${Utils.removeSpecialChar(title)}.json'],
+      text: title);
 }
 
 Future<void> exportAllWorkouts() async {
   var backup = Backup(workouts: await getAllWorkouts());
-  final params = SaveFileDialogParams(data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits), fileName: 'Backup.json');
+  final params = SaveFileDialogParams(
+      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+      fileName: 'Backup.json');
   await FlutterFileDialog.saveFile(params: params);
 }
 
-Future<int> importBackup() async {
-  const params = OpenFileDialogParams(dialogType: OpenFileDialogType.document, fileExtensionsFilter: ['json'], allowEditing: false);
-  final filePath = await FlutterFileDialog.pickFile(params: params);
+Future<String?> pickFile() async {
+  const params = OpenFileDialogParams(
+      dialogType: OpenFileDialogType.document,
+      fileExtensionsFilter: ['json'],
+      allowEditing: false);
+  return FlutterFileDialog.pickFile(params: params);
+}
+
+Future<int> importFile(bool fromBackup) async {
+  String? filePath = await pickFile();
   if (filePath != null && filePath.isNotEmpty) {
-    String backup;
+    String content;
     var file = File(filePath);
     try {
-      backup = await file.readAsString();
+      content = await file.readAsString();
     } on FileSystemException {
       // It might happen that encoding of files gets corrupted somehow.
       // Therefore loading is tried again with 'allowMalformed' flag.
       var bytes = await file.readAsBytes();
-      backup = utf8.decode(bytes, allowMalformed: true);
+      content = utf8.decode(bytes, allowMalformed: true);
       // TODO: What to do here? Log error? Show warning?
     }
-    var workouts = Backup.fromJson(jsonDecode(backup)).workouts;
-    workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
-    await Migrations.runMigrations();
-    return Future.value(workouts.length);
+
+    if (fromBackup) {
+      var workouts = Backup.fromJson(jsonDecode(content)).workouts;
+      workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
+      await Migrations.runMigrations();
+      return Future.value(workouts.length);
+    } else {
+      var workout = Workout.fromJson(jsonDecode(content));
+      writeWorkout(workout, fixDuplicates: true);
+      return Future.value(1);
+    }
   } else {
     return Future.value(0);
   }
@@ -109,14 +133,19 @@ Future<void> createBackup() async {
   Utils.copyDirectory(dir, dirbak);
   var backup = Backup(workouts: await getAllWorkouts());
   var backupfile = File('${dirbak.path}/backup.json');
-  backupfile.writeAsBytesSync(Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
+  backupfile.writeAsBytesSync(
+      Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
 }
 
 Future<List<Workout>> getAllWorkouts() async {
   final path = await localPath;
 
   var dir = Directory('$path/workouts');
-  var titles = dir.listSync().map((e) => e.path.split("/").last.split(".").first).toList();
-  var list = (await Future.wait(titles.map((t) async => await loadWorkout(title: t))));
+  var titles = dir
+      .listSync()
+      .map((e) => e.path.split("/").last.split(".").first)
+      .toList();
+  var list =
+      (await Future.wait(titles.map((t) async => await loadWorkout(title: t))));
   return Utils.sortWorkouts(list);
 }

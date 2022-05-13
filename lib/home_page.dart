@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'generated/l10n.dart';
 import 'settings_page.dart';
@@ -95,12 +96,15 @@ class HomePageState extends State<HomePage> {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ReorderableDragStartListener(index: workout.position, child: const Icon(Icons.drag_handle)),
+            child: ReorderableDragStartListener(
+                index: workout.position, child: const Icon(Icons.drag_handle)),
           ),
           Expanded(
             child: ListTile(
               title: Text(workout.title),
-              subtitle: Text(S.of(context).durationWithTime(Utils.formatSeconds(workout.duration))),
+              subtitle: Text(S
+                  .of(context)
+                  .durationWithTime(Utils.formatSeconds(workout.duration))),
             ),
           ),
           IconButton(
@@ -110,7 +114,8 @@ class HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BuilderPage(workout: workout, newWorkout: false),
+                  builder: (context) =>
+                      BuilderPage(workout: workout, newWorkout: false),
                 ),
               ).then((value) => _loadWorkouts());
             },
@@ -133,10 +138,11 @@ class HomePageState extends State<HomePage> {
                 _showDeleteDialog(context, workout);
               }),
           IconButton(
+              tooltip: S.of(context).shareWorkout,
               onPressed: () {
-                exportWorkout(workout.title);
+                shareWorkout(workout.title);
               },
-              icon: const Icon(Icons.save_alt))
+              icon: const Icon(Icons.share)),
         ],
       ));
 
@@ -146,9 +152,26 @@ class HomePageState extends State<HomePage> {
           title: Text(S.of(context).workouts),
           actions: [
             IconButton(
+              onPressed: () async {
+                var count = await importFile(false);
+                _loadWorkouts();
+                if (!mounted) return;
+                Fluttertoast.showToast(
+                    msg: S.of(context).importedCount(count),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER);
+              },
+              icon: const Icon(Icons.file_download),
+              tooltip: S.of(context).import,
+            ),
+            IconButton(
                 icon: const Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage())).then((value) => _loadWorkouts());
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsPage()))
+                      .then((value) => _loadWorkouts());
                 })
           ],
         ),
