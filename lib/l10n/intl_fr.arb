@@ -163,5 +163,7 @@
   "theme_system": "Thème du Système",
   "@theme_system": {},
   "theme": "Thème",
-  "@theme": {}
+  "@theme": {},
+  "shareWorkout": "",
+  "@shareWorkout": {}
 }
