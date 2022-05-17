@@ -21,7 +21,7 @@ dependencies:
   intl_utils: 2.6.1
   json_annotation: 4.5.0
   flutter_phoenix: 1.0.0
-  flutter_native_splash: 2.1.6
+  flutter_native_splash: 2.2.0+1
   scrollable_positioned_list: 0.3.2
   flutter_localizations:
     sdk: flutter
@@ -33,12 +33,15 @@ dev_dependencies:
   flutter_launcher_icons: 0.9.2
   flutter_oss_licenses: 2.0.0+1
   json_serializable: 6.2.0
-  build_runner: 2.1.10
+  build_runner: 2.1.11
   flutter_lints: 2.0.1
+
+dependency_overrides: 
+  petitparser: ^5.0.0
 
 flutter:
   uses-material-design: true
-  generate: true
+  generate: false
   assets:
     - LICENSE
     - assets/beep_low.wav
