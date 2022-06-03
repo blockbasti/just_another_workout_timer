@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:just_another_workout_timer/workout_runner.dart';
 
 import 'generated/l10n.dart';
 import 'settings_page.dart';
@@ -7,7 +8,6 @@ import 'storage_helper.dart';
 import 'utils.dart';
 import 'workout.dart';
 import 'workout_builder.dart';
-import 'workout_runner.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
@@ -127,7 +127,9 @@ class HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WorkoutPage(workout: workout),
+                    builder: (context) => WorkoutPage(
+                      workout: workout,
+                    ),
                   ),
                 ).then((value) => _loadWorkouts());
               }),
