@@ -13,7 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v3
         with:
-          java-version: "14.x"
+          distribution: "temurin"
+          java-version: "17.x"
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
