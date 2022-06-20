@@ -11,9 +11,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
-          java-version: "14.x"
+          distribution: "temurin"
+          java-version: "17.x"
       - uses: subosito/flutter-action@v1
         with:
           channel: "stable"
