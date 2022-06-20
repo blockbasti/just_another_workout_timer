@@ -9,7 +9,7 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -63,7 +63,7 @@ jobs:
 
       - name: Commit changed files
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         with:
           author_name: Bastian Block
           author_email: blockbasti99@gmail.com
