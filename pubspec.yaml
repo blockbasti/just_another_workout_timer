@@ -18,7 +18,7 @@ dependencies:
   url_launcher: 6.1.2
   wakelock: 0.6.1+2
   soundpool: 2.3.0
-  intl_utils: 2.6.1
+  intl_utils: ^2.6.1
   json_annotation: 4.5.0
   flutter_phoenix: 1.0.0
   flutter_native_splash: 2.2.2
