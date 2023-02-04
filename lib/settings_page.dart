@@ -50,8 +50,8 @@ class SettingsPageState extends State<SettingsPage> {
                 .map((lang) => DropdownMenuItem(
                     value: lang.localeCode, child: Text(lang.displayName)))
                 .toList(),
-            onChange: (String value) {
-              var lang = Languages.fromLocaleCode(value);
+            onChange: (String? value) {
+              var lang = Languages.fromLocaleCode(value!);
               setState(() {
                 S.load(Locale(lang.localeCode));
                 TTSHelper.setLanguage(lang.languageCode);
@@ -158,9 +158,9 @@ class SettingsPageState extends State<SettingsPage> {
                         '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})')))
                 .toList(),
             disabled: !TTSHelper.available,
-            onChange: (String value) {
+            onChange: (String? value) {
               TTSHelper.flutterTts.setVoice({
-                "name": value,
+                "name": value!,
                 "locale": Prefs.getString('tts_lang', 'en-US')
               });
             },

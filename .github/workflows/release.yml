@@ -28,7 +28,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           git-message: 'chore: write changelog {version}'
           git-user-name: 'blockbasti'
-          git-user-email: 'blockbasti99@gmail.com'
+          git-user-email: 'git@bblock.dev'
           version-file: './pubspec.yaml'
           version-path: 'version'
           preset: 'angular'
@@ -92,7 +92,7 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "32.0.0"
+          BUILD_TOOLS_VERSION: "33.0.0"
 
       - name: Get last commit id
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
