@@ -31,7 +31,7 @@ dependencies:
   provider: 6.0.5
 
 dev_dependencies:
-  flutter_launcher_icons: 0.11.0
+  flutter_launcher_icons: ">=0.11.0 <0.13.0"
   flutter_oss_licenses: 2.0.1
   json_serializable: 6.6.1
   build_runner: 2.3.3
