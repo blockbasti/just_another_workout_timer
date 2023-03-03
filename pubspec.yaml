@@ -10,28 +10,28 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tts: 3.6.3
-  path_provider: 2.0.12
+  path_provider: 2.0.13
   flutter_file_dialog: 3.0.0
   pref: 2.7.1
-  fluttertoast: 8.1.2
+  fluttertoast: 8.2.1
   prefs: 4.0.0
-  url_launcher: 6.1.8
+  url_launcher: 6.1.10
   wakelock: 0.6.2
   soundpool: 2.3.0
-  intl_utils: 2.8.1
+  intl_utils: 2.8.2
   json_annotation: 4.8.0
   flutter_phoenix: 1.1.0
-  flutter_native_splash: 2.2.17
+  flutter_native_splash: 2.2.18
   scrollable_positioned_list: 0.3.5
   flutter_localizations:
     sdk: flutter
   uuid: 3.0.7
   flutter_nord_theme: 2.1.0
-  share_plus: 6.3.0
+  share_plus: 6.3.1
   provider: 6.0.5
 
 dev_dependencies:
-  flutter_launcher_icons: 0.11.0
+  flutter_launcher_icons: 0.12.0
   flutter_oss_licenses: 2.0.1
   json_serializable: 6.6.1
   build_runner: 2.3.3
@@ -53,6 +53,8 @@ flutter_icons:
   android: "launcher_icon"
   ios: false
   image_path: "assets/ic_launcher.png"
+  adaptive_icon_foreground: "assets/ic_launcher_foreground.png"
+  adaptive_icon_background: "#2E3440"
 
 flutter_intl:
   enabled: true
@@ -60,10 +62,15 @@ flutter_intl:
 flutter_native_splash:
   color: "#D8DEE9"
   color_dark: "#2E3440"
-  image: "assets/ic_launcher.png"
+  image: "assets/ic_launcher_foreground.png"
   fullscreen: true
   android_gravity: center
   android: true
   ios: false
   web: false
-  android12: true
+  android12:
+    image: "assets/ic_launcher_foreground.png"
+    color: "#D8DEE9"
+    icon_background_color: "#D8DEE9"
+    color_dark: "#2E3440"
+    icon_background_color_dark: "#2E3440"
