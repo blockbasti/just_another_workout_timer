@@ -21,7 +21,7 @@ dependencies:
   intl_utils: 2.8.2
   json_annotation: 4.8.0
   flutter_phoenix: 1.1.0
-  flutter_native_splash: 2.2.18
+  flutter_native_splash: ^2.2.18
   scrollable_positioned_list: 0.3.5
   flutter_localizations:
     sdk: flutter
