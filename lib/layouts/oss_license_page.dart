@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import 'generated/l10n.dart';
-import 'oss_licenses.dart';
+import '../generated/l10n.dart';
+import '../oss_licenses.dart';
 
 class FlutterLicense extends LicenseEntry {
   @override

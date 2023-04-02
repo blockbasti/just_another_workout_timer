@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'storage_helper.dart';
 import 'utils.dart';
-import 'workout.dart';
+import '../utils/workout.dart';
 
 class Migrations {
   static late List<Workout> _workouts;

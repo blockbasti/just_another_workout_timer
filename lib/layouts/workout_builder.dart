@@ -4,11 +4,11 @@ import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 
-import 'generated/l10n.dart';
-import 'number_stepper.dart';
-import 'storage_helper.dart';
-import 'utils.dart';
-import 'workout.dart';
+import '../generated/l10n.dart';
+import '../utils/number_stepper.dart';
+import '../utils/storage_helper.dart';
+import '../utils/utils.dart';
+import '../utils/workout.dart';
 
 class BuilderPage extends StatefulWidget {
   final Workout workout;
@@ -87,30 +87,31 @@ class BuilderPageState extends State<BuilderPage> {
         (!_newWorkout &&
             _oldTitle != _workout.title &&
             await workoutExists(_workout.title))) {
+      if(!context.mounted) return;
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                content: Text(S.of(context).overwriteExistingWorkout),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(S.of(context).no),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: Text(S.of(context).yes),
-                    onPressed: () async {
-                      await deleteWorkout(_oldTitle);
-                      writeWorkout(_workout);
-                      _oldTitle = _workout.title;
-                      _newWorkout = false;
-                      if (!mounted) return;
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ));
+            content: Text(S.of(context).overwriteExistingWorkout),
+            actions: <Widget>[
+              TextButton(
+                child: Text(S.of(context).no),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text(S.of(context).yes),
+                onPressed: () async {
+                  await deleteWorkout(_oldTitle);
+                  writeWorkout(_workout);
+                  _oldTitle = _workout.title;
+                  _newWorkout = false;
+                  if (!mounted) return;
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ));
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
@@ -365,6 +366,8 @@ class BuilderPageState extends State<BuilderPage> {
         },
         child: Scaffold(
           appBar: AppBar(
+            toolbarHeight: 80,
+            scrolledUnderElevation: 0,
             title: TextFormField(
                 initialValue: _workout.title,
                 maxLength: 30,
@@ -390,6 +393,15 @@ class BuilderPageState extends State<BuilderPage> {
           body: Center(
             child: _buildSetList(),
           ),
+          bottomNavigationBar: BottomAppBar(
+            elevation: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(S.of(context).durationWithTime(Utils.formatSeconds(_workout.duration)))
+              ]
+            ),
+          ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'mainFAB',
             onPressed: _addSet,
@@ -397,7 +409,7 @@ class BuilderPageState extends State<BuilderPage> {
             child: const Icon(Icons.add),
           ),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
+              FloatingActionButtonLocation.centerDocked,
         ),
       );
 }

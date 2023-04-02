@@ -10,10 +10,10 @@ import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
 
 import 'generated/l10n.dart';
-import 'home_page.dart';
-import 'migrations.dart';
-import 'sound_helper.dart';
-import 'tts_helper.dart';
+import 'layouts/home_page.dart';
+import 'utils/migrations.dart';
+import 'utils/tts_helper.dart';
+import 'utils/sound_helper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

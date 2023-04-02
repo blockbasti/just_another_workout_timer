@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'generated/l10n.dart';
+import '../generated/l10n.dart';
 import 'utils.dart';
 
 /// display a value with + and - buttons

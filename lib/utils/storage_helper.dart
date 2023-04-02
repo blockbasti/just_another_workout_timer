@@ -8,7 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'migrations.dart';
 import 'utils.dart';
-import 'workout.dart';
+import '../utils/workout.dart';
 
 Future<String> get localPath async {
   final directory = await getExternalStorageDirectory();

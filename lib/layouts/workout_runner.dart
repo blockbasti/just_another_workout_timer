@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nord_theme/flutter_nord_theme.dart';
-import 'package:just_another_workout_timer/timetable.dart';
+import 'package:just_another_workout_timer/utils/timetable.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
-import 'generated/l10n.dart';
-import 'utils.dart';
-import 'workout.dart';
+import '../generated/l10n.dart';
+import '../utils/utils.dart';
+import '../utils/workout.dart';
 
 class WorkoutPage extends StatelessWidget {
   final Workout workout;

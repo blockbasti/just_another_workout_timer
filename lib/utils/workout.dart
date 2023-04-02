@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
-part 'workout.g.dart';
+part '../workout.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class Workout {

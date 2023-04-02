@@ -6,12 +6,12 @@ import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import 'generated/l10n.dart';
-import 'languages.dart';
+import '../generated/l10n.dart';
+import '../utils/languages.dart';
 import 'oss_license_page.dart';
-import 'sound_helper.dart';
-import 'storage_helper.dart';
-import 'tts_helper.dart';
+import '../utils/sound_helper.dart';
+import '../utils/storage_helper.dart';
+import '../utils/tts_helper.dart';
 
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:just_another_workout_timer/sound_helper.dart';
-import 'package:just_another_workout_timer/tts_helper.dart';
-import 'package:just_another_workout_timer/workout.dart';
+import 'sound_helper.dart';
+import 'package:just_another_workout_timer/utils/tts_helper.dart';
+import 'workout.dart';
 import 'package:prefs/prefs.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'generated/l10n.dart';
+import '../generated/l10n.dart';
 
 class Timetable with ChangeNotifier {
   final BuildContext _context;
