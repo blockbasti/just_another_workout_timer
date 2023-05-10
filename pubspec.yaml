@@ -15,7 +15,7 @@ dependencies:
   pref: 2.7.1
   fluttertoast: 8.2.1
   prefs: 4.0.0
-  url_launcher: 6.1.10
+  url_launcher: ^6.1.10
   wakelock: 0.6.2
   soundpool: 2.3.0
   intl_utils: 2.8.2
