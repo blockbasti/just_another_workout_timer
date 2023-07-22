@@ -8,10 +8,10 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../generated/l10n.dart';
 import '../utils/languages.dart';
-import 'oss_license_page.dart';
 import '../utils/sound_helper.dart';
 import '../utils/storage_helper.dart';
 import '../utils/tts_helper.dart';
+import 'oss_license_page.dart';
 
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
@@ -190,6 +190,7 @@ class SettingsPageState extends State<SettingsPage> {
                   context: context,
                   builder: (context) => Dialog(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8),
@@ -199,10 +200,13 @@ class SettingsPageState extends State<SettingsPage> {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(_license),
-                            )
+                            Expanded(
+                                child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(_license),
+                              ),
+                            ))
                           ],
                         ),
                       ));

@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
@@ -28,8 +28,12 @@ void main() async {
     'tts_next_announce': true,
     'sound': 'tts',
     'expanded_setlist': false
-  }).then((service) => Future.wait([TTSHelper.init(), SoundHelper.loadSounds(), Migrations.runMigrations()])
-      .then((_) => runApp(PrefService(service: service, child: Phoenix(child: JAWTApp())))));
+  }).then((service) => Future.wait([
+        TTSHelper.init(),
+        SoundHelper.loadSounds(),
+        Migrations.runMigrations()
+      ]).then((_) => runApp(
+          PrefService(service: service, child: Phoenix(child: JAWTApp())))));
 }
 
 class JAWTApp extends StatelessWidget {
@@ -39,7 +43,8 @@ class JAWTApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent));
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     switch (PrefService.of(context).get('theme')) {
@@ -54,37 +59,48 @@ class JAWTApp extends StatelessWidget {
         break;
     }
 
-    return MaterialApp(
-      title: 'Just Another Workout Timer',
-      themeMode: _brightness,
-      theme: NordTheme.light().copyWith(
-          useMaterial3: true,
-          cardTheme: const CardTheme(
-            elevation: 4,
-          )),
-      darkTheme: NordTheme.dark().copyWith(useMaterial3: true, cardTheme: const CardTheme(elevation: 4)),
-      home: const HomePage(),
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      localeListResolutionCallback: (locales, supportedLocales) {
-        if (PrefService.of(context).get('lang') != null) {
-          final locale = Locale(PrefService.of(context).get('lang'));
-          if (supportedLocales.contains(locale)) return locale;
-        }
+    return DynamicColorBuilder(
+        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) =>
+            MaterialApp(
+              title: 'Just Another Workout Timer',
+              themeMode: _brightness,
+              theme: ThemeData(
+                  useMaterial3: true,
+                  brightness: Brightness.light,
+                  colorScheme: lightDynamic,
+                  colorSchemeSeed: lightDynamic != null ? null : Colors.blue,
+                  cardTheme: const CardTheme(
+                    elevation: 4,
+                  )),
+              darkTheme: ThemeData(
+                  useMaterial3: true,
+                  brightness: Brightness.dark,
+                  cardTheme: const CardTheme(elevation: 4),
+                  colorScheme: darkDynamic,
+                  colorSchemeSeed: darkDynamic != null ? null : Colors.blue),
+              home: const HomePage(),
+              localizationsDelegates: const [
+                S.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: S.delegate.supportedLocales,
+              localeListResolutionCallback: (locales, supportedLocales) {
+                if (PrefService.of(context).get('lang') != null) {
+                  final locale = Locale(PrefService.of(context).get('lang'));
+                  if (supportedLocales.contains(locale)) return locale;
+                }
 
-        for (var locale in locales!) {
-          if (supportedLocales.any((element) => element.languageCode == locale.languageCode)) {
-            PrefService.of(context).set('lang', locale.languageCode);
-            return locale;
-          }
-        }
-        PrefService.of(context).set('lang', 'en');
-        return const Locale('en');
-      },
-    );
+                for (var locale in locales!) {
+                  if (supportedLocales.any((element) =>
+                      element.languageCode == locale.languageCode)) {
+                    PrefService.of(context).set('lang', locale.languageCode);
+                    return locale;
+                  }
+                }
+                PrefService.of(context).set('lang', 'en');
+                return const Locale('en');
+              },
+            ));
   }
 }

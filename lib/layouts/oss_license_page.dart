@@ -72,11 +72,14 @@ class OssLicensesPage extends StatelessWidget {
                 final package = snapshot.data![index];
                 return ListTile(
                   title: Text('${package.name} ${package.version}'),
-                  subtitle: package.description.isNotEmpty ? Text(package.description) : null,
+                  subtitle: package.description.isNotEmpty
+                      ? Text(package.description)
+                      : null,
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => MiscOssLicenseSingle(package: package),
+                      builder: (context) =>
+                          MiscOssLicenseSingle(package: package),
                     ),
                   ),
                 );
@@ -87,7 +90,8 @@ class OssLicensesPage extends StatelessWidget {
 class MiscOssLicenseSingle extends StatelessWidget {
   final Package package;
 
-  const MiscOssLicenseSingle({Key? key, required this.package}) : super(key: key);
+  const MiscOssLicenseSingle({Key? key, required this.package})
+      : super(key: key);
 
   String _bodyText() => package.license!.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
@@ -103,19 +107,31 @@ class MiscOssLicenseSingle extends StatelessWidget {
             child: ListView(children: <Widget>[
               if (package.description.isNotEmpty)
                 Padding(
-                    padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                    child: Text(package.description, style: Theme.of(context).textTheme.bodyText2!.copyWith(fontWeight: FontWeight.bold))),
+                    padding: const EdgeInsets.only(
+                        top: 12.0, left: 12.0, right: 12.0),
+                    child: Text(package.description,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(fontWeight: FontWeight.bold))),
               if (package.homepage != null)
                 Padding(
-                    padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
+                    padding: const EdgeInsets.only(
+                        top: 12.0, left: 12.0, right: 12.0),
                     child: InkWell(
-                      child: Text(package.homepage!, style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline)),
+                      child: Text(package.homepage!,
+                          style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline)),
                       onTap: () => launchUrlString(package.homepage!),
                     )),
-              if (package.description.isNotEmpty || package.homepage != null) const Divider(),
+              if (package.description.isNotEmpty || package.homepage != null)
+                const Divider(),
               Padding(
-                padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
-                child: Text(_bodyText(), style: Theme.of(context).textTheme.bodyText2),
+                padding:
+                    const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
+                child: Text(_bodyText(),
+                    style: Theme.of(context).textTheme.bodyMedium),
               ),
             ])),
       );

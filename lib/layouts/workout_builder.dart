@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -87,31 +86,31 @@ class BuilderPageState extends State<BuilderPage> {
         (!_newWorkout &&
             _oldTitle != _workout.title &&
             await workoutExists(_workout.title))) {
-      if(!context.mounted) return;
+      if (!context.mounted) return;
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: Text(S.of(context).overwriteExistingWorkout),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).no),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text(S.of(context).yes),
-                onPressed: () async {
-                  await deleteWorkout(_oldTitle);
-                  writeWorkout(_workout);
-                  _oldTitle = _workout.title;
-                  _newWorkout = false;
-                  if (!mounted) return;
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ));
+                content: Text(S.of(context).overwriteExistingWorkout),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(S.of(context).no),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(S.of(context).yes),
+                    onPressed: () async {
+                      await deleteWorkout(_oldTitle);
+                      writeWorkout(_workout);
+                      _oldTitle = _workout.title;
+                      _newWorkout = false;
+                      if (!mounted) return;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ));
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
@@ -262,9 +261,6 @@ class BuilderPageState extends State<BuilderPage> {
           index: exIndex,
           key: Key(_workout.sets[setIndex].exercises[exIndex].id),
           child: Card(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? NordColors.polarNight.darkest
-                : NordColors.snowStorm.lightest,
             child: Row(
               key: Key(_workout.sets[setIndex].exercises[exIndex].id),
               children: [
@@ -314,8 +310,8 @@ class BuilderPageState extends State<BuilderPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     NumberStepper(
-                      lowerLimit: 1,
-                      upperLimit: 999,
+                      lowerLimit: 0,
+                      upperLimit: 10800,
                       largeSteps: true,
                       formatNumber: true,
                       value:
@@ -366,11 +362,10 @@ class BuilderPageState extends State<BuilderPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 80,
-            scrolledUnderElevation: 0,
+            toolbarHeight: 74,
+            elevation: 1,
             title: TextFormField(
                 initialValue: _workout.title,
-                maxLength: 30,
                 inputFormatters: [LengthLimitingTextInputFormatter(30)],
                 maxLines: 1,
                 onChanged: (name) {
@@ -394,13 +389,15 @@ class BuilderPageState extends State<BuilderPage> {
             child: _buildSetList(),
           ),
           bottomNavigationBar: BottomAppBar(
-            elevation: 0,
+            height: 50,
+            elevation: 1,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(S.of(context).durationWithTime(Utils.formatSeconds(_workout.duration)))
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(S
+                      .of(context)
+                      .durationWithTime(Utils.formatSeconds(_workout.duration)))
+                ]),
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'mainFAB',

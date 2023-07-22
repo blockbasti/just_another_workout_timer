@@ -7,7 +7,11 @@ part '../workout.g.dart';
 class Workout {
   static const fileVersion = 2;
 
-  Workout({this.title = 'Workout', List<Set>? sets, this.version = fileVersion, this.position = -1}) {
+  Workout(
+      {this.title = 'Workout',
+      List<Set>? sets,
+      this.version = fileVersion,
+      this.position = -1}) {
     this.sets = sets ?? [Set()];
   }
 
@@ -25,7 +29,7 @@ class Workout {
   int get duration {
     var duration = 0;
 
-    sets.forEach((set) => {duration += set.duration});
+    sets.forEach((set) => duration += set.duration);
 
     return duration;
   }
@@ -35,7 +39,8 @@ class Workout {
     sets.removeWhere((set) => set.exercises.isEmpty);
   }
 
-  factory Workout.fromJson(Map<String, dynamic> json) => _$WorkoutFromJson(json);
+  factory Workout.fromJson(Map<String, dynamic> json) =>
+      _$WorkoutFromJson(json);
   Map<String, dynamic> toJson() => _$WorkoutToJson(this);
 }
 
@@ -62,7 +67,7 @@ class Set {
   int get duration {
     var duration = 0;
 
-    exercises.forEach((exercise) => {duration += exercise.duration});
+    exercises.forEach((exercise) => duration += exercise.duration);
 
     return duration * repetitions;
   }
@@ -86,7 +91,8 @@ class Exercise {
   @JsonKey(required: true, defaultValue: 30)
   int duration;
 
-  factory Exercise.fromJson(Map<String, dynamic> json) => _$ExerciseFromJson(json);
+  factory Exercise.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseFromJson(json);
   Map<String, dynamic> toJson() => _$ExerciseToJson(this);
 }
 

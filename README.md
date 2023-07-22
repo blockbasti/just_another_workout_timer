@@ -86,10 +86,6 @@ See the [open issues](https://github.com/blockbasti/just_another_workout_timer/i
 <!-- CONTRIBUTING -->
 ## Contributing
 
-<a href="https://weblate.bblock.dev/engage/just-another-workout-timer/">
-<img src="https://weblate.bblock.dev/widgets/just-another-workout-timer/-/open-graph.png" alt="Übersetzungsstatus" />
-</a>
-
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:numberpicker/numberpicker.dart';
 
 import '../generated/l10n.dart';
 import 'utils.dart';
@@ -45,16 +46,22 @@ class CustomStepperState extends State<NumberStepper> {
     super.dispose();
   }
 
-  Widget _editTitleTextField() {
+  Widget _editableTextField() {
     if (_isEditingText) {
+      _editingController.value =
+          TextEditingValue(text: widget.value.toString());
       return Center(
         child: SizedBox(
             width: 112,
             child: TextField(
                 maxLines: 1,
                 maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                keyboardType: TextInputType.number,
                 //maxLength: 4,
-                inputFormatters: [LengthLimitingTextInputFormatter(4), FilteringTextInputFormatter.digitsOnly],
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(5),
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 onSubmitted: (newValue) {
                   setState(() {
                     var oldVal = widget.value;
@@ -70,7 +77,8 @@ class CustomStepperState extends State<NumberStepper> {
                 },
                 autofocus: true,
                 controller: _editingController,
-                decoration: InputDecoration(suffixText: S.of(context).seconds))),
+                decoration:
+                    InputDecoration(suffixText: S.of(context).seconds))),
       );
     }
     return InkWell(
@@ -79,94 +87,31 @@ class CustomStepperState extends State<NumberStepper> {
             _isEditingText = true;
           });
         },
-        child: Text(
-          '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
-          style: TextStyle(fontSize: widget.iconSize, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+        child: NumberPicker(
+          itemHeight: 32,
+          value: widget.value,
+          minValue: widget.lowerLimit,
+          step: 10,
+          itemCount: 3,
+          haptics: true,
+          zeroPad: false,
+          maxValue: widget.upperLimit,
+          textMapper: (value) => Utils.formatSeconds(int.parse(value)),
+          onChanged: (value) {
+            setState(() {
+              widget.value = value;
+              widget.valueChanged(value);
+            });
+          },
         ));
   }
 
   @override
   Widget build(BuildContext context) => widget.largeSteps
-      ? Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: ElevatedButton(
-                    child: const Text(
-                      '+1',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        widget.value = widget.value == widget.upperLimit ? widget.upperLimit : widget.value += 1;
-                      });
-                      widget.valueChanged(widget.value);
-                    },
-                  ),
-                ),
-                Container(
-                  width: 48,
-                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: ElevatedButton(
-                    child: const Text('+5', style: TextStyle(fontWeight: FontWeight.bold)),
-                    onPressed: () {
-                      setState(() {
-                        widget.value = widget.value == widget.upperLimit ? widget.upperLimit : widget.value += 5;
-                      });
-                      widget.valueChanged(widget.value);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  //width: widget.iconSize*2,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: _editTitleTextField(),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  width: 48,
-                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: ElevatedButton(
-                    child: const Text('-1', style: TextStyle(fontWeight: FontWeight.bold)),
-                    onPressed: () {
-                      setState(() {
-                        widget.value = widget.value == widget.lowerLimit ? widget.lowerLimit : widget.value -= 1;
-                      });
-                      widget.valueChanged(widget.value);
-                    },
-                  ),
-                ),
-                Container(
-                  width: 48,
-                  margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                  child: ElevatedButton(
-                    child: const Text(
-                      '-5',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        widget.value = widget.value - 5 < widget.lowerLimit ? widget.lowerLimit : widget.value -= 5;
-                      });
-                      widget.valueChanged(widget.value);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
+      ? Container(
+          //width: widget.iconSize*2,
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: _editableTextField(),
         )
       : Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -175,7 +120,9 @@ class CustomStepperState extends State<NumberStepper> {
               icon: const Icon(Icons.remove),
               onPressed: () {
                 setState(() {
-                  widget.value = widget.value == widget.lowerLimit ? widget.lowerLimit : widget.value -= 1;
+                  widget.value = widget.value == widget.lowerLimit
+                      ? widget.lowerLimit
+                      : widget.value -= 1;
                 });
                 widget.valueChanged(widget.value);
               },
@@ -184,7 +131,9 @@ class CustomStepperState extends State<NumberStepper> {
               padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
                 '${widget.formatNumber ? Utils.formatSeconds(widget.value) : widget.value}',
-                style: TextStyle(fontSize: widget.iconSize * 1.2, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: widget.iconSize * 1.2,
+                    fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -192,7 +141,9 @@ class CustomStepperState extends State<NumberStepper> {
               icon: const Icon(Icons.add),
               onPressed: () {
                 setState(() {
-                  widget.value = widget.value == widget.upperLimit ? widget.upperLimit : widget.value += 1;
+                  widget.value = widget.value == widget.upperLimit
+                      ? widget.upperLimit
+                      : widget.value += 1;
                 });
                 widget.valueChanged(widget.value);
               },

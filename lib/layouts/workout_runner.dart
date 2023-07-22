@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nord_theme/flutter_nord_theme.dart';
 import 'package:just_another_workout_timer/utils/timetable.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
@@ -130,6 +129,8 @@ class WorkoutPageState extends State<WorkoutPageContent> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(_workout.title),
+            scrolledUnderElevation: 1,
+            elevation: 1,
           ),
           bottomNavigationBar: BottomAppBar(
               child: Row(
@@ -258,16 +259,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
               FloatingActionButton(
                 heroTag: 'FAB1',
                 mini: true,
-                foregroundColor: !timetable.isActive
-                    ? NordColors.polarNight.darkest
-                    : Theme.of(context)
-                        .floatingActionButtonTheme
-                        .foregroundColor,
-                backgroundColor: !timetable.isActive
-                    ? NordColors.snowStorm.darkest
-                    : Theme.of(context)
-                        .floatingActionButtonTheme
-                        .backgroundColor,
                 onPressed: timetable.isActive ? timetable.skipBackward : null,
                 child: const Icon(Icons.skip_previous),
               ),
@@ -295,16 +286,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
               FloatingActionButton(
                 heroTag: 'FAB2',
                 mini: true,
-                foregroundColor: !timetable.isActive
-                    ? NordColors.polarNight.darkest
-                    : Theme.of(context)
-                        .floatingActionButtonTheme
-                        .foregroundColor,
-                backgroundColor: !timetable.isActive
-                    ? NordColors.snowStorm.darkest
-                    : Theme.of(context)
-                        .floatingActionButtonTheme
-                        .backgroundColor,
                 onPressed: timetable.isActive ? timetable.skipForward : null,
                 child: const Icon(Icons.skip_next),
               )
