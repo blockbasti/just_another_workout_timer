@@ -1,0 +1,9 @@
+* Karmaşık egzersiz programlarını kolayca oluşturun
+* Kendi egzersizlerinizi ve sürelerini tanımlayın
+* Özel setlerinize egzersiz ekleyin
+* Metinden konuşmaya seslendirme
+* Flutter ile yazılmış Çağdaş Material Tasarımı
+* Reklamsız
+* Özgür, Ücrecsiz ve Açık Kaynak
+
+Github: https://github.com/blockbasti/just_another_workout_timer

@@ -3,32 +3,33 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:uuid/uuid.dart';
 
-import 'generated/l10n.dart';
-import 'number_stepper.dart';
-import 'storage_helper.dart';
-import 'utils.dart';
-import 'workout.dart';
+import '../generated/l10n.dart';
+import '../utils/number_stepper.dart';
+import '../utils/storage_helper.dart';
+import '../utils/utils.dart';
+import '../utils/workout.dart';
 
 class BuilderPage extends StatefulWidget {
   final Workout workout;
   final bool newWorkout;
 
-  BuilderPage({required this.workout, required this.newWorkout}) : super();
+  const BuilderPage({Key? key, required this.workout, required this.newWorkout})
+      : super(key: key);
 
   @override
-  _BuilderPageState createState() =>
-      _BuilderPageState(workout, newWorkout: newWorkout);
+  BuilderPageState createState() =>
+      BuilderPageState(workout, newWorkout: newWorkout);
 }
 
 /// page allowing a user to create a workout
-class _BuilderPageState extends State<BuilderPage> {
+class BuilderPageState extends State<BuilderPage> {
   late Workout _workout;
   late String _oldTitle;
   late bool _newWorkout;
   bool _dirty = false;
   int _lastDuration = 30;
 
-  _BuilderPageState(Workout workout, {required bool newWorkout}) {
+  BuilderPageState(Workout workout, {required bool newWorkout}) {
     _workout = workout;
     _oldTitle = _workout.title;
     _newWorkout = newWorkout;
@@ -50,7 +51,7 @@ class _BuilderPageState extends State<BuilderPage> {
 
   void _duplicateSet(int index) {
     var newSet = Set.fromJson(_workout.sets[index].toJson());
-    newSet.id = Uuid().v4();
+    newSet.id = const Uuid().v4();
     setState(() {
       _workout.sets.insert(index, newSet);
       _dirty = true;
@@ -60,7 +61,7 @@ class _BuilderPageState extends State<BuilderPage> {
   void _duplicateExercise(int setIndex, int exIndex) {
     var newEx =
         Exercise.fromJson(_workout.sets[setIndex].exercises[exIndex].toJson());
-    newEx.id = Uuid().v4();
+    newEx.id = const Uuid().v4();
     setState(() {
       _workout.sets[setIndex].exercises.insert(exIndex, newEx);
       _dirty = true;
@@ -85,6 +86,7 @@ class _BuilderPageState extends State<BuilderPage> {
         (!_newWorkout &&
             _oldTitle != _workout.title &&
             await workoutExists(_workout.title))) {
+      if (!context.mounted) return;
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -103,6 +105,7 @@ class _BuilderPageState extends State<BuilderPage> {
                       writeWorkout(_workout);
                       _oldTitle = _workout.title;
                       _newWorkout = false;
+                      if (!mounted) return;
                       Navigator.of(context).pop();
                     },
                   ),
@@ -116,6 +119,7 @@ class _BuilderPageState extends State<BuilderPage> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER);
     }
+    if (!mounted) return;
     Navigator.of(context).pop(true);
   }
 
@@ -163,16 +167,16 @@ class _BuilderPageState extends State<BuilderPage> {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ReorderableDragStartListener(
-                        child: Icon(Icons.drag_handle), index: index),
+                        index: index, child: const Icon(Icons.drag_handle)),
                   ),
                   Expanded(
                     child: ListTile(
                       title: Text(
                         S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
                       ),
-                      subtitle: Text('${Utils.formatSeconds(set.duration)}'),
+                      subtitle: Text(Utils.formatSeconds(set.duration)),
                     ),
                   ),
                   Text(S.of(context).repetitions),
@@ -197,14 +201,14 @@ class _BuilderPageState extends State<BuilderPage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: Icon(Icons.fitness_center),
+                        icon: const Icon(Icons.fitness_center),
                         tooltip: S.of(context).addExercise,
                         onPressed: () {
                           _addExercise(index, false);
                         },
                       ),
                       IconButton(
-                        icon: Icon(Icons.pause_circle_filled),
+                        icon: const Icon(Icons.pause_circle_filled),
                         tooltip: S.of(context).addRest,
                         onPressed: () {
                           _addExercise(index, true);
@@ -215,13 +219,13 @@ class _BuilderPageState extends State<BuilderPage> {
                   Row(
                     children: [
                       IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           tooltip: S.of(context).deleteSet,
                           onPressed: () {
                             _deleteSet(index);
                           }),
                       IconButton(
-                        icon: Icon(Icons.copy),
+                        icon: const Icon(Icons.copy),
                         tooltip: S.of(context).duplicate,
                         onPressed: () => _duplicateSet(index),
                       ),
@@ -257,14 +261,13 @@ class _BuilderPageState extends State<BuilderPage> {
           index: exIndex,
           key: Key(_workout.sets[setIndex].exercises[exIndex].id),
           child: Card(
-            color: Theme.of(context).backgroundColor,
             child: Row(
               key: Key(_workout.sets[setIndex].exercises[exIndex].id),
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: ReorderableDragStartListener(
-                      child: Icon(Icons.drag_handle), index: exIndex),
+                      index: exIndex, child: const Icon(Icons.drag_handle)),
                 ),
                 Expanded(
                     child: Column(
@@ -286,14 +289,14 @@ class _BuilderPageState extends State<BuilderPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           tooltip: S.of(context).deleteExercise,
                           onPressed: () {
                             _deleteExercise(setIndex, exIndex);
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.copy),
+                          icon: const Icon(Icons.copy),
                           tooltip: S.of(context).duplicate,
                           onPressed: () =>
                               _duplicateExercise(setIndex, exIndex),
@@ -307,8 +310,8 @@ class _BuilderPageState extends State<BuilderPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     NumberStepper(
-                      lowerLimit: 1,
-                      upperLimit: 999,
+                      lowerLimit: 0,
+                      upperLimit: 10800,
                       largeSteps: true,
                       formatNumber: true,
                       value:
@@ -359,9 +362,10 @@ class _BuilderPageState extends State<BuilderPage> {
         },
         child: Scaffold(
           appBar: AppBar(
+            toolbarHeight: 74,
+            elevation: 1,
             title: TextFormField(
                 initialValue: _workout.title,
-                maxLength: 30,
                 inputFormatters: [LengthLimitingTextInputFormatter(30)],
                 maxLines: 1,
                 onChanged: (name) {
@@ -384,14 +388,25 @@ class _BuilderPageState extends State<BuilderPage> {
           body: Center(
             child: _buildSetList(),
           ),
+          bottomNavigationBar: BottomAppBar(
+            height: 50,
+            elevation: 1,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(S
+                      .of(context)
+                      .durationWithTime(Utils.formatSeconds(_workout.duration)))
+                ]),
+          ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'mainFAB',
             onPressed: _addSet,
             tooltip: S.of(context).addSet,
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
           floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
+              FloatingActionButtonLocation.centerDocked,
         ),
       );
 }

@@ -4,22 +4,24 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-import 'generated/l10n.dart';
-import 'languages.dart';
+import '../generated/l10n.dart';
+import '../utils/languages.dart';
+import '../utils/sound_helper.dart';
+import '../utils/storage_helper.dart';
+import '../utils/tts_helper.dart';
 import 'oss_license_page.dart';
-import 'sound_helper.dart';
-import 'storage_helper.dart';
-import 'tts_helper.dart';
 
 /// change some settings of the app and display licenses
 class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
+
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class SettingsPageState extends State<SettingsPage> {
   late String _license;
 
   void _loadLicense() async {
@@ -40,17 +42,16 @@ class _SettingsPageState extends State<SettingsPage> {
           PrefTitle(
             title: Text(
               S.of(context).general,
-              /* style: TextStyle(color: Colors.blue), */
             ),
           ),
           PrefDropdown(
             title: Text(S.of(context).language),
             items: Languages.languages
                 .map((lang) => DropdownMenuItem(
-                    child: Text(lang.displayName), value: lang.localeCode))
+                    value: lang.localeCode, child: Text(lang.displayName)))
                 .toList(),
-            onChange: (String value) {
-              var lang = Languages.fromLocaleCode(value);
+            onChange: (String? value) {
+              var lang = Languages.fromLocaleCode(value!);
               setState(() {
                 S.load(Locale(lang.localeCode));
                 TTSHelper.setLanguage(lang.languageCode);
@@ -66,11 +67,11 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               items: [
                 DropdownMenuItem(
-                    child: Text(S.of(context).theme_dark), value: 'dark'),
+                    value: 'dark', child: Text(S.of(context).theme_dark)),
                 DropdownMenuItem(
-                    child: Text(S.of(context).theme_light), value: 'light'),
+                    value: 'light', child: Text(S.of(context).theme_light)),
                 DropdownMenuItem(
-                    child: Text(S.of(context).theme_system), value: 'system'),
+                    value: 'system', child: Text(S.of(context).theme_system)),
               ]),
           PrefSwitch(
             title: Text(S.of(context).keepScreenAwake),
@@ -85,8 +86,9 @@ class _SettingsPageState extends State<SettingsPage> {
               subtitle: Text(S.of(context).expanded_setlist_info),
               pref: 'expanded_setlist'),
           PrefTitle(
-              title: Text(S.of(context).backup,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).backup,
+          )),
           PrefLabel(
             title: Text(S.of(context).export),
             onTap: exportAllWorkouts,
@@ -94,15 +96,16 @@ class _SettingsPageState extends State<SettingsPage> {
           PrefLabel(
             title: Text(S.of(context).import),
             onTap: () => {
-              importBackup().then((value) => Fluttertoast.showToast(
+              importFile(true).then((value) => Fluttertoast.showToast(
                   msg: S.of(context).importedCount(value),
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.CENTER))
             },
           ),
           PrefTitle(
-              title: Text(S.of(context).soundOutput,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).soundOutput,
+          )),
           PrefRadio(
             title: Text(S.of(context).noSound),
             value: 'none',
@@ -135,8 +138,9 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           PrefTitle(
-            title:
-                Text(S.of(context).tts, /* style: TextStyle(color: Colors.blue) */),
+            title: Text(
+              S.of(context).tts,
+            ),
           ),
           PrefDropdown(
             title: Text(S.of(context).ttsVoice),
@@ -149,14 +153,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 .asMap()
                 .entries
                 .map((voice) => DropdownMenuItem(
+                    value: voice.value.name,
                     child: Text(
-                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})'),
-                    value: voice.value.name))
+                        '${S.of(context).voice} ${voice.key + 1} (${voice.value.name})')))
                 .toList(),
             disabled: !TTSHelper.available,
-            onChange: (String value) {
+            onChange: (String? value) {
               TTSHelper.flutterTts.setVoice({
-                "name": value,
+                "name": value!,
                 "locale": Prefs.getString('tts_lang', 'en-US')
               });
             },
@@ -168,13 +172,14 @@ class _SettingsPageState extends State<SettingsPage> {
             disabled: !TTSHelper.available,
           ),
           PrefTitle(
-              title: Text(S.of(context).licenses,
-                  /* style: TextStyle(color: Colors.blue) */)),
+              title: Text(
+            S.of(context).licenses,
+          )),
           PrefLabel(
             title: Text(S.of(context).viewOnGithub),
             subtitle: Text(S.of(context).reportIssuesOrRequestAFeature),
             onTap: () {
-              launch(
+              launchUrlString(
                   'https://github.com/blockbasti/just_another_workout_timer');
             },
           ),
@@ -185,19 +190,23 @@ class _SettingsPageState extends State<SettingsPage> {
                   context: context,
                   builder: (context) => Dialog(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(8),
                               child: Text(
                                 S.of(context).title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text(_license),
-                            )
+                            Expanded(
+                                child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(_license),
+                              ),
+                            ))
                           ],
                         ),
                       ));
@@ -209,7 +218,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OssLicensesPage(),
+                    builder: (context) => const OssLicensesPage(),
                   ));
             },
           )

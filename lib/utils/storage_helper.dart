@@ -4,10 +4,11 @@ import 'dart:typed_data';
 
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'migrations.dart';
 import 'utils.dart';
-import 'workout.dart';
+import '../utils/workout.dart';
 
 Future<String> get localPath async {
   final directory = await getExternalStorageDirectory();
@@ -30,6 +31,12 @@ Future<void> exportWorkout(String title) async {
   await FlutterFileDialog.saveFile(params: params);
 }
 
+Future<void> shareWorkout(String title) async {
+  final path = await localPath;
+  Share.shareFiles(['$path/workouts/${Utils.removeSpecialChar(title)}.json'],
+      text: title);
+}
+
 Future<void> exportAllWorkouts() async {
   var backup = Backup(workouts: await getAllWorkouts());
   final params = SaveFileDialogParams(
@@ -38,28 +45,39 @@ Future<void> exportAllWorkouts() async {
   await FlutterFileDialog.saveFile(params: params);
 }
 
-Future<int> importBackup() async {
-  final params = OpenFileDialogParams(
+Future<String?> pickFile() async {
+  const params = OpenFileDialogParams(
       dialogType: OpenFileDialogType.document,
       fileExtensionsFilter: ['json'],
       allowEditing: false);
-  final filePath = await FlutterFileDialog.pickFile(params: params);
+  return FlutterFileDialog.pickFile(params: params);
+}
+
+Future<int> importFile(bool fromBackup) async {
+  String? filePath = await pickFile();
   if (filePath != null && filePath.isNotEmpty) {
-    String backup;
+    String content;
     var file = File(filePath);
     try {
-      backup = await file.readAsString();
+      content = await file.readAsString();
     } on FileSystemException {
       // It might happen that encoding of files gets corrupted somehow.
       // Therefore loading is tried again with 'allowMalformed' flag.
       var bytes = await file.readAsBytes();
-      backup = utf8.decode(bytes, allowMalformed: true);
+      content = utf8.decode(bytes, allowMalformed: true);
       // TODO: What to do here? Log error? Show warning?
     }
-    var workouts = Backup.fromJson(jsonDecode(backup)).workouts;
-    workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
-    await Migrations.runMigrations();
-    return Future.value(workouts.length);
+
+    if (fromBackup) {
+      var workouts = Backup.fromJson(jsonDecode(content)).workouts;
+      workouts.forEach((w) => writeWorkout(w, fixDuplicates: true));
+      await Migrations.runMigrations();
+      return Future.value(workouts.length);
+    } else {
+      var workout = Workout.fromJson(jsonDecode(content));
+      writeWorkout(workout, fixDuplicates: true);
+      return Future.value(1);
+    }
   } else {
     return Future.value(0);
   }
@@ -68,7 +86,7 @@ Future<int> importBackup() async {
 Future<void> writeWorkout(Workout workout, {bool fixDuplicates = false}) async {
   if (fixDuplicates) {
     var counter = 2;
-    var newTitle = '${workout.title}';
+    var newTitle = workout.title;
 
     while (await workoutExists(newTitle)) {
       newTitle = '${workout.title}($counter)';
@@ -98,6 +116,7 @@ Future<void> deleteWorkout(String title) async {
   try {
     final file = await _loadWorkoutFile(title);
     file.delete();
+    // ignore: empty_catches
   } on Exception {}
 }
 

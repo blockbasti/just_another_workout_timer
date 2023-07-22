@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'workout.dart';
+part of 'utils/workout.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

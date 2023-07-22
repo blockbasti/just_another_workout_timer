@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:just_another_workout_timer/layouts/workout_runner.dart';
 
-import 'generated/l10n.dart';
+import '../generated/l10n.dart';
 import 'settings_page.dart';
-import 'storage_helper.dart';
-import 'utils.dart';
-import 'workout.dart';
+import '../utils/storage_helper.dart';
+import '../utils/utils.dart';
+import '../utils/workout.dart';
 import 'workout_builder.dart';
-import 'workout_runner.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
-  HomePage() : super();
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   List<Workout> workouts = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadWorkouts();
     });
   }
@@ -94,9 +95,9 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
             child: ReorderableDragStartListener(
-                child: Icon(Icons.drag_handle), index: workout.position),
+                index: workout.position, child: const Icon(Icons.drag_handle)),
           ),
           Expanded(
             child: ListTile(
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             tooltip: S.of(context).editWorkout,
             onPressed: () {
               Navigator.push(
@@ -120,27 +121,30 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           IconButton(
-              icon: Icon(Icons.play_circle_fill),
+              icon: const Icon(Icons.play_circle_fill),
               tooltip: S.of(context).startWorkout,
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => WorkoutPage(workout: workout),
+                    builder: (context) => WorkoutPage(
+                      workout: workout,
+                    ),
                   ),
                 ).then((value) => _loadWorkouts());
               }),
           IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               tooltip: S.of(context).deleteWorkout,
               onPressed: () {
                 _showDeleteDialog(context, workout);
               }),
           IconButton(
+              tooltip: S.of(context).shareWorkout,
               onPressed: () {
-                exportWorkout(workout.title);
+                shareWorkout(workout.title);
               },
-              icon: Icon(Icons.save_alt))
+              icon: const Icon(Icons.share)),
         ],
       ));
 
@@ -150,12 +154,25 @@ class _HomePageState extends State<HomePage> {
           title: Text(S.of(context).workouts),
           actions: [
             IconButton(
-                icon: Icon(Icons.settings),
+              onPressed: () async {
+                var count = await importFile(false);
+                _loadWorkouts();
+                if (!mounted) return;
+                Fluttertoast.showToast(
+                    msg: S.of(context).importedCount(count),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER);
+              },
+              icon: const Icon(Icons.file_download),
+              tooltip: S.of(context).import,
+            ),
+            IconButton(
+                icon: const Icon(Icons.settings),
                 onPressed: () {
                   Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SettingsPage()))
+                              builder: (context) => const SettingsPage()))
                       .then((value) => _loadWorkouts());
                 })
           ],
@@ -175,7 +192,7 @@ class _HomePageState extends State<HomePage> {
             ).then((value) => _loadWorkouts());
           },
           tooltip: S.of(context).addWorkout,
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       );
 }

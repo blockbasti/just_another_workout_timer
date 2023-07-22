@@ -9,14 +9,15 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v3
         with:
-          java-version: '14.x'
-      - uses: subosito/flutter-action@v1
+          distribution: "temurin"
+          java-version: '17.x'
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
@@ -27,7 +28,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           git-message: 'chore: write changelog {version}'
           git-user-name: 'blockbasti'
-          git-user-email: 'blockbasti99@gmail.com'
+          git-user-email: 'git@bblock.dev'
           version-file: './pubspec.yaml'
           version-path: 'version'
           preset: 'angular'
@@ -62,7 +63,7 @@ jobs:
 
       - name: Commit changed files
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         with:
           author_name: Bastian Block
           author_email: blockbasti99@gmail.com
@@ -91,7 +92,7 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "31.0.0"
+          BUILD_TOOLS_VERSION: "33.0.0"
 
       - name: Get last commit id
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
