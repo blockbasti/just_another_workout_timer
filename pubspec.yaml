@@ -17,7 +17,7 @@ dependencies:
   prefs: ^4.1.0+3
   url_launcher: ^6.1.12
   wakelock: 0.6.2
-  soundpool: 2.3.0
+  soundpool: 2.4.1
   intl_utils: ^2.8.3
   json_annotation: 4.8.1
   flutter_phoenix: 1.1.1
