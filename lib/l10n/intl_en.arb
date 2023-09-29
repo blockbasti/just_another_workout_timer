@@ -64,6 +64,8 @@
     "ttsLangDesc": "Select a language\n(only when TTS is enabled)",
     "ttsVoice": "TTS Voice (experimental)",
     "ttsVoiceDesc": "Select a voice for TTS",
+    "ttsEngine": "TTS Engine (experimental)",
+    "ttsEngineDesc": "Select an engine for TTS",
     "voice": "Voice",
     "useSound": "Use sound effects",
     "useSoundDesc": "Use simple sounds to indicate starts and endings of exercises",
