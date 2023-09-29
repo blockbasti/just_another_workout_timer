@@ -132,6 +132,8 @@
   "@ttsVoice": {},
   "ttsVoiceDesc": "Wähle eine Stimme für TTS",
   "@ttsVoiceDesc": {},
+  "ttsEngine": "TTS Anbieter (experimental)",
+  "ttsEngineDesc": "Wähle einen Anbieter für TTS",
   "voice": "Stimme",
   "@voice": {},
   "useSound": "Töne nutzen",
