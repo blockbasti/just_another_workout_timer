@@ -143,6 +143,23 @@ class SettingsPageState extends State<SettingsPage> {
             ),
           ),
           PrefDropdown(
+            title: Text(S.of(context).ttsEngine),
+            pref: 'tts_engine',
+            subtitle: Text(S.of(context).ttsEngineDesc),
+            items: TTSHelper.engines
+                .map((e) => DropdownMenuItem(
+                      value: e,
+                      child: Text(e),
+                    ))
+                .toList(),
+            disabled: !TTSHelper.available,
+            onChange: (String? value) {
+              TTSHelper.flutterTts
+                  .setEngine(value!)
+                  .then((_) => TTSHelper.init());
+            },
+          ),
+          PrefDropdown(
             title: Text(S.of(context).ttsVoice),
             pref: 'tts_voice',
             subtitle: Text(S.of(context).ttsVoiceDesc),

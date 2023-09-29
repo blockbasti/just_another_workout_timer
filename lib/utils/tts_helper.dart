@@ -30,24 +30,40 @@ class TTSHelper {
   /// list of all available voices for TTS
   static List<TTSVoice> voices = [];
 
+  static List<String> engines = [];
+
   static Future<void> init() async {
     flutterTts = FlutterTts();
 
     // populate the list of available TTS voices
     try {
-      List<dynamic> allVoices = await flutterTts.getVoices.timeout(const Duration(seconds: 1));
+      List<dynamic> allVoices =
+          await flutterTts.getVoices.timeout(const Duration(seconds: 1));
+
+      engines = (await flutterTts.getEngines.timeout(const Duration(seconds: 1))
+              as List<Object?>)
+          .map((e) => e.toString())
+          .toList(growable: false);
+
+      var ttsEngine = Prefs.getString('tts_engine', "");
+      if (ttsEngine == "") {
+        ttsEngine = engines.first;
+        await Prefs.setString('tts_voice', ttsEngine);
+      }
+
       voices = allVoices.map((element) {
         Map e = element;
         var voice = TTSVoice(e.entries.first.value, e.entries.last.value);
         return voice;
       }).toList(growable: true);
-      voices.retainWhere((voice) => Languages.languageCodes.contains(voice.locale));
+      voices.retainWhere(
+          (voice) => Languages.languageCodes.contains(voice.locale));
     } on TimeoutException {
       _ttsUnavailable();
       return;
     }
 
-    if (voices.isEmpty) {
+    if (voices.isEmpty || engines.isEmpty) {
       _ttsUnavailable();
       return;
     }
@@ -72,7 +88,10 @@ class TTSHelper {
     });
 
     try {
-      await flutterTts.setLanguage(ttsLang).timeout(const Duration(seconds: 1)).then((_) async {
+      await flutterTts
+          .setLanguage(ttsLang)
+          .timeout(const Duration(seconds: 1))
+          .then((_) async {
         await flutterTts.setVolume(1.0);
         await flutterTts.setVoice({"name": ttsVoice, "locale": ttsLang});
       });
@@ -94,7 +113,8 @@ class TTSHelper {
     Prefs.setString("tts_lang", languageCode);
     await flutterTts.setLanguage(languageCode);
 
-    var ttsVoice = voices.firstWhere((voice) => voice.locale == languageCode).name;
+    var ttsVoice =
+        voices.firstWhere((voice) => voice.locale == languageCode).name;
     await Prefs.setString('tts_voice', ttsVoice);
     await flutterTts.setVoice({"name": ttsVoice, "locale": languageCode});
   }
