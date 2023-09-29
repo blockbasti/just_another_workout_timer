@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_tts: ^3.8.3
-  path_provider: 2.0.15
+  path_provider: 2.1.1
   flutter_file_dialog: ^3.0.2
   pref: 2.7.1
   fluttertoast: ^8.2.2
