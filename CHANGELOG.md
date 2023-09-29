@@ -1,3 +1,12 @@
+# [1.13.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.12.0...v1.13.0) (2023-09-29)
+
+
+### Features
+
+* allow different TTS engine (fixes [#141](https://github.com/blockbasti/just_another_workout_timer/issues/141)) ([53f54d0](https://github.com/blockbasti/just_another_workout_timer/commit/53f54d01560f3ca54c3ccd7c9239a58232f2fe15))
+
+
+
 # [1.12.0](https://github.com/blockbasti/just_another_workout_timer/compare/v1.11.2...v1.12.0) (2023-07-22)
 
 
