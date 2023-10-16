@@ -25,7 +25,7 @@ dependencies:
   scrollable_positioned_list: 0.3.8
   flutter_localizations:
     sdk: flutter
-  uuid: 3.0.7
+  uuid: 4.1.0
 #  flutter_nord_theme: 2.1.0
   share_plus: ^6.3.4
   provider: 6.0.5
