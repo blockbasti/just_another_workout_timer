@@ -110,8 +110,8 @@ class BuilderPageState extends State<BuilderPage> {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: Text(S.of(context).enterWorkoutName),
-          ));
+                content: Text(S.of(context).enterWorkoutName),
+              ));
       return;
     }
 
@@ -127,27 +127,27 @@ class BuilderPageState extends State<BuilderPage> {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: Text(S.of(context).overwriteExistingWorkout),
-            actions: <Widget>[
-              TextButton(
-                child: Text(S.of(context).no),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text(S.of(context).yes),
-                onPressed: () async {
-                  await deleteWorkout(_oldTitle);
-                  writeWorkout(_workout);
-                  _oldTitle = _workout.title;
-                  _newWorkout = false;
-                  if (!mounted) return;
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ));
+                content: Text(S.of(context).overwriteExistingWorkout),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(S.of(context).no),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(S.of(context).yes),
+                    onPressed: () async {
+                      await deleteWorkout(_oldTitle);
+                      writeWorkout(_workout);
+                      _oldTitle = _workout.title;
+                      _newWorkout = false;
+                      if (!mounted) return;
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ));
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
@@ -161,13 +161,12 @@ class BuilderPageState extends State<BuilderPage> {
   }
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: () async {
-          if (!_dirty) {
-            return true;
-          }
-
-          final value = await showDialog<bool>(
+  Widget build(BuildContext context) => PopScope(
+        canPop: !_dirty,
+        onPopInvoked: (bool didPop) async {
+          if (didPop) return;
+          // if the user has made changes, ask if they want to exit
+          final yesExit = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
                     content: Text(S.of(context).exitCheck),
@@ -187,7 +186,9 @@ class BuilderPageState extends State<BuilderPage> {
                     ],
                   ));
 
-          return value!;
+          if (yesExit == true && context.mounted) {
+            Navigator.of(context).pop();
+          }
         },
         child: Scaffold(
           appBar: AppBar(

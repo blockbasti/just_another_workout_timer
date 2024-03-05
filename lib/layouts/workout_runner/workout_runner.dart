@@ -68,7 +68,7 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     if (!timetable.isInitialized) {
       return Container();
     }
-    return WillPopScope(
+    return PopScope(
         child: Scaffold(
           appBar: AppBar(
             title: Text(_workout.title),
@@ -242,13 +242,11 @@ class WorkoutPageState extends State<WorkoutPageContent> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
         ),
-        onWillPop: () async {
-          // Just pop if the workout wasn't started yet or is already done
-          if (timetable.canQuit) {
-            return true;
-          }
-
-          final value = await showDialog<bool>(
+        canPop: timetable.canQuit,
+        onPopInvoked: (bool didPop) async {
+          if (didPop) return;
+          // if the workout is running, ask if the user wants to exit
+          final yesExit = await showDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
                     content: Text(S.of(context).exitCheck),
@@ -268,7 +266,9 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                     ],
                   ));
 
-          return value == true;
+          if (yesExit == true && context.mounted) {
+            Navigator.of(context).pop();
+          }
         });
   }
 }
