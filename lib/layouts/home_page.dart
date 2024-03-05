@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_another_workout_timer/layouts/workout_builder/workout_builder.dart';
-import 'package:just_another_workout_timer/layouts/workout_runner.dart';
+import 'package:just_another_workout_timer/layouts/workout_runner/workout_runner.dart';
 
 import '../generated/l10n.dart';
 import 'settings_page.dart';

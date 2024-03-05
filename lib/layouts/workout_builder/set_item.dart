@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:just_another_workout_timer/layouts/workout_builder/workout_builder.dart';
 
 import '../../generated/l10n.dart';
 import '../../utils/number_stepper.dart';

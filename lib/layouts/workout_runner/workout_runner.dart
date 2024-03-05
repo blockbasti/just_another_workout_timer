@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/utils/timetable.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../generated/l10n.dart';
-import '../utils/utils.dart';
-import '../utils/workout.dart';
+import '../../generated/l10n.dart';
+import '../../utils/utils.dart';
+import '../../utils/workout.dart';
+import 'current_set_list.dart';
+import 'next_set_list.dart';
 
 class WorkoutPage extends StatelessWidget {
   final Workout workout;
@@ -270,95 +271,4 @@ class WorkoutPageState extends State<WorkoutPageContent> {
           return value == true;
         });
   }
-}
-
-class CurrentSetList extends StatefulWidget {
-  const CurrentSetList({super.key, required this.set, required this.timetable});
-
-  final Set set;
-  final Timetable timetable;
-
-  @override
-  State<CurrentSetList> createState() => _CurrentSetListState();
-}
-
-class _CurrentSetListState extends State<CurrentSetList> {
-  final ItemScrollController _itemScrollController = ItemScrollController();
-  final ItemPositionsListener _itemPositionsListener =
-      ItemPositionsListener.create();
-
-  @override
-  void initState() {
-    widget.timetable.itemScrollController = _itemScrollController;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var list = ScrollablePositionedList.builder(
-      itemBuilder: (context, index) => SetItem(
-          exercise: widget.set.exercises[index],
-          active:
-              widget.set.exercises.indexOf(widget.timetable.currentExercise) ==
-                  index),
-      itemCount: widget.set.exercises.length,
-      itemScrollController: _itemScrollController,
-      itemPositionsListener: _itemPositionsListener,
-      shrinkWrap: true,
-    );
-
-    if (!Prefs.getBool('expanded_setlist', false)) {
-      return SizedBox(
-        height: 217,
-        child: list,
-      );
-    } else {
-      return list;
-    }
-  }
-}
-
-class NextSetList extends StatelessWidget {
-  const NextSetList({super.key, required this.set, required this.timetable});
-
-  final Set set;
-  final Timetable timetable;
-
-  @override
-  Widget build(BuildContext context) => SizedBox(
-        height: 217,
-        child: ListView.builder(
-          itemBuilder: (context, index) {
-            if (index < set.exercises.length) {
-              return SetItem(
-                  exercise: set.exercises[index],
-                  active: set.exercises.indexOf(timetable.currentExercise) ==
-                      index);
-            } else {
-              return Container();
-            }
-          },
-          itemCount: set.exercises.length,
-          primary: false,
-          shrinkWrap: true,
-        ),
-      );
-}
-
-class SetItem extends StatelessWidget {
-  const SetItem({super.key, required this.exercise, required this.active});
-
-  final Exercise exercise;
-  final bool active;
-
-  @override
-  Widget build(BuildContext context) => ListTile(
-        tileColor: active
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).focusColor,
-        title: Text(exercise.name),
-        subtitle: Text(S
-            .of(context)
-            .durationWithTime(Utils.formatSeconds(exercise.duration))),
-      );
 }
