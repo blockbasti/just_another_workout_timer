@@ -123,8 +123,10 @@ class BuilderPageState extends State<BuilderPage> {
         (!_newWorkout &&
             _oldTitle != _workout.title &&
             await workoutExists(_workout.title))) {
-      if (!context.mounted) return;
-      showDialog(
+      if (!mounted) return;
+      // ask if the user wants to overwrite the existing workout
+      // if they say no, do not exit the screen
+      bool? exitScreen = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
                 content: Text(S.of(context).overwriteExistingWorkout),
@@ -132,7 +134,7 @@ class BuilderPageState extends State<BuilderPage> {
                   TextButton(
                     child: Text(S.of(context).no),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(false);
                     },
                   ),
                   TextButton(
@@ -143,11 +145,12 @@ class BuilderPageState extends State<BuilderPage> {
                       _oldTitle = _workout.title;
                       _newWorkout = false;
                       if (!mounted) return;
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pop(true);
                     },
                   ),
                 ],
               ));
+      if (exitScreen == false) return;
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
