@@ -43,10 +43,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
 
   WorkoutPageState();
 
-  final ItemScrollController _itemScrollController = ItemScrollController();
-  final ItemPositionsListener _itemPositionsListener =
-      ItemPositionsListener.create();
-
   @override
   void dispose() {
     timetable.timerStop();
@@ -59,66 +55,12 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     super.initState();
     _workout = widget.workout;
     timetable = widget.timetable;
-    timetable.itemScrollController = _itemScrollController;
     if (Prefs.getBool('wakelock', true)) Wakelock.enable();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       timetable.buildTimetable();
     });
   }
-
-  Widget _buildCurrentSetList(Set? set) {
-    if (set == null) return Container();
-
-    var list = ScrollablePositionedList.builder(
-      itemBuilder: (context, index) => _buildSetItem(set.exercises[index],
-          set.exercises.indexOf(timetable.currentExercise) == index),
-      itemCount: set.exercises.length,
-      itemScrollController: _itemScrollController,
-      itemPositionsListener: _itemPositionsListener,
-      shrinkWrap: true,
-    );
-
-    if (!Prefs.getBool('expanded_setlist', false)) {
-      return SizedBox(
-        height: 217,
-        child: list,
-      );
-    } else {
-      return list;
-    }
-  }
-
-  Widget _buildNextSetList(Set? set) {
-    if (set == null) return Container();
-
-    return SizedBox(
-      height: 217,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < set.exercises.length) {
-            return _buildSetItem(set.exercises[index],
-                set.exercises.indexOf(timetable.currentExercise) == index);
-          } else {
-            return Container();
-          }
-        },
-        itemCount: set.exercises.length,
-        primary: false,
-        shrinkWrap: true,
-      ),
-    );
-  }
-
-  Widget _buildSetItem(Exercise exercise, bool active) => ListTile(
-        tileColor: active
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).focusColor,
-        title: Text(exercise.name),
-        subtitle: Text(S
-            .of(context)
-            .durationWithTime(Utils.formatSeconds(exercise.duration))),
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +165,8 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
                           ),
-                          _buildCurrentSetList(timetable.currentSet),
+                          CurrentSetList(
+                              set: timetable.currentSet, timetable: timetable),
                         ],
                       ),
                     ),
@@ -243,11 +186,15 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                                           timetable.nextSet!.repetitions))
                                       : null,
                                 ),
-                                _buildNextSetList(timetable.nextSet),
+                                if (timetable.nextSet != null)
+                                  NextSetList(
+                                    set: timetable.nextSet!,
+                                    timetable: timetable,
+                                  ),
                               ],
                             ),
                           )
-                        : Column()
+                        : const Column()
                   ],
                 ),
               )
@@ -323,4 +270,95 @@ class WorkoutPageState extends State<WorkoutPageContent> {
           return value == true;
         });
   }
+}
+
+class CurrentSetList extends StatefulWidget {
+  const CurrentSetList({super.key, required this.set, required this.timetable});
+
+  final Set set;
+  final Timetable timetable;
+
+  @override
+  State<CurrentSetList> createState() => _CurrentSetListState();
+}
+
+class _CurrentSetListState extends State<CurrentSetList> {
+  final ItemScrollController _itemScrollController = ItemScrollController();
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  @override
+  void initState() {
+    widget.timetable.itemScrollController = _itemScrollController;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var list = ScrollablePositionedList.builder(
+      itemBuilder: (context, index) => SetItem(
+          exercise: widget.set.exercises[index],
+          active:
+              widget.set.exercises.indexOf(widget.timetable.currentExercise) ==
+                  index),
+      itemCount: widget.set.exercises.length,
+      itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
+      shrinkWrap: true,
+    );
+
+    if (!Prefs.getBool('expanded_setlist', false)) {
+      return SizedBox(
+        height: 217,
+        child: list,
+      );
+    } else {
+      return list;
+    }
+  }
+}
+
+class NextSetList extends StatelessWidget {
+  const NextSetList({super.key, required this.set, required this.timetable});
+
+  final Set set;
+  final Timetable timetable;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        height: 217,
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            if (index < set.exercises.length) {
+              return SetItem(
+                  exercise: set.exercises[index],
+                  active: set.exercises.indexOf(timetable.currentExercise) ==
+                      index);
+            } else {
+              return Container();
+            }
+          },
+          itemCount: set.exercises.length,
+          primary: false,
+          shrinkWrap: true,
+        ),
+      );
+}
+
+class SetItem extends StatelessWidget {
+  const SetItem({super.key, required this.exercise, required this.active});
+
+  final Exercise exercise;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) => ListTile(
+        tileColor: active
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).focusColor,
+        title: Text(exercise.name),
+        subtitle: Text(S
+            .of(context)
+            .durationWithTime(Utils.formatSeconds(exercise.duration))),
+      );
 }
