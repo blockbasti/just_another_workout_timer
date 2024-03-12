@@ -23,7 +23,7 @@ jobs:
 
       - name: Build full changelog
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v4
+        uses: TriPSs/conventional-changelog-action@v5
         with:
           github-token: ${{ secrets.github_token }}
           git-message: 'chore: write changelog {version}'
