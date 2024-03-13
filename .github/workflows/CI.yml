@@ -33,7 +33,7 @@ jobs:
         run: flutter build apk --build-number $(printf '%(%Y%m%d)T\n' -1) --debug
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: APK
           path: ./build/app/outputs/apk/debug/app-debug.apk
