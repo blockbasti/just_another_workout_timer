@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:just_another_workout_timer/utils/timetable.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '../generated/l10n.dart';
-import '../utils/utils.dart';
-import '../utils/workout.dart';
+import '../../generated/l10n.dart';
+import '../../utils/utils.dart';
+import '../../utils/workout.dart';
+import 'current_set_list.dart';
+import 'next_set_list.dart';
 
 class WorkoutPage extends StatelessWidget {
   final Workout workout;
@@ -43,10 +44,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
 
   WorkoutPageState();
 
-  final ItemScrollController _itemScrollController = ItemScrollController();
-  final ItemPositionsListener _itemPositionsListener =
-      ItemPositionsListener.create();
-
   @override
   void dispose() {
     timetable.timerStop();
@@ -59,7 +56,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     super.initState();
     _workout = widget.workout;
     timetable = widget.timetable;
-    timetable.itemScrollController = _itemScrollController;
     if (Prefs.getBool('wakelock', true)) Wakelock.enable();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,65 +63,40 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     });
   }
 
-  Widget _buildCurrentSetList(Set? set) {
-    if (set == null) return Container();
-
-    var list = ScrollablePositionedList.builder(
-      itemBuilder: (context, index) => _buildSetItem(set.exercises[index],
-          set.exercises.indexOf(timetable.currentExercise) == index),
-      itemCount: set.exercises.length,
-      itemScrollController: _itemScrollController,
-      itemPositionsListener: _itemPositionsListener,
-      shrinkWrap: true,
-    );
-
-    if (!Prefs.getBool('expanded_setlist', false)) {
-      return SizedBox(
-        height: 217,
-        child: list,
-      );
-    } else {
-      return list;
-    }
-  }
-
-  Widget _buildNextSetList(Set? set) {
-    if (set == null) return Container();
-
-    return SizedBox(
-      height: 217,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          if (index < set.exercises.length) {
-            return _buildSetItem(set.exercises[index],
-                set.exercises.indexOf(timetable.currentExercise) == index);
-          } else {
-            return Container();
-          }
-        },
-        itemCount: set.exercises.length,
-        primary: false,
-        shrinkWrap: true,
-      ),
-    );
-  }
-
-  Widget _buildSetItem(Exercise exercise, bool active) => ListTile(
-        tileColor: active
-            ? Theme.of(context).primaryColor
-            : Theme.of(context).focusColor,
-        title: Text(exercise.name),
-        subtitle: Text(S
-            .of(context)
-            .durationWithTime(Utils.formatSeconds(exercise.duration))),
-      );
-
   @override
   Widget build(BuildContext context) {
     if (!timetable.isInitialized) {
       return Container();
     }
-    return WillPopScope(
+    return PopScope(
+        canPop: timetable.canQuit,
+        onPopInvoked: (bool didPop) async {
+          if (didPop) return;
+          // if the workout is running, ask if the user wants to exit
+          final yesExit = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                    content: Text(S.of(context).exitCheck),
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text(S.of(context).no),
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                      ),
+                      TextButton(
+                        child: Text(S.of(context).yesExit),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                      ),
+                    ],
+                  ));
+
+          if (yesExit == true && context.mounted) {
+            Navigator.of(context).pop();
+          }
+        },
         child: Scaffold(
           appBar: AppBar(
             title: Text(_workout.title),
@@ -223,7 +194,8 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
                           ),
-                          _buildCurrentSetList(timetable.currentSet),
+                          CurrentSetList(
+                              set: timetable.currentSet, timetable: timetable),
                         ],
                       ),
                     ),
@@ -243,11 +215,15 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                                           timetable.nextSet!.repetitions))
                                       : null,
                                 ),
-                                _buildNextSetList(timetable.nextSet),
+                                if (timetable.nextSet != null)
+                                  NextSetList(
+                                    set: timetable.nextSet!,
+                                    timetable: timetable,
+                                  ),
                               ],
                             ),
                           )
-                        : Column()
+                        : const Column()
                   ],
                 ),
               )
@@ -293,34 +269,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-        ),
-        onWillPop: () async {
-          // Just pop if the workout wasn't started yet or is already done
-          if (timetable.canQuit) {
-            return true;
-          }
-
-          final value = await showDialog<bool>(
-              context: context,
-              builder: (context) => AlertDialog(
-                    content: Text(S.of(context).exitCheck),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text(S.of(context).no),
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                      ),
-                      TextButton(
-                        child: Text(S.of(context).yesExit),
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                      ),
-                    ],
-                  ));
-
-          return value == true;
-        });
+        ));
   }
 }

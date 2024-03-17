@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:just_another_workout_timer/layouts/workout_runner.dart';
+import 'package:just_another_workout_timer/layouts/workout_builder/workout_builder.dart';
+import 'package:just_another_workout_timer/layouts/workout_runner/workout_runner.dart';
 
 import '../generated/l10n.dart';
 import 'settings_page.dart';
 import '../utils/storage_helper.dart';
 import '../utils/utils.dart';
 import '../utils/workout.dart';
-import 'workout_builder.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
@@ -43,6 +43,17 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  _onWorkoutsReorder(oldIndex, newIndex) {
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    setState(() {
+      var workout = workouts.removeAt(oldIndex);
+      workouts.insert(newIndex, workout);
+    });
+    _saveSorting();
+  }
+
   /// aks user if they want to delete a workout
   _showDeleteDialog(BuildContext context, Workout workout) {
     // set up the buttons
@@ -76,78 +87,6 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildWorkoutList() => ReorderableListView(
-        onReorder: (oldIndex, newIndex) {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          setState(() {
-            var workout = workouts.removeAt(oldIndex);
-            workouts.insert(newIndex, workout);
-          });
-          _saveSorting();
-        },
-        children: workouts.map(_buildWorkoutItem).toList(),
-      );
-
-  Widget _buildWorkoutItem(Workout workout) => Card(
-      key: Key(workout.toJson().toString()),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ReorderableDragStartListener(
-                index: workout.position, child: const Icon(Icons.drag_handle)),
-          ),
-          Expanded(
-            child: ListTile(
-              title: Text(workout.title),
-              subtitle: Text(S
-                  .of(context)
-                  .durationWithTime(Utils.formatSeconds(workout.duration))),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit),
-            tooltip: S.of(context).editWorkout,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      BuilderPage(workout: workout, newWorkout: false),
-                ),
-              ).then((value) => _loadWorkouts());
-            },
-          ),
-          IconButton(
-              icon: const Icon(Icons.play_circle_fill),
-              tooltip: S.of(context).startWorkout,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WorkoutPage(
-                      workout: workout,
-                    ),
-                  ),
-                ).then((value) => _loadWorkouts());
-              }),
-          IconButton(
-              icon: const Icon(Icons.delete),
-              tooltip: S.of(context).deleteWorkout,
-              onPressed: () {
-                _showDeleteDialog(context, workout);
-              }),
-          IconButton(
-              tooltip: S.of(context).shareWorkout,
-              onPressed: () {
-                shareWorkout(workout.title);
-              },
-              icon: const Icon(Icons.share)),
-        ],
-      ));
-
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -177,7 +116,11 @@ class HomePageState extends State<HomePage> {
                 })
           ],
         ),
-        body: _buildWorkoutList(),
+        body: WorkoutList(
+            workouts: workouts,
+            loadWorkouts: _loadWorkouts,
+            showDeleteDialog: _showDeleteDialog,
+            onReorder: _onWorkoutsReorder),
         floatingActionButton: FloatingActionButton(
           heroTag: 'mainFAB',
           onPressed: () {
@@ -195,4 +138,102 @@ class HomePageState extends State<HomePage> {
           child: const Icon(Icons.add),
         ),
       );
+}
+
+class WorkoutList extends StatelessWidget {
+  const WorkoutList(
+      {super.key,
+      required this.workouts,
+      required this.loadWorkouts,
+      required this.showDeleteDialog,
+      required this.onReorder});
+
+  final List<Workout> workouts;
+  final void Function(int oldIndex, int newIndex) onReorder;
+  final void Function() loadWorkouts;
+  final void Function(BuildContext context, Workout workout) showDeleteDialog;
+
+  @override
+  Widget build(BuildContext context) => ReorderableListView(
+        onReorder: onReorder,
+        children: workouts
+            .map((workout) => WorkoutItem(
+                  key: Key(workout.toJson().toString()),
+                  workout: workout,
+                  loadWorkouts: loadWorkouts,
+                  showDeleteDialog: showDeleteDialog,
+                ))
+            .toList(),
+      );
+}
+
+class WorkoutItem extends StatelessWidget {
+  const WorkoutItem(
+      {super.key,
+      required this.workout,
+      required this.loadWorkouts,
+      required this.showDeleteDialog});
+
+  final Workout workout;
+  final void Function() loadWorkouts;
+  final void Function(BuildContext context, Workout workout) showDeleteDialog;
+
+  @override
+  Widget build(BuildContext context) => Card(
+      key: Key(workout.toJson().toString()),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: ReorderableDragStartListener(
+                index: workout.position, child: const Icon(Icons.drag_handle)),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Text(workout.title),
+              subtitle: Text(S
+                  .of(context)
+                  .durationWithTime(Utils.formatSeconds(workout.duration))),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            tooltip: S.of(context).editWorkout,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      BuilderPage(workout: workout, newWorkout: false),
+                ),
+              ).then((value) => loadWorkouts());
+            },
+          ),
+          IconButton(
+              icon: const Icon(Icons.play_circle_fill),
+              tooltip: S.of(context).startWorkout,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WorkoutPage(
+                      workout: workout,
+                    ),
+                  ),
+                ).then((value) => loadWorkouts());
+              }),
+          IconButton(
+              icon: const Icon(Icons.delete),
+              tooltip: S.of(context).deleteWorkout,
+              onPressed: () {
+                showDeleteDialog(context, workout);
+              }),
+          IconButton(
+              tooltip: S.of(context).shareWorkout,
+              onPressed: () {
+                shareWorkout(workout.title);
+              },
+              icon: const Icon(Icons.share)),
+        ],
+      ));
 }
