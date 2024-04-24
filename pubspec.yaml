@@ -31,6 +31,7 @@ dependencies:
   provider: 6.0.5
   dynamic_color: ^1.6.7
   numberpicker: 2.1.2
+  prompt_dialog: 1.0.15
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1
