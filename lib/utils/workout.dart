@@ -51,6 +51,7 @@ class Set {
     String? id,
     this.repetitions = 1,
     List<Exercise>? exercises,
+    this.name
   }) {
     this.id = id ?? const Uuid().v4();
     this.exercises = exercises ?? [Exercise()];
@@ -58,6 +59,9 @@ class Set {
 
   @JsonKey(required: true)
   int repetitions;
+
+  @JsonKey()
+  late String? name;
 
   @JsonKey()
   late String id;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../generated/l10n.dart';
@@ -149,6 +150,20 @@ class BuilderPageState extends State<BuilderPage> {
     });
   }
 
+  void _editSetName(int setIndex) async {
+    var existingName = _workout.sets[setIndex].name ?? "";
+    var newName = await prompt(
+        context,
+        initialValue: existingName,
+        maxLength: 15);
+    if (newName != null && newName != existingName) {
+      setState(() {
+        _workout.sets[setIndex].name = newName.isEmpty ? null : newName;
+        _dirty = true;
+      });
+    }
+  }
+
   Widget _buildSetList() => ReorderableListView(
         onReorder: (oldIndex, newIndex) {
           if (oldIndex < newIndex) {
@@ -186,10 +201,18 @@ class BuilderPageState extends State<BuilderPage> {
                   Expanded(
                     child: ListTile(
                       title: Text(
+                        set.name ??
                         S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
                       ),
                       subtitle: Text(Utils.formatSeconds(set.duration)),
                     ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    tooltip: S.of(context).editSetName,
+                    onPressed: () {
+                      _editSetName(index);
+                    },
                   ),
                   Text(S.of(context).repetitions),
                   NumberStepper(
