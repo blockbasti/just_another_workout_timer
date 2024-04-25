@@ -51,7 +51,8 @@ class Set {
     String? id,
     this.repetitions = 1,
     List<Exercise>? exercises,
-    this.name
+    this.name,
+    this.hidden = false,
   }) {
     this.id = id ?? const Uuid().v4();
     this.exercises = exercises ?? [Exercise()];
@@ -68,6 +69,8 @@ class Set {
 
   @JsonKey(required: true)
   late List<Exercise> exercises;
+
+  bool hidden;
 
   int get duration {
     var duration = 0;

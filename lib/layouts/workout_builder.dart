@@ -254,12 +254,20 @@ class BuilderPageState extends State<BuilderPage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.delete),
-                        tooltip: S.of(context).deleteSet,
+                        icon: Icon(set.hidden ? Icons.visibility : Icons.visibility_off),
                         onPressed: () {
-                          _deleteSet(index);
+                          setState(() {
+                            set.hidden = !set.hidden;
+                            _dirty = true;
+                          });
                         },
                       ),
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          tooltip: S.of(context).deleteSet,
+                          onPressed: () {
+                            _deleteSet(index);
+                          }),
                       IconButton(
                         icon: const Icon(Icons.copy),
                         tooltip: S.of(context).duplicate,
@@ -286,7 +294,7 @@ class BuilderPageState extends State<BuilderPage> {
             _workout.sets[setIndex].exercises.insert(newIndex, ex);
           });
         },
-        children: set.exercises
+        children: set.hidden ? [] : set.exercises
             .asMap()
             .keys
             .map(
