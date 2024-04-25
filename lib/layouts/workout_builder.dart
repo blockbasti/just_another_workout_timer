@@ -203,16 +203,15 @@ class BuilderPageState extends State<BuilderPage> {
                       title: Text(
                         set.name ??
                         S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                       subtitle: Text(Utils.formatSeconds(set.duration)),
+                      onLongPress: () {
+                        _editSetName(index);
+                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    tooltip: S.of(context).editSetName,
-                    onPressed: () {
-                      _editSetName(index);
-                    },
                   ),
                   Text(S.of(context).repetitions),
                   NumberStepper(

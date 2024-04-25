@@ -147,92 +147,79 @@ class WorkoutPageState extends State<WorkoutPageContent> {
               // left side of footer
               Expanded(
                 child: ListTile(
-                  title: Text(
-                    S.of(context).exerciseOf(
-                          timetable.currentSet.exercises
-                                  .indexOf(timetable.currentExercise) +
-                              1 +
-                              (timetable.currentReps *
-                                  timetable.currentSet.exercises.length),
-                          timetable.currentSet.exercises.length *
-                              timetable.currentSet.repetitions,
-                        ),
-                  ),
-                  subtitle: Text(
-                    S.of(context).repOf(
-                          timetable.currentReps + 1,
-                          timetable.currentSet.repetitions,
-                        ),
-                  ),
-                ),
-              ),
+                title: Text(S.of(context).exerciseOf(
+                    timetable.currentSet.exercises
+                            .indexOf(timetable.currentExercise) +
+                        1 +
+                        (timetable.currentReps *
+                            timetable.currentSet.exercises.length),
+                    timetable.currentSet.exercises.length *
+                        timetable.currentSet.repetitions)),
+                subtitle: Text(S.of(context).repOf(timetable.currentReps + 1,
+                    timetable.currentSet.repetitions)),
+              )),
               // right side of footer
               Expanded(
-                child: ListTile(
-                  title: Text(
-                    S.of(context).setOf(
-                          _workout.sets.indexOf(timetable.currentSet) + 1,
-                          _workout.sets.length,
-                        ),
-                    textAlign: TextAlign.end,
-                  ),
-                  subtitle: Text(
-                    S.of(context).durationLeft(
-                          Utils.formatSeconds(
-                            _workout.duration - timetable.currentSecond + 10,
-                          ),
-                          Utils.formatSeconds(_workout.duration + 10),
-                        ),
-                    textAlign: TextAlign.end,
-                  ),
+                  child: ListTile(
+                title: Text(
+                  S.of(context).setOf(
+                      _workout.sets.indexOf(timetable.currentSet) + 1,
+                      _workout.sets.length),
+                  textAlign: TextAlign.end,
                 ),
-              ),
+                subtitle: Text(
+                  S.of(context).durationLeft(
+                      Utils.formatSeconds(
+                          _workout.duration - timetable.currentSecond + 10),
+                      Utils.formatSeconds(_workout.duration + 10)),
+                  textAlign: TextAlign.end,
+                ),
+              ))
             ],
-          ),
-        ),
-        body: Column(
-          children: [
-            // top card with current exercise
-            Card(
-              child: Center(
-                child: Column(
-                  children: [
-                    Text(
-                      '${S.of(context).setIndex(_workout.sets.indexOf(timetable.currentSet) + 1)} - ${Utils.formatSeconds(timetable.remainingSeconds)}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
+          )),
+          body: Column(
+            children: [
+              // top card with current exercise
+              Card(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        timetable.currentSet.name ?? S.of(context).setIndex(_workout.sets.indexOf(timetable.currentSet) + 1),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 40, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    LinearProgressIndicator(
-                      value: timetable.remainingSeconds /
-                          (timetable.currentSecond < 10
-                              ? 10
-                              : timetable.currentExercise.duration),
-                      minHeight: 6,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).colorScheme.secondary,
+                      Text(
+                        Utils.formatSeconds(timetable.remainingSeconds),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 48, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    Text(
-                      timetable.currentExercise.name,
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
+                      LinearProgressIndicator(
+                        value: timetable.remainingSeconds /
+                            (timetable.currentSecond < 10
+                                ? 10
+                                : timetable.currentExercise.duration),
+                        minHeight: 6,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).colorScheme.secondary),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    timetable.nextExercise != null
-                        ? Text(
-                            S.of(context).nextExercise(
-                                  timetable.nextExercise?.name ?? '',
-                                ),
-                            style: const TextStyle(fontSize: 24),
-                            textAlign: TextAlign.center,
-                          )
-                        : Container(),
-                  ],
+                      Text(
+                        timetable.currentExercise.name,
+                        style: const TextStyle(
+                            fontSize: 48, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      timetable.nextExercise != null
+                          ? Text(
+                              S.of(context).nextExercise(
+                                  timetable.nextExercise?.name ?? ''),
+                              style: const TextStyle(fontSize: 24),
+                              textAlign: TextAlign.center,
+                            )
+                          : Container(),
+                    ],
                 ),
               ),
             ),
