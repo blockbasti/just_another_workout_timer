@@ -57,7 +57,7 @@ class BuilderPageState extends State<BuilderPage> {
     var newSet = Set.fromJson(_workout.sets[index].toJson());
     newSet.id = const Uuid().v4();
     setState(() {
-      _workout.sets.insert(index, newSet);
+      _workout.sets.insert(index + 1, newSet);
       _dirty = true;
     });
   }
