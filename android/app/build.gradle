@@ -35,6 +35,15 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
     defaultConfig {
         applicationId "com.blockbasti.justanotherworkouttimer"
         minSdkVersion flutter.minSdkVersion
@@ -65,6 +74,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'com.blockbasti.just_another_workout_timer'
 }
 
 flutter {
