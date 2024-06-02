@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: '17.x'
+          java-version: '21.x'
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -92,7 +92,7 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "33.0.0"
+          BUILD_TOOLS_VERSION: "34.0.0"
 
       - name: Get last commit id
         if: ${{ steps.changelog.outputs.skipped == 'false' }}

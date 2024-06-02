@@ -39,7 +39,7 @@ void main() async {
 class JAWTApp extends StatelessWidget {
   ThemeMode? _brightness;
 
-  JAWTApp({Key? key}) : super(key: key);
+  JAWTApp({super.key});
 
   @override
   Widget build(BuildContext context) {

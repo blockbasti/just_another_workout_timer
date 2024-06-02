@@ -13,8 +13,8 @@ class BuilderPage extends StatefulWidget {
   final Workout workout;
   final bool newWorkout;
 
-  const BuilderPage({Key? key, required this.workout, required this.newWorkout})
-      : super(key: key);
+  const BuilderPage(
+      {super.key, required this.workout, required this.newWorkout});
 
   @override
   BuilderPageState createState() =>
@@ -105,7 +105,7 @@ class BuilderPageState extends State<BuilderPage> {
                       writeWorkout(_workout);
                       _oldTitle = _workout.title;
                       _newWorkout = false;
-                      if (!mounted) return;
+                      if (!context.mounted) return;
                       Navigator.of(context).pop();
                     },
                   ),
@@ -114,6 +114,7 @@ class BuilderPageState extends State<BuilderPage> {
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
+      if (!context.mounted) return;
       Fluttertoast.showToast(
           msg: S.of(context).saved,
           toastLength: Toast.LENGTH_SHORT,

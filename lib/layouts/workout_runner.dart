@@ -3,7 +3,7 @@ import 'package:just_another_workout_timer/utils/timetable.dart';
 import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../generated/l10n.dart';
 import '../utils/utils.dart';
@@ -12,7 +12,7 @@ import '../utils/workout.dart';
 class WorkoutPage extends StatelessWidget {
   final Workout workout;
 
-  const WorkoutPage({Key? key, required this.workout}) : super(key: key);
+  const WorkoutPage({super.key, required this.workout});
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -30,8 +30,7 @@ class WorkoutPageContent extends StatefulWidget {
   final Timetable timetable;
 
   const WorkoutPageContent(
-      {Key? key, required this.workout, required this.timetable})
-      : super(key: key);
+      {super.key, required this.workout, required this.timetable});
 
   @override
   WorkoutPageState createState() => WorkoutPageState();
@@ -50,7 +49,7 @@ class WorkoutPageState extends State<WorkoutPageContent> {
   @override
   void dispose() {
     timetable.timerStop();
-    Wakelock.disable();
+    WakelockPlus.disable();
     super.dispose();
   }
 
@@ -60,7 +59,7 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     _workout = widget.workout;
     timetable = widget.timetable;
     timetable.itemScrollController = _itemScrollController;
-    if (Prefs.getBool('wakelock', true)) Wakelock.enable();
+    if (Prefs.getBool('wakelock', true)) WakelockPlus.enable();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       timetable.buildTimetable();
@@ -247,7 +246,7 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                               ],
                             ),
                           )
-                        : Column()
+                        : const Column()
                   ],
                 ),
               )

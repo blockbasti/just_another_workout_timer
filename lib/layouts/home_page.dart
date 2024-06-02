@@ -3,15 +3,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:just_another_workout_timer/layouts/workout_runner.dart';
 
 import '../generated/l10n.dart';
-import 'settings_page.dart';
 import '../utils/storage_helper.dart';
 import '../utils/utils.dart';
 import '../utils/workout.dart';
+import 'settings_page.dart';
 import 'workout_builder.dart';
 
 /// Main screen
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   HomePageState createState() => HomePageState();
@@ -157,7 +157,7 @@ class HomePageState extends State<HomePage> {
               onPressed: () async {
                 var count = await importFile(false);
                 _loadWorkouts();
-                if (!mounted) return;
+                if (!context.mounted) return;
                 Fluttertoast.showToast(
                     msg: S.of(context).importedCount(count),
                     toastLength: Toast.LENGTH_SHORT,

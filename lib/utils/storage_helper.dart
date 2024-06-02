@@ -6,9 +6,9 @@ import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../utils/workout.dart';
 import 'migrations.dart';
 import 'utils.dart';
-import '../utils/workout.dart';
 
 Future<String> get localPath async {
   final directory = await getExternalStorageDirectory();
@@ -33,7 +33,8 @@ Future<void> exportWorkout(String title) async {
 
 Future<void> shareWorkout(String title) async {
   final path = await localPath;
-  Share.shareFiles(['$path/workouts/${Utils.removeSpecialChar(title)}.json'],
+  Share.shareXFiles(
+      [XFile('$path/workouts/${Utils.removeSpecialChar(title)}.json')],
       text: title);
 }
 
