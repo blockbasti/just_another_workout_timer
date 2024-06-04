@@ -15,7 +15,7 @@ dependencies:
   flutter_native_splash: '^2.4.0'
   flutter_phoenix: '^1.1.1'
   flutter_tts: '^4.0.2'
-  fluttertoast: '^8.2.5'
+  fluttertoast: ^8.2.5
   intl_utils: '^2.8.7'
   json_annotation: '^4.9.0'
   numberpicker: '^2.1.2'
