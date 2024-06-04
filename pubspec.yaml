@@ -28,7 +28,7 @@ dependencies:
   scrollable_positioned_list: '^0.3.8'
   share_plus: '^9.0.0'
   soundpool: '^2.4.1'
-  url_launcher: '^6.2.6'
+  url_launcher: ^6.2.6
   uuid: '^4.4.0'
   wakelock_plus: '^1.2.5'
 
