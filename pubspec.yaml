@@ -33,7 +33,7 @@ dependencies:
   wakelock_plus: '^1.2.5'
 
 dev_dependencies:
-  build_runner: '^2.4.10'
+  build_runner: ^2.4.10
   flutter_launcher_icons: '^0.13.1'
   flutter_lints: '^4.0.0'
   flutter_oss_licenses: '^3.0.2'
