@@ -1,9 +1,13 @@
 name: Create release
 on:
-  workflow_dispatch:
   push:
     branches:
-      - release
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
 
 jobs:
   create_release:
@@ -12,79 +16,37 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: dart
 
       - uses: actions/setup-java@v4
+        if: ${{ steps.release.outputs.release_created }}
         with:
-          distribution: "temurin"
-          java-version: '21.x'
+            distribution: "temurin"
+            java-version: '21.x'
+            cache: 'gradle'
+      
       - uses: subosito/flutter-action@v2
+        if: ${{ steps.release.outputs.release_created }}
         with:
-          channel: 'stable'
-
-      - name: Build full changelog
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@v5
-        with:
-          github-token: ${{ secrets.github_token }}
-          git-message: 'chore: write changelog {version}'
-          git-user-name: 'blockbasti'
-          git-user-email: 'git@bblock.dev'
-          version-file: './pubspec.yaml'
-          version-path: 'version'
-          preset: 'angular'
-          tag-prefix: 'v'
-          output-file: 'CHANGELOG.md'
-          release-count: 0
-          skip-on-empty: 'true'
-          skip-version-file: 'false'
-          skip-commit: 'true'
-
-      - name: Write versioncode to pubspec.yml
-        env:
-          VERSION: ${{ steps.changelog.outputs.version }}
-        run: |
-          #export VERSION=$(grep -oP '(?<=version: )(\d\.\d\.\d)' ./pubspec.yaml)
-          export TIMESTAMP=$(printf '%(%Y%m%d)T\n' -1)
-          sed -i -E -e "4,4s/.*/version\: $VERSION\+$TIMESTAMP/" pubspec.yaml
-
-      - name: Write changelog to fastlane
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        env:
-          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
-        run: echo $CHANGELOG > fastlane/metadata/android/en-US/changelogs/$(printf '%(%Y%m%d)T\n' -1).txt
-
-      - name: Delete automatically created tag
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        env:
-          TAG: ${{ steps.changelog.outputs.tag }}
-        run: |
-          git tag -d $TAG
-          git push --delete origin $TAG
-
-      - name: Commit changed files
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: Bastian Block
-          author_email: blockbasti99@gmail.com
-          message: 'chore: commit files during release'
-          add: "['fastlane/metadata/android/en-US/changelogs/*.txt', 'pubspec.yaml', 'CHANGELOG.md']"
-
+            channel: 'stable'
+      
       - name: Setup Flutter
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           flutter config --no-analytics
           flutter pub get
           sh ./scripts/generate_code.sh
 
       - name: Build APKs
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        if: ${{ steps.release.outputs.release_created }}
         run: flutter build apk
 
       - name: Sign APK
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
         uses: r0adkll/sign-android-release@v1
         id: sign_app
+        if: ${{ steps.release.outputs.release_created }}
         with:
           releaseDirectory: ./build/app/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -92,32 +54,11 @@ jobs:
           keyStorePassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
           keyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.0"
+          BUILD_TOOLS_VERSION: "35.0.0"
 
-      - name: Get last commit id
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        id: get_commit
-        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
-        with:
-          commitish: ${{ steps.get_commit.outputs.sha }}
-          tag_name: ${{ steps.changelog.outputs.tag }}
-          release_name: ${{ steps.changelog.outputs.tag }}
-          body: ${{ steps.changelog.outputs.clean_changelog }}
-
-      - name: Upload Release Asset
-        if: ${{ steps.changelog.outputs.skipped == 'false' }}
-        uses: actions/upload-release-asset@v1
+      - name: Upload Release Artifact
+        if: ${{ steps.release.outputs.release_created }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ steps.sign_app.outputs.signedReleaseFile }}
-          asset_name: com.blockbasti.justanotherworkouttimer.apk
-          asset_content_type: application/vnd.android.package-archive
+        run: gh release upload ${{ steps.release.outputs.tag_name }} ${{ steps.sign_app.outputs.signedReleaseFile }}#com.blockbasti.justanotherworkouttimer.apk
+

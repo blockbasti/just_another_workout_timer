@@ -1,7 +1,7 @@
 name: 'just_another_workout_timer'
 version: '1.11.2+20220317'
 environment: 
-  sdk: '>=3.3.0'
+  sdk: '>=3.4.0'
 description: Just Another Workout Timer
 
 dependencies:
