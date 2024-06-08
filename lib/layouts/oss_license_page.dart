@@ -16,7 +16,7 @@ class FlutterLicense extends LicenseEntry {
 
 /// display all used packages and their license
 class OssLicensesPage extends StatelessWidget {
-  const OssLicensesPage({Key? key}) : super(key: key);
+  const OssLicensesPage({super.key});
 
   static Future<List<Package>> loadLicenses() async {
     // merging non-dart dependency list using LicenseRegistry.
@@ -27,7 +27,7 @@ class OssLicensesPage extends StatelessWidget {
         lp.addAll(l.paragraphs.map((p) => p.text));
       }
     }
-    final licenses = ossLicenses.toList();
+    final licenses = allDependencies.toSet();
     for (var key in lm.keys) {
       licenses.add(Package(
         name: key,
@@ -37,7 +37,7 @@ class OssLicensesPage extends StatelessWidget {
         license: lm[key]!.join('\n\n'),
         isMarkdown: false,
         isSdk: false,
-        isDirectDependency: false,
+        dependencies: [],
       ));
     }
 
@@ -49,10 +49,10 @@ class OssLicensesPage extends StatelessWidget {
         license: 'CC-0',
         isMarkdown: false,
         isSdk: false,
-        isDirectDependency: false,
-        homepage: 'https://freesound.org/people/unfa/sounds/243749/'));
+        homepage: 'https://freesound.org/people/unfa/sounds/243749/',
+        dependencies: []));
 
-    return licenses..sort((a, b) => a.name.compareTo(b.name));
+    return licenses.toList()..sort((a, b) => a.name.compareTo(b.name));
   }
 
   static final _licenses = loadLicenses();
@@ -90,8 +90,7 @@ class OssLicensesPage extends StatelessWidget {
 class MiscOssLicenseSingle extends StatelessWidget {
   final Package package;
 
-  const MiscOssLicenseSingle({Key? key, required this.package})
-      : super(key: key);
+  const MiscOssLicenseSingle({super.key, required this.package});
 
   String _bodyText() => package.license!.split('\n').map((line) {
         if (line.startsWith('//')) line = line.substring(2);
