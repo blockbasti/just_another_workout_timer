@@ -7,11 +7,12 @@ part '../workout.g.dart';
 class Workout {
   static const fileVersion = 2;
 
-  Workout(
-      {this.title = 'Workout',
-      List<Set>? sets,
-      this.version = fileVersion,
-      this.position = -1}) {
+  Workout({
+    this.title = 'Workout',
+    List<Set>? sets,
+    this.version = fileVersion,
+    this.position = -1,
+  }) {
     this.sets = sets ?? [Set()];
   }
 

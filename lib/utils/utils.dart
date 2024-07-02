@@ -15,9 +15,11 @@ class Utils {
       text.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_');
 
   static List<Workout> sortWorkouts(List<Workout> workouts) {
-    workouts.sort((w1, w2) => w1.position != -1 && w2.position != -1
-        ? w1.position.compareTo(w2.position)
-        : compareNatural(w1.title, w2.title));
+    workouts.sort(
+      (w1, w2) => w1.position != -1 && w2.position != -1
+          ? w1.position.compareTo(w2.position)
+          : compareNatural(w1.title, w2.title),
+    );
     return workouts;
   }
 
@@ -26,13 +28,15 @@ class Utils {
       source.listSync(recursive: false).forEach((var entity) {
         if (entity is Directory) {
           var newDirectory = Directory(
-              path.join(destination.absolute.path, path.basename(entity.path)));
+            path.join(destination.absolute.path, path.basename(entity.path)),
+          );
           newDirectory.createSync();
 
           copyDirectory(entity.absolute, newDirectory);
         } else if (entity is File) {
           entity.copySync(
-              path.join(destination.path, path.basename(entity.path)));
+            path.join(destination.path, path.basename(entity.path)),
+          );
         }
       });
 }

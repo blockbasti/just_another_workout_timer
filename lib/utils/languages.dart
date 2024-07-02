@@ -15,11 +15,14 @@ class Languages {
     AppLanguage("Français", "fr", "fr-FR"),
     AppLanguage("Italiano", "it", "it-IT"),
     AppLanguage("Русский", "ru", "ru-RU"),
-    AppLanguage("Türkçe", "tr", "tr-TR")
+    AppLanguage("Türkçe", "tr", "tr-TR"),
   ];
 
-  static List<String> get languageCodes => languages.map((lang) => lang.languageCode).toList();
+  static List<String> get languageCodes =>
+      languages.map((lang) => lang.languageCode).toList();
 
-  static AppLanguage fromLocaleCode(String localeCode) =>
-      languages.firstWhere((lang) => lang.localeCode == localeCode, orElse: () => languages.first);
+  static AppLanguage fromLocaleCode(String localeCode) => languages.firstWhere(
+        (lang) => lang.localeCode == localeCode,
+        orElse: () => languages.first,
+      );
 }

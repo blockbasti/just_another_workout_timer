@@ -13,8 +13,11 @@ class BuilderPage extends StatefulWidget {
   final Workout workout;
   final bool newWorkout;
 
-  const BuilderPage(
-      {super.key, required this.workout, required this.newWorkout});
+  const BuilderPage({
+    super.key,
+    required this.workout,
+    required this.newWorkout,
+  });
 
   @override
   BuilderPageState createState() =>
@@ -71,10 +74,11 @@ class BuilderPageState extends State<BuilderPage> {
   void saveWorkout() async {
     if (_workout.title == '') {
       showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                content: Text(S.of(context).enterWorkoutName),
-              ));
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text(S.of(context).enterWorkoutName),
+        ),
+      );
       return;
     }
 
@@ -88,37 +92,39 @@ class BuilderPageState extends State<BuilderPage> {
             await workoutExists(_workout.title))) {
       if (!context.mounted) return;
       showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                content: Text(S.of(context).overwriteExistingWorkout),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text(S.of(context).no),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: Text(S.of(context).yes),
-                    onPressed: () async {
-                      await deleteWorkout(_oldTitle);
-                      writeWorkout(_workout);
-                      _oldTitle = _workout.title;
-                      _newWorkout = false;
-                      if (!context.mounted) return;
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ));
+        context: context,
+        builder: (context) => AlertDialog(
+          content: Text(S.of(context).overwriteExistingWorkout),
+          actions: <Widget>[
+            TextButton(
+              child: Text(S.of(context).no),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(S.of(context).yes),
+              onPressed: () async {
+                await deleteWorkout(_oldTitle);
+                writeWorkout(_workout);
+                _oldTitle = _workout.title;
+                _newWorkout = false;
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
     } else {
       writeWorkout(_workout);
       _newWorkout = false;
       if (!context.mounted) return;
       Fluttertoast.showToast(
-          msg: S.of(context).saved,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER);
+        msg: S.of(context).saved,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
     if (!mounted) return;
     Navigator.of(context).pop(true);
@@ -126,9 +132,12 @@ class BuilderPageState extends State<BuilderPage> {
 
   void _addExercise(int setIndex, bool isRest) {
     setState(() {
-      _workout.sets[setIndex].exercises.add(Exercise(
+      _workout.sets[setIndex].exercises.add(
+        Exercise(
           name: isRest ? S.of(context).rest : S.of(context).exercise,
-          duration: _lastDuration));
+          duration: _lastDuration,
+        ),
+      );
       _dirty = true;
     });
   }
@@ -159,10 +168,10 @@ class BuilderPageState extends State<BuilderPage> {
 
   Widget _buildSetItem(Set set, int index) =>
       ReorderableDelayedDragStartListener(
-          index: index,
-          key: Key(set.id),
-          child: Card(
-              child: Column(
+        index: index,
+        key: Key(set.id),
+        child: Card(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -170,7 +179,9 @@ class BuilderPageState extends State<BuilderPage> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: ReorderableDragStartListener(
-                        index: index, child: const Icon(Icons.drag_handle)),
+                      index: index,
+                      child: const Icon(Icons.drag_handle),
+                    ),
                   ),
                   Expanded(
                     child: ListTile(
@@ -182,17 +193,18 @@ class BuilderPageState extends State<BuilderPage> {
                   ),
                   Text(S.of(context).repetitions),
                   NumberStepper(
-                      lowerLimit: 1,
-                      upperLimit: 99,
-                      largeSteps: false,
-                      formatNumber: false,
-                      value: set.repetitions,
-                      valueChanged: (repetitions) {
-                        setState(() {
-                          set.repetitions = repetitions;
-                          _dirty = true;
-                        });
-                      })
+                    lowerLimit: 1,
+                    upperLimit: 99,
+                    largeSteps: false,
+                    formatNumber: false,
+                    value: set.repetitions,
+                    valueChanged: (repetitions) {
+                      setState(() {
+                        set.repetitions = repetitions;
+                        _dirty = true;
+                      });
+                    },
+                  ),
                 ],
               ),
               _buildExerciseList(set, index),
@@ -220,11 +232,12 @@ class BuilderPageState extends State<BuilderPage> {
                   Row(
                     children: [
                       IconButton(
-                          icon: const Icon(Icons.delete),
-                          tooltip: S.of(context).deleteSet,
-                          onPressed: () {
-                            _deleteSet(index);
-                          }),
+                        icon: const Icon(Icons.delete),
+                        tooltip: S.of(context).deleteSet,
+                        onPressed: () {
+                          _deleteSet(index);
+                        },
+                      ),
                       IconButton(
                         icon: const Icon(Icons.copy),
                         tooltip: S.of(context).duplicate,
@@ -233,9 +246,11 @@ class BuilderPageState extends State<BuilderPage> {
                     ],
                   ),
                 ],
-              )
+              ),
             ],
-          )));
+          ),
+        ),
+      );
 
   Widget _buildExerciseList(Set set, int setIndex) => ReorderableListView(
         shrinkWrap: true,
@@ -252,26 +267,33 @@ class BuilderPageState extends State<BuilderPage> {
         children: set.exercises
             .asMap()
             .keys
-            .map((index) =>
-                _buildExerciseItem(setIndex, index, set.exercises[index].name))
+            .map(
+              (index) => _buildExerciseItem(
+                setIndex,
+                index,
+                set.exercises[index].name,
+              ),
+            )
             .toList(),
       );
 
   Widget _buildExerciseItem(int setIndex, int exIndex, String name) =>
       ReorderableDelayedDragStartListener(
-          index: exIndex,
-          key: Key(_workout.sets[setIndex].exercises[exIndex].id),
-          child: Card(
-            child: Row(
-              key: Key(_workout.sets[setIndex].exercises[exIndex].id),
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: ReorderableDragStartListener(
-                      index: exIndex, child: const Icon(Icons.drag_handle)),
+        index: exIndex,
+        key: Key(_workout.sets[setIndex].exercises[exIndex].id),
+        child: Card(
+          child: Row(
+            key: Key(_workout.sets[setIndex].exercises[exIndex].id),
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: ReorderableDragStartListener(
+                  index: exIndex,
+                  child: const Icon(Icons.drag_handle),
                 ),
-                Expanded(
-                    child: Column(
+              ),
+              Expanded(
+                child: Column(
                   children: [
                     TextFormField(
                       initialValue: name,
@@ -303,34 +325,35 @@ class BuilderPageState extends State<BuilderPage> {
                               _duplicateExercise(setIndex, exIndex),
                         ),
                       ],
-                    )
-                  ],
-                )),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    NumberStepper(
-                      lowerLimit: 0,
-                      upperLimit: 10800,
-                      largeSteps: true,
-                      formatNumber: true,
-                      value:
-                          _workout.sets[setIndex].exercises[exIndex].duration,
-                      valueChanged: (duration) {
-                        setState(() {
-                          _workout.sets[setIndex].exercises[exIndex].duration =
-                              duration;
-                          _dirty = true;
-                          _lastDuration = duration;
-                        });
-                      },
                     ),
                   ],
                 ),
-              ],
-            ),
-          ));
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  NumberStepper(
+                    lowerLimit: 0,
+                    upperLimit: 10800,
+                    largeSteps: true,
+                    formatNumber: true,
+                    value: _workout.sets[setIndex].exercises[exIndex].duration,
+                    valueChanged: (duration) {
+                      setState(() {
+                        _workout.sets[setIndex].exercises[exIndex].duration =
+                            duration;
+                        _dirty = true;
+                        _lastDuration = duration;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -340,24 +363,25 @@ class BuilderPageState extends State<BuilderPage> {
           }
 
           final value = await showDialog<bool>(
-              context: context,
-              builder: (context) => AlertDialog(
-                    content: Text(S.of(context).exitCheck),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text(S.of(context).no),
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                      ),
-                      TextButton(
-                        child: Text(S.of(context).yesExit),
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                      ),
-                    ],
-                  ));
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Text(S.of(context).exitCheck),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(S.of(context).no),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: Text(S.of(context).yesExit),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            ),
+          );
 
           return value!;
         },
@@ -366,24 +390,25 @@ class BuilderPageState extends State<BuilderPage> {
             toolbarHeight: 74,
             elevation: 1,
             title: TextFormField(
-                initialValue: _workout.title,
-                inputFormatters: [LengthLimitingTextInputFormatter(30)],
-                maxLines: 1,
-                onChanged: (name) {
-                  _workout.title = name;
-                  setState(() {
-                    _dirty = true;
-                  });
-                },
-                decoration: InputDecoration(
-                  labelText: S.of(context).name,
-                )),
+              initialValue: _workout.title,
+              inputFormatters: [LengthLimitingTextInputFormatter(30)],
+              maxLines: 1,
+              onChanged: (name) {
+                _workout.title = name;
+                setState(() {
+                  _dirty = true;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: S.of(context).name,
+              ),
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.save),
                 tooltip: S.of(context).saveWorkout,
                 onPressed: saveWorkout,
-              )
+              ),
             ],
           ),
           body: Center(
@@ -393,12 +418,15 @@ class BuilderPageState extends State<BuilderPage> {
             height: 50,
             elevation: 1,
             child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(S
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  S
                       .of(context)
-                      .durationWithTime(Utils.formatSeconds(_workout.duration)))
-                ]),
+                      .durationWithTime(Utils.formatSeconds(_workout.duration)),
+                ),
+              ],
+            ),
           ),
           floatingActionButton: FloatingActionButton(
             heroTag: 'mainFAB',

@@ -20,20 +20,27 @@ void main() async {
   GestureBinding.instance.resamplingEnabled = true;
   await Prefs.init();
 
-  PrefServiceShared.init(defaults: {
-    'theme': 'system',
-    'wakelock': true,
-    'halftime': true,
-    'ticks': false,
-    'tts_next_announce': true,
-    'sound': 'tts',
-    'expanded_setlist': false
-  }).then((service) => Future.wait([
-        TTSHelper.init(),
-        SoundHelper.loadSounds(),
-        Migrations.runMigrations()
-      ]).then((_) => runApp(
-          PrefService(service: service, child: Phoenix(child: JAWTApp())))));
+  PrefServiceShared.init(
+    defaults: {
+      'theme': 'system',
+      'wakelock': true,
+      'halftime': true,
+      'ticks': false,
+      'tts_next_announce': true,
+      'sound': 'tts',
+      'expanded_setlist': false,
+    },
+  ).then(
+    (service) => Future.wait([
+      TTSHelper.init(),
+      SoundHelper.loadSounds(),
+      Migrations.runMigrations(),
+    ]).then(
+      (_) => runApp(
+        PrefService(service: service, child: Phoenix(child: JAWTApp())),
+      ),
+    ),
+  );
 }
 
 class JAWTApp extends StatelessWidget {
@@ -43,8 +50,11 @@ class JAWTApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+      ),
+    );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     switch (PrefService.of(context).get('theme')) {
@@ -60,47 +70,51 @@ class JAWTApp extends StatelessWidget {
     }
 
     return DynamicColorBuilder(
-        builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) =>
-            MaterialApp(
-              title: 'Just Another Workout Timer',
-              themeMode: _brightness,
-              theme: ThemeData(
-                  useMaterial3: true,
-                  brightness: Brightness.light,
-                  colorScheme: lightDynamic,
-                  colorSchemeSeed: lightDynamic != null ? null : Colors.blue,
-                  cardTheme: const CardTheme(
-                    elevation: 4,
-                  )),
-              darkTheme: ThemeData(
-                  useMaterial3: true,
-                  brightness: Brightness.dark,
-                  cardTheme: const CardTheme(elevation: 4),
-                  colorScheme: darkDynamic,
-                  colorSchemeSeed: darkDynamic != null ? null : Colors.blue),
-              home: const HomePage(),
-              localizationsDelegates: const [
-                S.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-              ],
-              supportedLocales: S.delegate.supportedLocales,
-              localeListResolutionCallback: (locales, supportedLocales) {
-                if (PrefService.of(context).get('lang') != null) {
-                  final locale = Locale(PrefService.of(context).get('lang'));
-                  if (supportedLocales.contains(locale)) return locale;
-                }
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) =>
+          MaterialApp(
+        title: 'Just Another Workout Timer',
+        themeMode: _brightness,
+        theme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.light,
+          colorScheme: lightDynamic,
+          colorSchemeSeed: lightDynamic != null ? null : Colors.blue,
+          cardTheme: const CardTheme(
+            elevation: 4,
+          ),
+        ),
+        darkTheme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          cardTheme: const CardTheme(elevation: 4),
+          colorScheme: darkDynamic,
+          colorSchemeSeed: darkDynamic != null ? null : Colors.blue,
+        ),
+        home: const HomePage(),
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        localeListResolutionCallback: (locales, supportedLocales) {
+          if (PrefService.of(context).get('lang') != null) {
+            final locale = Locale(PrefService.of(context).get('lang'));
+            if (supportedLocales.contains(locale)) return locale;
+          }
 
-                for (var locale in locales!) {
-                  if (supportedLocales.any((element) =>
-                      element.languageCode == locale.languageCode)) {
-                    PrefService.of(context).set('lang', locale.languageCode);
-                    return locale;
-                  }
-                }
-                PrefService.of(context).set('lang', 'en');
-                return const Locale('en');
-              },
-            ));
+          for (var locale in locales!) {
+            if (supportedLocales.any(
+              (element) => element.languageCode == locale.languageCode,
+            )) {
+              PrefService.of(context).set('lang', locale.languageCode);
+              return locale;
+            }
+          }
+          PrefService.of(context).set('lang', 'en');
+          return const Locale('en');
+        },
+      ),
+    );
   }
 }

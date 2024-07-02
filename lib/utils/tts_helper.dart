@@ -57,7 +57,8 @@ class TTSHelper {
         return voice;
       }).toList(growable: true);
       voices.retainWhere(
-          (voice) => Languages.languageCodes.contains(voice.locale));
+        (voice) => Languages.languageCodes.contains(voice.locale),
+      );
     } on TimeoutException {
       _ttsUnavailable();
       return;

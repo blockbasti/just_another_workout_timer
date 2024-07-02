@@ -98,7 +98,8 @@ class Timetable with ChangeNotifier {
     // announce first exercise
     _timetable[1] = () {
       TTSHelper.speak(
-          S.of(_context).firstExercise(_workout.sets[0].exercises[0].name));
+        S.of(_context).firstExercise(_workout.sets[0].exercises[0].name),
+      );
     };
 
     // countdown to workout start
@@ -167,7 +168,8 @@ class Timetable with ChangeNotifier {
             setMap[currentTime + exercise.duration - 9] = () {
               if (locNextExercise != null) {
                 TTSHelper.speak(
-                    S.of(_context).nextExercise(locNextExercise.name));
+                  S.of(_context).nextExercise(locNextExercise.name),
+                );
               }
             };
           } else if (currentSecond > 10 && Prefs.getBool('ticks')) {

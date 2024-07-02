@@ -3,11 +3,13 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - lib/generated/**
+    - '**/*.g.dart'
     - lib/oss_licenses.dart
 
 linter:
   rules:
     sort_pub_dependencies: true
+    require_trailing_commas: true
     public_member_api_docs: false
     lines_longer_than_80_chars: false
     prefer_expression_function_bodies: true

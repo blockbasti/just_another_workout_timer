@@ -30,10 +30,12 @@ class HomePageState extends State<HomePage> {
 
   /// load all workouts from disk and populate list
   _loadWorkouts() async {
-    getAllWorkouts().then((value) => setState(() {
-          workouts = value;
-          _saveSorting();
-        }));
+    getAllWorkouts().then(
+      (value) => setState(() {
+        workouts = value;
+        _saveSorting();
+      }),
+    );
   }
 
   _saveSorting() {
@@ -91,36 +93,40 @@ class HomePageState extends State<HomePage> {
       );
 
   Widget _buildWorkoutItem(Workout workout) => Card(
-      key: Key(workout.toJson().toString()),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: ReorderableDragStartListener(
-                index: workout.position, child: const Icon(Icons.drag_handle)),
-          ),
-          Expanded(
-            child: ListTile(
-              title: Text(workout.title),
-              subtitle: Text(S
-                  .of(context)
-                  .durationWithTime(Utils.formatSeconds(workout.duration))),
+        key: Key(workout.toJson().toString()),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: ReorderableDragStartListener(
+                index: workout.position,
+                child: const Icon(Icons.drag_handle),
+              ),
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.edit),
-            tooltip: S.of(context).editWorkout,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      BuilderPage(workout: workout, newWorkout: false),
+            Expanded(
+              child: ListTile(
+                title: Text(workout.title),
+                subtitle: Text(
+                  S
+                      .of(context)
+                      .durationWithTime(Utils.formatSeconds(workout.duration)),
                 ),
-              ).then((value) => _loadWorkouts());
-            },
-          ),
-          IconButton(
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: S.of(context).editWorkout,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        BuilderPage(workout: workout, newWorkout: false),
+                  ),
+                ).then((value) => _loadWorkouts());
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.play_circle_fill),
               tooltip: S.of(context).startWorkout,
               onPressed: () {
@@ -132,21 +138,25 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ).then((value) => _loadWorkouts());
-              }),
-          IconButton(
+              },
+            ),
+            IconButton(
               icon: const Icon(Icons.delete),
               tooltip: S.of(context).deleteWorkout,
               onPressed: () {
                 _showDeleteDialog(context, workout);
-              }),
-          IconButton(
+              },
+            ),
+            IconButton(
               tooltip: S.of(context).shareWorkout,
               onPressed: () {
                 shareWorkout(workout.title);
               },
-              icon: const Icon(Icons.share)),
-        ],
-      ));
+              icon: const Icon(Icons.share),
+            ),
+          ],
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -159,22 +169,25 @@ class HomePageState extends State<HomePage> {
                 _loadWorkouts();
                 if (!context.mounted) return;
                 Fluttertoast.showToast(
-                    msg: S.of(context).importedCount(count),
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER);
+                  msg: S.of(context).importedCount(count),
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                );
               },
               icon: const Icon(Icons.file_download),
               tooltip: S.of(context).import,
             ),
             IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsPage()))
-                      .then((value) => _loadWorkouts());
-                })
+              icon: const Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsPage(),
+                  ),
+                ).then((value) => _loadWorkouts());
+              },
+            ),
           ],
         ),
         body: _buildWorkoutList(),

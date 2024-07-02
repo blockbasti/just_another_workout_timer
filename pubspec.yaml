@@ -5,18 +5,17 @@ environment:
 description: Just Another Workout Timer
 
 dependencies:
-  collection: '^1.15.0'
+  collection: '^1.18.0'
   dynamic_color: '^1.7.0'
   flutter: 
     sdk: flutter
   flutter_file_dialog: '^3.0.2'
   flutter_localizations: 
     sdk: flutter
-  flutter_native_splash: '^2.4.0'
   flutter_phoenix: '^1.1.1'
   flutter_tts: '^4.0.2'
   fluttertoast: '^8.2.5'
-  intl_utils: '^2.8.7'
+  intl: '^0.19.0'
   json_annotation: '^4.9.0'
   numberpicker: '^2.1.2'
   path: '^1.8.0'
@@ -24,7 +23,6 @@ dependencies:
   pref: '^2.8.0'
   prefs: '^4.1.0+3'
   provider: '^6.1.2'
-  pubspec_dependency_sorter: '^1.0.5'
   scrollable_positioned_list: '^0.3.8'
   share_plus: '^9.0.0'
   soundpool: '^2.4.1'
@@ -33,11 +31,14 @@ dependencies:
   wakelock_plus: '^1.2.5'
 
 dev_dependencies:
-  build_runner: ^2.4.10
+  build_runner: '^2.4.11'
   flutter_launcher_icons: '^0.13.1'
   flutter_lints: '^4.0.0'
+  flutter_native_splash: '^2.4.0'
   flutter_oss_licenses: '^3.0.2'
+  intl_utils: '^2.8.7'
   json_serializable: '^6.8.0'
+  pubspec_dependency_sorter: '^1.0.5'
 
 flutter:
   uses-material-design: true
@@ -46,7 +47,7 @@ flutter:
     - LICENSE
     - 'assets/beep_low.wav'
     - 'assets/beep_high.wav'
-    - assets/tick.wav
+    - 'assets/tick.wav'
 
 flutter_icons:
   android: 'launcher_icon'

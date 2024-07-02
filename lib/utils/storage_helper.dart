@@ -26,31 +26,35 @@ Future<void> exportWorkout(String title) async {
   var workout = await loadWorkout(title: title);
   var backup = Backup(workouts: [workout]);
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
-      fileName: '${Utils.removeSpecialChar(title)}.json');
+    data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+    fileName: '${Utils.removeSpecialChar(title)}.json',
+  );
   await FlutterFileDialog.saveFile(params: params);
 }
 
 Future<void> shareWorkout(String title) async {
   final path = await localPath;
   Share.shareXFiles(
-      [XFile('$path/workouts/${Utils.removeSpecialChar(title)}.json')],
-      text: title);
+    [XFile('$path/workouts/${Utils.removeSpecialChar(title)}.json')],
+    text: title,
+  );
 }
 
 Future<void> exportAllWorkouts() async {
   var backup = Backup(workouts: await getAllWorkouts());
   final params = SaveFileDialogParams(
-      data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
-      fileName: 'Backup.json');
+    data: Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+    fileName: 'Backup.json',
+  );
   await FlutterFileDialog.saveFile(params: params);
 }
 
 Future<String?> pickFile() async {
   const params = OpenFileDialogParams(
-      dialogType: OpenFileDialogType.document,
-      fileExtensionsFilter: ['json'],
-      allowEditing: false);
+    dialogType: OpenFileDialogType.document,
+    fileExtensionsFilter: ['json'],
+    allowEditing: false,
+  );
   return FlutterFileDialog.pickFile(params: params);
 }
 
@@ -135,7 +139,8 @@ Future<void> createBackup() async {
   var backup = Backup(workouts: await getAllWorkouts());
   var backupfile = File('${dirbak.path}/backup.json');
   backupfile.writeAsBytesSync(
-      Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits));
+    Uint8List.fromList(jsonEncode(backup.toJson()).codeUnits),
+  );
 }
 
 Future<List<Workout>> getAllWorkouts() async {
