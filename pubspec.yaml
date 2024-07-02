@@ -1,5 +1,5 @@
 name: 'just_another_workout_timer'
-version: '1.13.0'
+version: 1.14.0
 environment: 
   sdk: '>=3.4.0'
 description: Just Another Workout Timer
