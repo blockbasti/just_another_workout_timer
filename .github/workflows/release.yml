@@ -37,7 +37,8 @@ jobs:
         run: |
           flutter config --no-analytics
           flutter pub get
-          sh ./scripts/generate_code.sh
+          dart pub global activate script_runner
+          scr build
 
       - name: Build APKs
         if: ${{ steps.release.outputs.release_created }}

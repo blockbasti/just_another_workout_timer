@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pref/pref.dart';
 import 'package:prefs/prefs.dart';
@@ -12,12 +13,13 @@ import 'package:prefs/prefs.dart';
 import 'generated/l10n.dart';
 import 'layouts/home_page.dart';
 import 'utils/migrations.dart';
-import 'utils/tts_helper.dart';
 import 'utils/sound_helper.dart';
+import 'utils/tts_helper.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   GestureBinding.instance.resamplingEnabled = true;
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Prefs.init();
 
   PrefServiceShared.init(
@@ -36,9 +38,12 @@ void main() async {
       SoundHelper.loadSounds(),
       Migrations.runMigrations(),
     ]).then(
-      (_) => runApp(
-        PrefService(service: service, child: Phoenix(child: JAWTApp())),
-      ),
+      (_) {
+        runApp(
+          PrefService(service: service, child: Phoenix(child: JAWTApp())),
+        );
+        FlutterNativeSplash.remove();
+      },
     ),
   );
 }

@@ -12,6 +12,7 @@ dependencies:
   flutter_file_dialog: '^3.0.2'
   flutter_localizations: 
     sdk: flutter
+  flutter_native_splash: '^2.4.0'
   flutter_phoenix: '^1.1.1'
   flutter_tts: '^4.0.2'
   fluttertoast: '^8.2.5'
@@ -34,7 +35,6 @@ dev_dependencies:
   build_runner: '^2.4.11'
   flutter_launcher_icons: '^0.13.1'
   flutter_lints: '^4.0.0'
-  flutter_native_splash: '^2.4.0'
   flutter_oss_licenses: '^3.0.2'
   intl_utils: '^2.8.7'
   json_serializable: '^6.8.0'
@@ -68,9 +68,17 @@ flutter_native_splash:
   android: true
   ios: false
   web: false
-  android12: 
-    image: 'assets/ic_launcher_foreground.png'
+  android_12:
     color: '#D8DEE9'
     icon_background_color: '#D8DEE9'
     color_dark: '#2E3440'
     icon_background_color_dark: '#2E3440'
+
+script_runner:
+  scripts:
+    - licenses: dart pub run flutter_oss_licenses:generate.dart
+    - translations: dart run intl_utils:generate
+    - launcher_icons: flutter pub run flutter_launcher_icons
+    - native_splash: flutter pub run flutter_native_splash:create
+    - build_runner: dart run build_runner build --delete-conflicting-outputs
+    - build: scr licenses && scr translations && scr launcher_icons && scr native_splash && scr build_runner
