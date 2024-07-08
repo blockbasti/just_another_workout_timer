@@ -12,7 +12,7 @@ dependencies:
   flutter_file_dialog: '^3.0.2'
   flutter_localizations: 
     sdk: flutter
-  flutter_native_splash: '^2.4.0'
+  flutter_native_splash: ^2.4.0
   flutter_phoenix: '^1.1.1'
   flutter_tts: '^4.0.2'
   fluttertoast: '^8.2.5'
