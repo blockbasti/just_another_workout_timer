@@ -267,7 +267,8 @@ class BuilderPageState extends State<BuilderPage> {
                           tooltip: S.of(context).deleteSet,
                           onPressed: () {
                             _deleteSet(index);
-                          }),
+                          }
+                      ),
                       IconButton(
                         icon: const Icon(Icons.copy),
                         tooltip: S.of(context).duplicate,
