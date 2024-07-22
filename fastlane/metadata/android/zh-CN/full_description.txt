@@ -1,0 +1,9 @@
+* 轻松创建复杂的锻炼计划
+* 用自定义的持续时间，定义您自己的训练动作
+* 将动作添加到自定义的动作组
+* 文字转语音（TTS）语音提示
+* 使用 Flutter 构建的现代的 Material Design
+* 无广告
+* 自由和开源
+
+Github: https://github.com/blockbasti/just_another_workout_timer
