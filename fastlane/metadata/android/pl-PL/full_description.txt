@@ -1,0 +1,9 @@
+* Łatwo twórz złożone treningi
+* Wprowadzaj własne ćwiczenia z wybranymi czasami trwania
+* Grupuj ćwiczenia w zestawy
+* Synteza mowy
+* Wykorzystuje Flutter
+* Bez reklam
+* Darmowy i otwartoźródłowy
+
+Github: https://github.com/blockbasti/just_another_workout_timer
