@@ -16,6 +16,7 @@ class NumberStepper extends StatefulWidget {
     required this.valueChanged,
     required this.formatNumber,
     required this.largeSteps,
+    required this.step,
   });
 
   final int lowerLimit;
@@ -24,7 +25,10 @@ class NumberStepper extends StatefulWidget {
   int value;
   final ValueChanged<int> valueChanged;
   final bool formatNumber;
+  // if false, shows a number with plus/minus buttons.
+  // if true, shows the spinner.
   final bool largeSteps;
+  final int step;
 
   @override
   CustomStepperState createState() => CustomStepperState();
@@ -47,12 +51,16 @@ class CustomStepperState extends State<NumberStepper> {
   }
 
   Widget _editableTextField() {
-    if (_isEditingText) {
+    var isSpinnerValid = widget.value % widget.step == 0;
+
+    if (_isEditingText || !isSpinnerValid) {
       _editingController.value =
           TextEditingValue(text: widget.value.toString());
-      return Center(
+      return Container(
+        width: 122,
+        alignment: Alignment.centerRight,
         child: SizedBox(
-          width: 112,
+          width: 75,
           child: TextField(
             maxLines: 1,
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
@@ -75,9 +83,13 @@ class CustomStepperState extends State<NumberStepper> {
                 }
               });
             },
-            autofocus: true,
+            // Only autofocus if we're text editing, not for isSpinnerValid
+            autofocus: _isEditingText,
             controller: _editingController,
-            decoration: InputDecoration(suffixText: S.of(context).seconds),
+            decoration: InputDecoration(
+              helperText: S.of(context).seconds,
+              helperStyle: const TextStyle(fontSize: 14),
+            ),
           ),
         ),
       );
@@ -92,7 +104,7 @@ class CustomStepperState extends State<NumberStepper> {
         itemHeight: 32,
         value: widget.value,
         minValue: widget.lowerLimit,
-        step: 10,
+        step: widget.step,
         itemCount: 3,
         haptics: true,
         zeroPad: false,

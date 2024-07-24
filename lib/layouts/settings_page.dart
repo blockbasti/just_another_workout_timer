@@ -102,6 +102,25 @@ class SettingsPageState extends State<SettingsPage> {
             subtitle: Text(S.of(context).expanded_setlist_info),
             pref: 'expanded_setlist',
           ),
+          PrefDropdown<int>(
+            title: Text(S.of(context).spinnerStep),
+            pref: 'spinner_step',
+            items: [
+              DropdownMenuItem(
+                value: 5,
+                child: Text("5 ${S.of(context).seconds}"),
+              ),
+              DropdownMenuItem(
+                value: 10,
+                child: Text("10 ${S.of(context).seconds}"),
+              ),
+              DropdownMenuItem(
+                value: 15,
+                child: Text("15 ${S.of(context).seconds}"),
+              ),
+            ],
+          ),
+
           PrefTitle(
             title: Text(
               S.of(context).backup,
