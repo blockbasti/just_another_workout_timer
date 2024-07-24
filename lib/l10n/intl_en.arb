@@ -19,6 +19,7 @@
     "duplicate": "Duplicate",
     "durationLeft": "{timeLeft} of {timeTotal} left",
     "durationWithTime": "Duration: {formattedTime}",
+    "editSetName" : "Edit set name",
     "editWorkout": "Edit workout",
     "enterWorkoutName": "Please enter a name for the workout!",
     "exercise": "Exercise",

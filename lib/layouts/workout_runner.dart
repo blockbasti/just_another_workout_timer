@@ -166,6 +166,7 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                   ),
                 ),
               ),
+
               // right side of footer
               Expanded(
                 child: ListTile(
@@ -198,7 +199,15 @@ class WorkoutPageState extends State<WorkoutPageContent> {
                 child: Column(
                   children: [
                     Text(
-                      '${S.of(context).setIndex(_workout.sets.indexOf(timetable.currentSet) + 1)} - ${Utils.formatSeconds(timetable.remainingSeconds)}',
+                      timetable.currentSet.name ?? S.of(context).setIndex(_workout.sets.indexOf(timetable.currentSet) + 1),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    Text(
+                      Utils.formatSeconds(timetable.remainingSeconds),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 48,

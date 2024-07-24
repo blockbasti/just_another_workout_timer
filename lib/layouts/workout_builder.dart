@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:prompt_dialog/prompt_dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../generated/l10n.dart';
@@ -56,7 +57,7 @@ class BuilderPageState extends State<BuilderPage> {
     var newSet = Set.fromJson(_workout.sets[index].toJson());
     newSet.id = const Uuid().v4();
     setState(() {
-      _workout.sets.insert(index, newSet);
+      _workout.sets.insert(index + 1, newSet);
       _dirty = true;
     });
   }
@@ -149,6 +150,20 @@ class BuilderPageState extends State<BuilderPage> {
     });
   }
 
+  void _editSetName(int setIndex) async {
+    var existingName = _workout.sets[setIndex].name ?? "";
+    var newName = await prompt(
+        context,
+        initialValue: existingName,
+        maxLength: 15);
+    if (newName != null && newName != existingName) {
+      setState(() {
+        _workout.sets[setIndex].name = newName.isEmpty ? null : newName;
+        _dirty = true;
+      });
+    }
+  }
+
   Widget _buildSetList() => ReorderableListView(
         onReorder: (oldIndex, newIndex) {
           if (oldIndex < newIndex) {
@@ -186,9 +201,16 @@ class BuilderPageState extends State<BuilderPage> {
                   Expanded(
                     child: ListTile(
                       title: Text(
+                        set.name ??
                         S.of(context).setIndex(_workout.sets.indexOf(set) + 1),
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                       subtitle: Text(Utils.formatSeconds(set.duration)),
+                      onLongPress: () {
+                        _editSetName(index);
+                      },
                     ),
                   ),
                   Text(S.of(context).repetitions),
@@ -232,11 +254,20 @@ class BuilderPageState extends State<BuilderPage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.delete),
-                        tooltip: S.of(context).deleteSet,
+                        icon: Icon(set.hidden ? Icons.visibility : Icons.visibility_off),
                         onPressed: () {
-                          _deleteSet(index);
+                          setState(() {
+                            set.hidden = !set.hidden;
+                            _dirty = true;
+                          });
                         },
+                      ),
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          tooltip: S.of(context).deleteSet,
+                          onPressed: () {
+                            _deleteSet(index);
+                          }
                       ),
                       IconButton(
                         icon: const Icon(Icons.copy),
@@ -264,7 +295,7 @@ class BuilderPageState extends State<BuilderPage> {
             _workout.sets[setIndex].exercises.insert(newIndex, ex);
           });
         },
-        children: set.exercises
+        children: set.hidden ? [] : set.exercises
             .asMap()
             .keys
             .map(
