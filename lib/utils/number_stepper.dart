@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -17,6 +18,7 @@ class NumberStepper extends StatefulWidget {
     required this.formatNumber,
     required this.largeSteps,
     required this.step,
+    required this.tapToEdit,
   });
 
   final int lowerLimit;
@@ -29,6 +31,7 @@ class NumberStepper extends StatefulWidget {
   // if true, shows the spinner.
   final bool largeSteps;
   final int step;
+  final bool tapToEdit;
 
   @override
   CustomStepperState createState() => CustomStepperState();
@@ -36,12 +39,14 @@ class NumberStepper extends StatefulWidget {
 
 class CustomStepperState extends State<NumberStepper> {
   bool _isEditingText = false;
+  bool _isSpinnerActive = true;
   late TextEditingController _editingController;
 
   @override
   void initState() {
     super.initState();
     _editingController = TextEditingController(text: widget.value.toString());
+    _isSpinnerActive = !widget.tapToEdit;
   }
 
   @override
@@ -97,25 +102,50 @@ class CustomStepperState extends State<NumberStepper> {
     return InkWell(
       onTap: () {
         setState(() {
-          _isEditingText = true;
+          if (widget.tapToEdit) {
+            _isSpinnerActive = true;
+          }
+          else {
+            _isEditingText = true;
+          }
         });
       },
-      child: NumberPicker(
-        itemHeight: 32,
-        value: widget.value,
-        minValue: widget.lowerLimit,
-        step: widget.step,
-        itemCount: 3,
-        haptics: true,
-        zeroPad: false,
-        maxValue: widget.upperLimit,
-        textMapper: (value) => Utils.formatSeconds(int.parse(value)),
-        onChanged: (value) {
-          setState(() {
-            widget.value = value;
-            widget.valueChanged(value);
-          });
-        },
+      onLongPress: () {
+        setState(() {
+          if (widget.tapToEdit) {
+            _isEditingText = true;
+          }
+        });
+      },
+      child: IgnorePointer(
+        ignoring: !_isSpinnerActive,
+        child: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            setState(() {
+              if (notification.direction == ScrollDirection.idle && widget.tapToEdit) {
+                _isSpinnerActive = false;
+              }
+            });
+            return true;
+          },
+          child: NumberPicker(
+            itemHeight: 32,
+            value: widget.value,
+            minValue: widget.lowerLimit,
+            step: widget.step,
+            itemCount: 3,
+            haptics: true,
+            zeroPad: false,
+            maxValue: widget.upperLimit,
+            textMapper: (value) => Utils.formatSeconds(int.parse(value)),
+            onChanged: (value) {
+              setState(() {
+                widget.value = value;
+                widget.valueChanged(value);
+              });
+            },
+          ),
+        ),
       ),
     );
   }

@@ -199,6 +199,7 @@ class BuilderPageState extends State<BuilderPage> {
                     largeSteps: false,
                     step: 1,
                     formatNumber: false,
+                    tapToEdit: false,
                     value: set.repetitions,
                     valueChanged: (repetitions) {
                       setState(() {
@@ -341,6 +342,7 @@ class BuilderPageState extends State<BuilderPage> {
                     largeSteps: true,
                     step: Prefs.getInt('spinner_step', 10) ,
                     formatNumber: true,
+                    tapToEdit: Prefs.getBool('tap_to_edit', false),
                     value: _workout.sets[setIndex].exercises[exIndex].duration,
                     valueChanged: (duration) {
                       setState(() {

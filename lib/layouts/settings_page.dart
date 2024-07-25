@@ -102,6 +102,12 @@ class SettingsPageState extends State<SettingsPage> {
             subtitle: Text(S.of(context).expanded_setlist_info),
             pref: 'expanded_setlist',
           ),
+
+          PrefTitle(
+            title: Text(
+              S.of(context).editWorkout,
+            ),
+          ),
           PrefDropdown<int>(
             title: Text(S.of(context).spinnerStep),
             pref: 'spinner_step',
@@ -119,6 +125,10 @@ class SettingsPageState extends State<SettingsPage> {
                 child: Text("15 ${S.of(context).seconds}"),
               ),
             ],
+          ),
+          PrefSwitch(
+            title: Text(S.of(context).tapToEdit),
+            pref: 'tap_to_edit',
           ),
 
           PrefTitle(
