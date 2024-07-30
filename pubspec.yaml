@@ -25,7 +25,7 @@ dependencies:
   prefs: '^4.1.0+3'
   provider: '^6.1.2'
   scrollable_positioned_list: '^0.3.8'
-  share_plus: '^9.0.0'
+  share_plus: ">=9.0.0 <11.0.0"
   soundpool: '^2.4.1'
   url_launcher: '^6.2.6'
   uuid: '^4.4.0'
