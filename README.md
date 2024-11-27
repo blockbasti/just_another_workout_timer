@@ -64,7 +64,7 @@
 * Define your own exercises with custom durations
 * Add exercises to custom sets
 * Text-to-Speech announcements
-* Modern Material Design built with Flutter
+* Modern Material Design built with [Flutter](https://flutter.dev/)  
 * Ad-free
 * Free and Open-Source
 
