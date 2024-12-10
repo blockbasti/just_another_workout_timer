@@ -20,7 +20,7 @@ dependencies:
   json_annotation: '^4.9.0'
   numberpicker: '^2.1.2'
   path: '^1.8.0'
-  path_provider: '^2.1.3'
+  path_provider: ^2.1.3
   pref: '^2.8.0'
   prefs: '^4.1.0+3'
   provider: '^6.1.2'
