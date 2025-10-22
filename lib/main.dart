@@ -31,6 +31,8 @@ void main() async {
       'tts_next_announce': true,
       'sound': 'tts',
       'expanded_setlist': false,
+      'spinner_step': 10,
+      'tap_to_edit' : false,
     },
   ).then(
     (service) => Future.wait([
