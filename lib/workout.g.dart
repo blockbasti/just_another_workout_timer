@@ -39,6 +39,7 @@ Set _$SetFromJson(Map<String, dynamic> json) {
     exercises: (json['exercises'] as List<dynamic>?)
         ?.map((e) => Exercise.fromJson(e as Map<String, dynamic>))
         .toList(),
+    name: json['name'] as String?
   );
 }
 
@@ -46,6 +47,7 @@ Map<String, dynamic> _$SetToJson(Set instance) => <String, dynamic>{
       'repetitions': instance.repetitions,
       'id': instance.id,
       'exercises': instance.exercises.map((e) => e.toJson()).toList(),
+      'name' : instance.name
     };
 
 Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
