@@ -21,6 +21,7 @@
 
   <h3 align="center">Just Another Workout Timer</h3>
 
+  
   <p align="center">
     A simple timer for your workouts, built with Flutter!
     <br />

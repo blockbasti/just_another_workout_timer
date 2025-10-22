@@ -207,5 +207,10 @@ class HomePageState extends State<HomePage> {
           tooltip: S.of(context).addWorkout,
           child: const Icon(Icons.add),
         ),
+        // Empty App Bar prevents drawing under nav buttons.
+        bottomNavigationBar: const BottomAppBar(
+          elevation : 1,
+          height: 1,
+        )
       );
 }

@@ -31,6 +31,8 @@ void main() async {
       'tts_next_announce': true,
       'sound': 'tts',
       'expanded_setlist': false,
+      'spinner_step': 10,
+      'tap_to_edit' : false,
     },
   ).then(
     (service) => Future.wait([
@@ -49,6 +51,7 @@ void main() async {
 }
 
 class JAWTApp extends StatelessWidget {
+  // TODO this shouldn't exist in a StatelessWidget
   ThemeMode? _brightness;
 
   JAWTApp({super.key});
@@ -84,14 +87,14 @@ class JAWTApp extends StatelessWidget {
           brightness: Brightness.light,
           colorScheme: lightDynamic,
           colorSchemeSeed: lightDynamic != null ? null : Colors.blue,
-          cardTheme: const CardTheme(
+          cardTheme: const CardThemeData(
             elevation: 4,
           ),
         ),
         darkTheme: ThemeData(
           useMaterial3: true,
           brightness: Brightness.dark,
-          cardTheme: const CardTheme(elevation: 4),
+          cardTheme: const CardThemeData(elevation: 4),
           colorScheme: darkDynamic,
           colorSchemeSeed: darkDynamic != null ? null : Colors.blue,
         ),

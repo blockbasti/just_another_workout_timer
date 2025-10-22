@@ -47,3 +47,4 @@ app.*.map.json
 
 lib/generated
 lib/oss_licenses.dart
+/pubspec.lock

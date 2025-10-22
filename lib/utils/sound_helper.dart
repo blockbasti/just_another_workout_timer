@@ -1,63 +1,69 @@
-import 'package:flutter/services.dart';
 import 'package:prefs/prefs.dart';
-import 'package:soundpool/soundpool.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SoundHelper {
-  static final Soundpool _soundpool = Soundpool.fromOptions(
-    options: const SoundpoolOptions(
-      streamType: StreamType.music,
-    ),
-  );
-  static late int _beepLowId;
-  static late int _beepHighId;
-  static late int _tickId;
+
+  static final AssetSource _beepLowSource = AssetSource("beep_low.wav");
+  static final AssetSource _beepHighSource = AssetSource("beep_high.wav");
+  static final AssetSource _tickSource = AssetSource("tick.wav");
+  static late AudioPlayer _player;
 
   static bool useSound = false;
 
   static Future<void> loadSounds() async {
+    AudioLogger.logLevel = AudioLogLevel.info;
     await _loadSounds();
     useSound = Prefs.getString('sound') == 'beep';
   }
 
   static Future<void> _loadSounds() async {
-    var beepLow = await rootBundle.load('assets/beep_low.wav');
-    var beepHigh = await rootBundle.load('assets/beep_high.wav');
-    var tick = await rootBundle.load('assets/tick.wav');
-    _beepLowId = await _soundpool.load(beepLow);
-    _beepHighId = await _soundpool.load(beepHigh);
-    _tickId = await _soundpool.load(tick);
+    _player = AudioPlayer();
+    await _player.setReleaseMode(ReleaseMode.stop);
+
+    await _loadSound(_beepLowSource);
+    await _loadSound(_beepHighSource);
+    await _loadSound(_tickSource);
+  }
+
+  static Future<void> _loadSound(AssetSource src) async {
+    await AudioCache.instance.load(src.path);
   }
 
   static void playBeepLow() {
-    if (useSound) _soundpool.play(_beepLowId);
+    if (useSound) _player.play(_beepLowSource);
   }
 
   static void playBeepHigh() {
-    if (useSound) _soundpool.play(_beepHighId);
+    if (useSound) _player.play(_beepHighSource);
   }
 
   static void playBeepTick() {
-    if (Prefs.getBool('ticks')) _soundpool.play(_tickId);
+    if (Prefs.getBool('ticks')) _player.play(_tickSource);
   }
 
   static void playDouble() {
     if (useSound) {
-      _soundpool.play(_beepLowId);
+      playBeepLow();
       Future.delayed(const Duration(milliseconds: 200))
-          .then((value) => _soundpool.play(_beepLowId));
+          .then((value) => playBeepLow());
     }
   }
 
   static void playTriple() {
     if (useSound) {
-      _soundpool.play(_beepHighId);
+      playBeepHigh();
       Future.delayed(const Duration(milliseconds: 150))
-          .then((value) => _soundpool.play(_beepHighId))
+          .then((value) => playBeepHigh())
           .then(
             (value) => Future.delayed(const Duration(milliseconds: 150))
-                .then((value) => _soundpool.play(_beepHighId)),
+                .then((value) => playBeepHigh()),
           );
     }
+  }
+
+  // TODO does this need to be called somewhere?
+  static void dispose() async {
+    await _player.dispose();
   }
 }
