@@ -10,13 +10,15 @@ dependencies:
   flutter: 
     sdk: flutter
   flutter_file_dialog: '^3.0.2'
-  flutter_localizations: 
+  flutter_foreground_task: '^8.14.0'
+  flutter_local_notifications: '^18.0.1'
+  flutter_localizations:
     sdk: flutter
   flutter_native_splash: '^2.4.0'
   flutter_phoenix: '^1.1.1'
   flutter_tts: '^4.0.2'
-  fluttertoast: '^8.2.5'
-  intl: '^0.19.0'
+  fluttertoast: ^9.0.0
+  intl: '^0.20.2'
   json_annotation: '^4.9.0'
   numberpicker: '^2.1.2'
   path: '^1.8.0'
@@ -25,17 +27,18 @@ dependencies:
   prefs: '^4.1.0+3'
   provider: '^6.1.2'
   scrollable_positioned_list: '^0.3.8'
-  share_plus: '^9.0.0'
-  soundpool: '^2.4.1'
+  share_plus: ^12.0.1
+  audioplayers: ^6.1.0
   url_launcher: '^6.2.6'
   uuid: '^4.4.0'
   wakelock_plus: '^1.2.5'
 
 dev_dependencies:
   build_runner: '^2.4.11'
-  flutter_launcher_icons: '^0.13.1'
-  flutter_lints: '^4.0.0'
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^5.0.0
   flutter_oss_licenses: '^3.0.2'
+  dart_pubspec_licenses: '>=3.0.14'
   intl_utils: '^2.8.7'
   json_serializable: '^6.8.0'
   pubspec_dependency_sorter: '^1.0.5'

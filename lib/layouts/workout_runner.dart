@@ -4,10 +4,13 @@ import 'package:prefs/prefs.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
 import '../generated/l10n.dart';
 import '../utils/utils.dart';
 import '../utils/workout.dart';
+import '../utils/workout_service.dart';
 
 class WorkoutPage extends StatelessWidget {
   final Workout workout;
@@ -15,11 +18,13 @@ class WorkoutPage extends StatelessWidget {
   const WorkoutPage({super.key, required this.workout});
 
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-        create: (context) => Timetable(context, workout),
-        child: Consumer<Timetable>(
-          builder: (context, timetable, child) =>
-              WorkoutPageContent(workout: workout, timetable: timetable),
+  Widget build(BuildContext context) => WithForegroundTask(
+        child: ChangeNotifierProvider(
+          create: (context) => Timetable(context, workout),
+          child: Consumer<Timetable>(
+            builder: (context, timetable, child) =>
+                WorkoutPageContent(workout: workout, timetable: timetable),
+          ),
         ),
       );
 }
@@ -50,13 +55,6 @@ class WorkoutPageState extends State<WorkoutPageContent> {
       ItemPositionsListener.create();
 
   @override
-  void dispose() {
-    timetable.timerStop();
-    WakelockPlus.disable();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     _workout = widget.workout;
@@ -64,9 +62,72 @@ class WorkoutPageState extends State<WorkoutPageContent> {
     timetable.itemScrollController = _itemScrollController;
     if (Prefs.getBool('wakelock', true)) WakelockPlus.enable();
 
+    // Initialize workout service and request notification permission
+    _initializeWorkoutService();
+
+    // Set up notification button listener
+    _setupButtonListener();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       timetable.buildTimetable();
     });
+  }
+
+  void _setupButtonListener() {
+    // Listen for button presses from the foreground task
+    FlutterForegroundTask.addTaskDataCallback(_onReceiveTaskData);
+  }
+
+  @override
+  void dispose() {
+    FlutterForegroundTask.removeTaskDataCallback(_onReceiveTaskData);
+    timetable.stopWorkout();
+    WakelockPlus.disable();
+    super.dispose();
+  }
+
+  void _onReceiveTaskData(Object data) {
+    if (data is Map && data['action'] != null) {
+      final action = data['action'] as String;
+      _handleNotificationAction(action);
+    }
+  }
+
+  Future<void> _initializeWorkoutService() async {
+    try {
+      await WorkoutService.initialize();
+
+      // Request notification permission for Android 13+
+      final notificationPlugin = FlutterLocalNotificationsPlugin();
+      await notificationPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.requestNotificationsPermission();
+    } catch (e) {
+      // Silently handle errors - service will work without permissions
+      // but user won't see notifications
+    }
+  }
+
+  void _handleNotificationAction(String action) {
+    switch (action) {
+      case 'play':
+      case 'pause':
+        if (timetable.isActive) {
+          timetable.timerStop();
+        } else {
+          timetable.timerStart();
+        }
+        // Force immediate notification update to reflect new state
+        timetable.forceNotificationUpdate();
+        break;
+      case 'stop':
+        timetable.stopWorkout();
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+        break;
+    }
   }
 
   Widget _buildCurrentSetList(Set? set) {

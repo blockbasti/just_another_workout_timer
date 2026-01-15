@@ -1,63 +1,54 @@
-import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:prefs/prefs.dart';
-import 'package:soundpool/soundpool.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class SoundHelper {
-  static final Soundpool _soundpool = Soundpool.fromOptions(
-    options: const SoundpoolOptions(
-      streamType: StreamType.music,
-    ),
-  );
-  static late int _beepLowId;
-  static late int _beepHighId;
-  static late int _tickId;
-
+  static final AudioPlayer _player = AudioPlayer();
   static bool useSound = false;
 
   static Future<void> loadSounds() async {
-    await _loadSounds();
     useSound = Prefs.getString('sound') == 'beep';
+    // Configure audio player for low-latency playback
+    await _player.setReleaseMode(ReleaseMode.stop);
   }
 
-  static Future<void> _loadSounds() async {
-    var beepLow = await rootBundle.load('assets/beep_low.wav');
-    var beepHigh = await rootBundle.load('assets/beep_high.wav');
-    var tick = await rootBundle.load('assets/tick.wav');
-    _beepLowId = await _soundpool.load(beepLow);
-    _beepHighId = await _soundpool.load(beepHigh);
-    _tickId = await _soundpool.load(tick);
-  }
-
-  static void playBeepLow() {
-    if (useSound) _soundpool.play(_beepLowId);
-  }
-
-  static void playBeepHigh() {
-    if (useSound) _soundpool.play(_beepHighId);
-  }
-
-  static void playBeepTick() {
-    if (Prefs.getBool('ticks')) _soundpool.play(_tickId);
-  }
-
-  static void playDouble() {
+  static Future<void> playBeepLow() async {
     if (useSound) {
-      _soundpool.play(_beepLowId);
-      Future.delayed(const Duration(milliseconds: 200))
-          .then((value) => _soundpool.play(_beepLowId));
+      await _player.play(AssetSource('beep_low.wav'));
     }
   }
 
-  static void playTriple() {
+  static Future<void> playBeepHigh() async {
     if (useSound) {
-      _soundpool.play(_beepHighId);
-      Future.delayed(const Duration(milliseconds: 150))
-          .then((value) => _soundpool.play(_beepHighId))
-          .then(
-            (value) => Future.delayed(const Duration(milliseconds: 150))
-                .then((value) => _soundpool.play(_beepHighId)),
-          );
+      await _player.play(AssetSource('beep_high.wav'));
     }
+  }
+
+  static Future<void> playBeepTick() async {
+    if (Prefs.getBool('ticks')) {
+      await _player.play(AssetSource('tick.wav'));
+    }
+  }
+
+  static Future<void> playDouble() async {
+    if (useSound) {
+      await _player.play(AssetSource('beep_low.wav'));
+      await Future.delayed(const Duration(milliseconds: 200));
+      await _player.play(AssetSource('beep_low.wav'));
+    }
+  }
+
+  static Future<void> playTriple() async {
+    if (useSound) {
+      await _player.play(AssetSource('beep_high.wav'));
+      await Future.delayed(const Duration(milliseconds: 150));
+      await _player.play(AssetSource('beep_high.wav'));
+      await Future.delayed(const Duration(milliseconds: 150));
+      await _player.play(AssetSource('beep_high.wav'));
+    }
+  }
+
+  static Future<void> dispose() async {
+    await _player.dispose();
   }
 }

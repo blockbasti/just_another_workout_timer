@@ -39,6 +39,7 @@ class OssLicensesPage extends StatelessWidget {
           isMarkdown: false,
           isSdk: false,
           dependencies: [],
+          devDependencies: [],
         ),
       );
     }
@@ -54,6 +55,7 @@ class OssLicensesPage extends StatelessWidget {
         isSdk: false,
         homepage: 'https://freesound.org/people/unfa/sounds/243749/',
         dependencies: [],
+        devDependencies: [],
       ),
     );
 
